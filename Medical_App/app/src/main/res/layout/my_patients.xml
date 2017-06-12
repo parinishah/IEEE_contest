@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_my_patients"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <ImageButton
+                android:id="@+id/imageButton_my_patients_back"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="0dp"
+                android:background="@drawable/menu"
+                android:layout_marginTop="10dp"/>
+
+            <SearchView
+                android:id="@+id/search_bar_my_patients_search"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp" />
+
+            <TextView
+                android:id="@+id/textView_my_patients_patients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Patients"
+                android:textColor="#ffffff"
+                android:textAlignment="center"
+                android:clickable="false"
+                android:textSize="20dp"
+                android:padding="2dp"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_weight="2" />
+
+            <ImageButton
+                android:id="@+id/imageButton_my_patients_add_patient"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="14dp"
+                android:background="@drawable/add_user_2"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+
+
+</LinearLayout>
