@@ -1,8 +1,10 @@
 package com.example.krish.medical_app.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -33,5 +35,17 @@ public class Signup extends AppCompatActivity
         login = (TextView) findViewById(R.id.textView_signup_login_btn);
         signup = (TextView) findViewById(R.id.textView_signup_signup_btn);
 
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launch_login();
+            }
+        });
+    }
+
+    public void launch_login()
+    {
+        startActivity(new Intent(this, Login.class));
     }
 }
+
