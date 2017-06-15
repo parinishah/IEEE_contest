@@ -53,4 +53,8 @@ public class Login extends AppCompatActivity {
         startActivity(new Intent(this, My_patients.class));
     }
 
+    @Override
+    public void onBackPressed() {
+        //should exit the app
+    }
 }

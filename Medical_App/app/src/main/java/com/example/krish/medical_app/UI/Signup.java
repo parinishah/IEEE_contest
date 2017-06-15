@@ -41,11 +41,25 @@ public class Signup extends AppCompatActivity
                 launch_login();
             }
         });
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launch_my_patients();
+            }
+        });
     }
 
     public void launch_login()
     {
         startActivity(new Intent(this, Login.class));
+    }
+    public void launch_my_patients()
+    {
+        startActivity(new Intent(this,My_patients.class));
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }
 

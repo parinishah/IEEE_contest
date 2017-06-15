@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.krish.medical_app.MainActivity;
 import com.example.krish.medical_app.R;
 
 /**
@@ -35,7 +34,6 @@ public class View_patient extends AppCompatActivity
     protected TextView medical_history_value;
     protected ImageButton notes;
     protected ImageButton images;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +93,7 @@ public class View_patient extends AppCompatActivity
             }
         });
 
+
     }
 
     public void launch_my_patients() { startActivity(new Intent(this, My_patients.class)); }
@@ -135,5 +134,8 @@ public class View_patient extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
     }
+    public void onBackPressed()
+    {    }
+
 
 }

@@ -57,16 +57,15 @@
 
 
     <ScrollView
+        android:id="@+id/scrollview_new"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/scrollview_new">
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,14 +74,14 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_first"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="FIRST NAME"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_first"/>
+                    android:padding="5dp"
+                    android:text="FIRST NAME"
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/editText_new_first"
@@ -91,8 +90,7 @@
                     android:layout_weight="1.5"
                     android:hint="First Name"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                     />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -103,14 +101,14 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_middle"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="MIDDLE NAME"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_middle"/>
+                    android:padding="5dp"
+                    android:text="MIDDLE NAME"
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/editText_new_middle"
@@ -119,8 +117,7 @@
                     android:layout_weight="1.5"
                     android:hint="Middle Name"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                     />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -131,14 +128,14 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_last"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="LAST NAME"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_last"/>
+                    android:padding="5dp"
+                    android:text="LAST NAME"
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/editText_new_last"
@@ -147,8 +144,7 @@
                     android:layout_weight="1.5"
                     android:hint="Last Name"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                     />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -159,14 +155,14 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_id"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="PATIENT - ID"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_id"/>
+                    android:padding="5dp"
+                    android:text="PATIENT - ID"
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/editText_new_id"
@@ -175,8 +171,7 @@
                     android:layout_weight="1.5"
                     android:hint="Patient's ID"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                    />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -187,15 +182,15 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_gender"
                     android:layout_width="70dp"
                     android:layout_height="40dp"
-                    android:text="GENDER"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
-                    android:id="@+id/textView_new_gender"/>
+                    android:padding="5dp"
+                    android:text="GENDER"
+                    android:textSize="13dp" />
 
                 <RadioGroup
                     android:id="@+id/radio_new_Gender"
@@ -208,9 +203,9 @@
                         android:id="@+id/radio_new_male"
                         android:layout_width="0dp"
                         android:layout_height="45dp"
-                        android:text="Male"
                         android:layout_weight="0.2"
-                        android:checked="true" />
+                        android:checked="true"
+                        android:text="Male" />
 
                     <RadioButton
                         android:id="@+id/radio_new_female"
@@ -237,23 +232,23 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_dob"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="DATE OF BIRTH"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_dob"/>
+                    android:padding="5dp"
+                    android:text="DATE OF BIRTH"
+                    android:textSize="13dp" />
 
                 <EditText
+                    android:id="@+id/editText_new_dob"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
-                    android:hint="Patient's  Date of Birth"
 
-                    android:textSize="18dp"
                     android:layout_weight="1.5"
-                    android:id="@+id/editText_new_dob"/>
+                    android:hint="Patient's  Date of Birth"
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -281,8 +276,7 @@
                     android:hint="Age"
                     android:inputType="number"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                     />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -293,14 +287,14 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_email"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="E-MAIL"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_email"/>
+                    android:padding="5dp"
+                    android:text="E-MAIL"
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/editText_new_email"
@@ -310,8 +304,7 @@
                     android:hint="E-mail Address"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                    />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -322,14 +315,14 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_address"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="ADDRESS"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_address"/>
+                    android:padding="5dp"
+                    android:text="ADDRESS"
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/editText_new_address"
@@ -339,8 +332,7 @@
                     android:hint="Address"
                     android:inputType="textPostalAddress"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                     />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -352,23 +344,23 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_contact"
                     android:layout_width="70dp"
                     android:layout_height="40dp"
-                    android:text="CONTACT"
-                    android:textSize="17dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1.9"
-                    android:id="@+id/textView_new_contact"/>
+                    android:padding="5dp"
+                    android:text="CONTACT"
+                    android:textSize="17dp" />
 
                 <ImageButton
                     android:id="@+id/imageButton_new_contact"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="5dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="0dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
                     app:srcCompat="@android:drawable/arrow_down_float" />
 
             </LinearLayout>
@@ -380,14 +372,14 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_mobile"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="MOBILE"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_mobile"/>
+                    android:padding="5dp"
+                    android:text="MOBILE"
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/editText_new_mobile"
@@ -397,8 +389,7 @@
                     android:hint="Mobile Number"
                     android:inputType="phone"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                    />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -409,14 +400,14 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_phone"
                     android:layout_width="70dp"
                     android:layout_height="45dp"
-                    android:text="PHONE"
-                    android:textSize="13dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="0.3"
-                    android:id="@+id/textView_new_phone"/>
+                    android:padding="5dp"
+                    android:text="PHONE"
+                    android:textSize="13dp" />
 
                 <EditText
                     android:id="@+id/editText_new_phone"
@@ -426,8 +417,7 @@
                     android:hint="Phone Number"
                     android:inputType="phone"
                     android:singleLine="true"
-                    android:textSize="18dp"
-                    />
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
@@ -439,54 +429,63 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_diagnosis"
                     android:layout_width="70dp"
                     android:layout_height="40dp"
-                    android:text="DIAGNOSIS"
-                    android:textSize="17dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1.9"
-                    android:id="@+id/textView_new_diagnosis"/>
+                    android:padding="5dp"
+                    android:text="DIAGNOSIS"
+                    android:textSize="17dp" />
 
                 <ImageButton
                     android:id="@+id/imageButton_new_diagnosis"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="5dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="0dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
                     app:srcCompat="@android:drawable/arrow_down_float" />
 
             </LinearLayout>
 
-
             <LinearLayout
+                android:id="@+id/linearLayout_new_type_diagnosis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2">
+                android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/imageButton_new_type_diagnosis"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:padding="5dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_gravity="center"
-                    android:clickable="false"
-                    android:background="@drawable/type_diagnosis"
-                    />
 
-                <EditText
-                    android:layout_width="70dp"
-                    android:layout_height="45dp"
-                    android:hint="Type a Diagnosis"
-                    android:textSize="18dp"
-                    android:padding="5dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1.3"
-                    android:singleLine="true"
-                    android:id="@+id/editText_new_diagnosis_type"/>
+                <LinearLayout
+                    android:id="@+id/linearLayout_new_type_diagnosis_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <ImageButton
+                        android:id="@+id/imageButton_new_type_diagnosis_1"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/type_diagnosis"
+                        android:clickable="false"
+                        android:padding="5dp" />
+
+                    <EditText
+                        android:id="@+id/editText_new_diagnosis_type_1"
+                        android:layout_width="70dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="1.3"
+                        android:hint="Type a Diagnosis"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -502,21 +501,21 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
-                    android:clickable="true"
                     android:background="@drawable/add_diadnosis"
+                    android:clickable="true"
                     android:padding="5dp" />
 
                 <TextView
+                    android:id="@+id/textView_new_diagnosis_add"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    android:text="Add a Diagnosis"
-                    android:textSize="15dp"
-                    android:padding="5dp"
-                    android:layout_marginStart="20dp"
                     android:layout_gravity="center"
-                    android:layout_weight="1.3"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="7dp"
-                    android:id="@+id/textView_new_diagnosis_add"/>
+                    android:layout_weight="1.3"
+                    android:padding="5dp"
+                    android:text="Add a Diagnosis"
+                    android:textSize="15dp" />
 
             </LinearLayout>
 
@@ -528,23 +527,23 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/textView_new_medical_history"
                     android:layout_width="70dp"
                     android:layout_height="40dp"
-                    android:text="MEDICAL HISTORY"
-                    android:textSize="17dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1.9"
-                    android:id="@+id/textView_new_medical_history"/>
+                    android:padding="5dp"
+                    android:text="MEDICAL HISTORY"
+                    android:textSize="17dp" />
 
                 <ImageButton
                     android:id="@+id/imageButton_new_medical_history"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="5dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="0dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
                     app:srcCompat="@android:drawable/arrow_down_float" />
 
             </LinearLayout>
@@ -556,22 +555,20 @@
                 android:weightSum="2">
 
                 <EditText
+                    android:id="@+id/editText_new_add_medical_history"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:hint="Enter Medical History"
-                    android:textSize="18dp"
-                    android:padding="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1.3"
+                    android:hint="Enter Medical History"
+                    android:padding="5dp"
                     android:singleLine="true"
-                    android:id="@+id/editText_new_add_medical_history"/>
+                    android:textSize="18dp" />
 
             </LinearLayout>
 
 
-
         </LinearLayout>
-
 
 
     </ScrollView>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "611142589247",
+    "firebase_url": "https://medical-app-e3079.firebaseio.com",
+    "project_id": "medical-app-e3079",
+    "storage_bucket": "medical-app-e3079.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611142589247:android:e6821533e645516c",
+        "android_client_info": {
+          "package_name": "com.example.krish.medical_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611142589247-2f3akl31a1hs3lkupgc9ghmn4ufbb8hk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.krish.medical_app",
+            "certificate_hash": "b5db5d2b7a87bf782ca586c24a091e71c203336a"
+          }
+        },
+        {
+          "client_id": "611142589247-58ddkcoo41ss6pb2he3v005gh5n65ssh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg5avtOfPBjvkHKrGWU8syK8eqics7T3o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611142589247-58ddkcoo41ss6pb2he3v005gh5n65ssh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

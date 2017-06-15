@@ -43,4 +43,9 @@ public class My_patients extends AppCompatActivity
     }
 
     public void launch_new_patient_info(){ startActivity(new Intent(this, New_patient_info.class)); }
+
+    @Override
+    public void onBackPressed() {
+        //should exit the app
+    }
 }

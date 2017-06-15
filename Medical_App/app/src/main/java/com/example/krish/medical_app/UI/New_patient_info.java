@@ -1,8 +1,10 @@
 package com.example.krish.medical_app.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -49,7 +51,7 @@ public class New_patient_info extends AppCompatActivity
         address = (EditText)findViewById(R.id.editText_new_address);
         mobile_num = (EditText)findViewById(R.id.editText_new_mobile);
         phone_num = (EditText)findViewById(R.id.editText_new_phone);
-        diagnosis = (EditText)findViewById(R.id.editText_new_diagnosis_type);
+        diagnosis = (EditText)findViewById(R.id.editText_new_diagnosis_type_1);
         medical_history = (EditText)findViewById(R.id.editText_new_add_medical_history);
         male = (RadioButton)findViewById(R.id.radio_new_male);
         female = (RadioButton)findViewById(R.id.radio_new_female);
@@ -57,5 +59,28 @@ public class New_patient_info extends AppCompatActivity
         create = (TextView)findViewById(R.id.textView_new_create);
         cancel = (TextView)findViewById(R.id.textView_new_cancel_btn);
 
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launch_My_patients();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launch_My_patients();
+            }
+        });
+
+
+
+    }
+    public void launch_My_patients()
+    {
+        startActivity(new Intent(this,My_patients.class));
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

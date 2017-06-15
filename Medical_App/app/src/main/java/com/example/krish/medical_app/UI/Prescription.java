@@ -55,4 +55,8 @@ public class Prescription extends AppCompatActivity
     }
 
     public void launch_notes(){ startActivity(new Intent(this, Notes.class)); }
+
+    @Override
+    public void onBackPressed() {
+    }
 }
