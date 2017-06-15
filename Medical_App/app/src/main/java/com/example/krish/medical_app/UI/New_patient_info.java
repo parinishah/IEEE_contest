@@ -13,7 +13,7 @@ import com.example.krish.medical_app.R;
  * Created by parini on 08-06-2017.
  */
 
-public class New_patient extends AppCompatActivity
+public class New_patient_info extends AppCompatActivity
 {
     protected EditText firstname;
     protected EditText middlename;

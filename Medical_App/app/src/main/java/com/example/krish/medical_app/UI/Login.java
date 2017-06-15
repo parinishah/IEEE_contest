@@ -24,11 +24,11 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        email_username = (EditText)findViewById(R.id.editText_login_email);
+        email_username = (EditText) findViewById(R.id.editText_login_email);
         password = (EditText) findViewById(R.id.editText_login_password);
         signup = (TextView) findViewById(R.id.textView_login_signup_btn);
         login = (TextView) findViewById(R.id.textView_login_login_btn);
-        forgot_password = (TextView)findViewById(R.id.textView_login_forgot);
+        forgot_password = (TextView) findViewById(R.id.textView_login_forgot);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,10 +36,21 @@ public class Login extends AppCompatActivity {
                 launch_signup();
             }
         });
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launch_my_patients();
+            }
+        });
+    }
 
+    public void launch_signup() {
+        startActivity(new Intent(this, Signup.class));
     }
-    public void launch_signup()
-    {
-        startActivity(new Intent(this,Signup.class));
+
+
+    public void launch_my_patients() {
+        startActivity(new Intent(this, My_patients.class));
     }
+
 }

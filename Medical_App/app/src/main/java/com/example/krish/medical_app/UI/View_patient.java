@@ -60,7 +60,7 @@ public class View_patient extends AppCompatActivity
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                launch_my_patients();
             }
         });
 
@@ -81,7 +81,32 @@ public class View_patient extends AppCompatActivity
             }
         });
 
+        notes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launch_notes();
+            }
+        });
+
+        images.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launch_pictures_options_popup();
+            }
+        });
+
     }
+
+    public void launch_my_patients() { startActivity(new Intent(this, My_patients.class)); }
+
+    public void launch_notes(){ startActivity(new Intent(this, Notes.class)); }
+
+    public void launch_pictures_options_popup() { startActivity(new Intent(this, Pictures_options_popup.class)); }
+
+    public void launch_new_patient_info() { startActivity(new Intent(this, New_patient_info.class)); }
+
+    public void launch_delete_patient_popup() { startActivity(new Intent(this, Delete_patient_popup.class)); }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,6 +114,26 @@ public class View_patient extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.patient_profile_options, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.patient_profile_options_edit:
+                launch_new_patient_info();
+                return true;
+
+            case R.id.patient_profile_options_save_printable_copy:
+
+                return true;
+
+            case R.id.patient_profile_options_delete:
+                launch_delete_patient_popup();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

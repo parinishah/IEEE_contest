@@ -1,8 +1,10 @@
 package com.example.krish.medical_app.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,5 +38,21 @@ public class Prescription extends AppCompatActivity
         refills = (EditText) findViewById(R.id.editText_prescription_refills);
         sig = (EditText) findViewById(R.id.editText_prescription_sig);
 
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launch_notes();
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launch_notes();
+            }
+        });
+
     }
+
+    public void launch_notes(){ startActivity(new Intent(this, Notes.class)); }
 }
