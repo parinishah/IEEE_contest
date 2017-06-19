@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/textView_my_patient_view_update"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="Krish Shah "
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="10dp">
+
+
+            <ImageView
+                android:id="@+id/imageView_my_patient_view_id"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/patient_id"/>
+
+            <TextView
+                android:id="@+id/textView_my_patient_view_id"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="2"
+                android:textSize="17dp"
+                android:gravity="center"
+                android:layout_marginStart="5dp"/>
+
+
+            <ImageView
+                android:id="@+id/imageView_my_patient_view_gender"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/gender"
+                android:layout_marginStart="40dp"/>
+
+            <TextView
+                android:id="@+id/textView_my_patient_view_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="male"
+                android:textSize="17dp"
+                android:gravity="center"
+                android:layout_marginStart="5dp"/>
+
+
+            <ImageView
+                android:id="@+id/imageView_my_patient_view_age"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/age"
+                android:layout_marginStart="40dp"/>
+
+            <TextView
+                android:id="@+id/textView_my_patient_view_age"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="18"
+                android:textSize="17dp"
+                android:gravity="center"
+                android:layout_marginStart="5dp"/>
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

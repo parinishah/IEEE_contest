@@ -21,7 +21,7 @@ public class My_patients extends AppCompatActivity
     protected ImageButton options;
     protected ImageButton add_patient;
     protected ScrollView scrollView;
-    protected SearchView searchView;
+    //protected SearchView searchView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class My_patients extends AppCompatActivity
         options = (ImageButton) findViewById(R.id.imageButton_my_patients_options);
         add_patient = (ImageButton) findViewById(R.id.imageButton_my_patients_add_patient);
         scrollView = (ScrollView) findViewById(R.id.scrollView_my_patients);
-        searchView = (SearchView) findViewById(R.id.search_bar_my_patients_search);
+        //searchView = (SearchView) findViewById(R.id.search_bar_my_patients_search);
 
         add_patient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +46,9 @@ public class My_patients extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        //should exit the app
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

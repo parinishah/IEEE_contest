@@ -22,10 +22,11 @@
         <activity android:name=".UI.New_patient_info"></activity>
         <activity android:name=".UI.Prescription"></activity>
         <activity android:name=".UI.View_patient"></activity>
-        <activity android:name=".UI.Delete_patient_popup"></activity>
+        <activity android:name=".UI.Delete_popup"></activity>
         <activity android:name=".UI.My_patients"></activity>
         <activity android:name=".UI.Notes"></activity>
         <activity android:name=".UI.Pictures_options_popup"></activity>
+        <activity android:name=".UI.Doctor_profile"></activity>
     </application>
 
 

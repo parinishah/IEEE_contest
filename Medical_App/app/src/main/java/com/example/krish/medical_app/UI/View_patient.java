@@ -1,5 +1,6 @@
 package com.example.krish.medical_app.UI;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +18,7 @@ import com.example.krish.medical_app.R;
  * Created by KRISH on 08-06-2017.
  */
 
-public class View_patient extends AppCompatActivity
-{
+public class View_patient extends AppCompatActivity {
 
     protected ImageButton back;
     protected ImageButton more;
@@ -52,8 +52,8 @@ public class View_patient extends AppCompatActivity
         mobile_value = (TextView) findViewById(R.id.textView_view_mobile_value);
         phone_value = (TextView) findViewById(R.id.textView_view_phone_value);
         medical_history_value = (TextView) findViewById(R.id.textView_view_medical_history_value);
-        notes = (ImageButton)findViewById(R.id.imageButton_view_notes);
-        images = (ImageButton)findViewById(R.id.imageButton_view_images);
+        notes = (ImageButton) findViewById(R.id.imageButton_view_notes);
+        images = (ImageButton) findViewById(R.id.imageButton_view_images);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,15 +96,21 @@ public class View_patient extends AppCompatActivity
 
     }
 
-    public void launch_my_patients() { startActivity(new Intent(this, My_patients.class)); }
+    public void launch_my_patients() {
+        startActivity(new Intent(this, My_patients.class));
+    }
 
-    public void launch_notes(){ startActivity(new Intent(this, Notes.class)); }
+    public void launch_notes() {
+        startActivity(new Intent(this, Notes.class));
+    }
 
-    public void launch_pictures_options_popup() { startActivity(new Intent(this, Pictures_options_popup.class)); }
+    public void launch_pictures_options_popup() {
+        startActivity(new Intent(this, Pictures_options_popup.class));
+    }
 
-    public void launch_new_patient_info() { startActivity(new Intent(this, New_patient_info.class)); }
-
-    public void launch_delete_patient_popup() { startActivity(new Intent(this, Delete_patient_popup.class)); }
+    public void launch_new_patient_info() {
+        startActivity(new Intent(this, New_patient_info.class));
+    }
 
 
     @Override
@@ -127,12 +133,42 @@ public class View_patient extends AppCompatActivity
                 return true;
 
             case R.id.patient_profile_options_delete:
-                launch_delete_patient_popup();
+                dialogopener();
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void dialogopener()
+    {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.delete_popup);
+
+        final TextView delete = (TextView) findViewById(R.id.textView_delete_delete);
+        TextView cancel = (TextView) findViewById(R.id.textView_delete_cancel);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete_patient();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
+    public void delete_patient()
+    {
+        //code to delete patient
     }
     public void onBackPressed()
     {    }

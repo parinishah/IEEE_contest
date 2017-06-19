@@ -4,13 +4,13 @@ package com.example.krish.medical_app.Java_classes;
  * Created by parini on 16-06-2017.
  */
 
-public class Notes
+public class Note
 {
     private String notes_id;
     private String date;
     private String text;
 
-    Notes(String notes_id, String date, String text)
+    Note(String notes_id, String date, String text)
     {
         this.notes_id = notes_id;
         this.date = date;

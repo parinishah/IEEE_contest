@@ -1,5 +1,6 @@
 package com.example.krish.medical_app.UI;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -42,7 +43,7 @@ public class Notes extends AppCompatActivity
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_view_patient();
+                dialogopener();
             }
         });
 
@@ -69,9 +70,39 @@ public class Notes extends AppCompatActivity
 
     }
 
+    public void dialogopener()
+    {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.delete_popup);
+
+        final TextView delete = (TextView) findViewById(R.id.textView_delete_delete);
+        TextView cancel = (TextView) findViewById(R.id.textView_delete_cancel);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete_note();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
     public void launch_view_patient(){ startActivity(new Intent(this, View_patient.class));}
 
     public void launch_prescription(){ startActivity(new Intent(this, Prescription.class));}
+
+    public void delete_note()
+    {
+        //code to delete note
+    }
 
     @Override
     public void onBackPressed() {
