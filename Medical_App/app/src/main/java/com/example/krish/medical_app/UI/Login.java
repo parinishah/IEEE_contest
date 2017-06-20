@@ -1,6 +1,7 @@
 package com.example.krish.medical_app.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,12 +25,21 @@ public class Login extends AppCompatActivity {
     protected TextView signup;
     protected TextView login;
     protected TextView forgot_password;
+    protected String doctor_username;
     protected DatabaseReference Login ;
+    protected String usernm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+        doctor_username = sharedPref.getString("doctor_username", null);
+        if (doctor_username != null)
+        {
+            launch_my_patients(doctor_username);
+        }
 
         Login = FirebaseDatabase.getInstance().getReference();
 
@@ -55,9 +65,14 @@ public class Login extends AppCompatActivity {
 
                         if((dataSnapshot.child(username.getText().toString()).exists()) )
                         {
-                            if(dataSnapshot.child(username.getText().toString()).child("password").getValue().toString().equals(password.getText().toString()))
+                            usernm = username.getText().toString();
+                            if(dataSnapshot.child(usernm).child("password").getValue().toString().equals(password.getText().toString()))
                             {
-                                launch_my_patients();
+                                SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("doctor_username",usernm);
+                                editor.commit();
+                                launch_my_patients(usernm);
                             }
                             else
                             {
@@ -90,9 +105,11 @@ public class Login extends AppCompatActivity {
     }
 
 
-    public void launch_my_patients() {
+    public void launch_my_patients(String doc_username) {
 
-        startActivity(new Intent(this, My_patients.class));
+        Intent i =new Intent(this, My_patients.class);
+        i.putExtra("username",doc_username);
+        startActivity(i);
     }
 
     @Override

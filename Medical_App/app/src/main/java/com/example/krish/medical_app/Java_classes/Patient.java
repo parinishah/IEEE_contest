@@ -20,7 +20,7 @@ public class Patient
     private String diagnosis;
     private String medical_history;
 
-    Patient(String patient_id, String first_name, String middle_name, String last_name, String gender, String dob,
+    public Patient(String patient_id, String first_name, String middle_name, String last_name, String gender, String dob,
             String age, String email, String address, String mobile, String phone, String diagnosis, String medical_history) {
         this.first_name = first_name;
         this.middle_name = middle_name;

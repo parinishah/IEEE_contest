@@ -1,6 +1,7 @@
 package com.example.krish.medical_app.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class Doctor_profile extends AppCompatActivity
     protected ImageButton back;
     protected TextView save;
     protected Doctor doctor_obj;
+    protected String signup_username,signup_email,signup_password;
 
 
     @Override
@@ -48,14 +50,17 @@ public class Doctor_profile extends AppCompatActivity
         back = (ImageButton) findViewById(R.id.imageButton_doctor_back);
         save = (TextView) findViewById(R.id.textView_doctor_save);
 
+        signup_email = bundle.getString("email");
+        signup_username = bundle.getString("username");
+        signup_password = bundle.getString("password");
 
-        email.setText(bundle.getString("email"));
+        email.setText(signup_email);
 
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_my_patients();
+                launch_my_patients(signup_username);
             }
         });
 
@@ -77,16 +82,27 @@ public class Doctor_profile extends AppCompatActivity
                     Gender = "other";
                 }
 
-                doctor_obj = new Doctor(bundle.getString("username"),bundle.getString("password"),bundle.getString("email"),
+                doctor_obj = new Doctor(signup_username,signup_password,signup_email,
                         fullname.getText().toString(),Gender,mobile.getText().toString(),qualification.getText().toString());
                 doctor_obj.firebase_doctor();
-                launch_my_patients();
+
+                SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("doctor_username",signup_username);
+                editor.commit();
+
+                launch_my_patients(signup_username);
             }
         });
 
     }
 
-    public void launch_my_patients(){ startActivity(new Intent(this, My_patients.class)); }
+    public void launch_my_patients(String doc_username) {
+
+        Intent i =new Intent(this, My_patients.class);
+        i.putExtra("username",doc_username);
+        startActivity(i);
+    }
 
     @Override
     public void onBackPressed() {
