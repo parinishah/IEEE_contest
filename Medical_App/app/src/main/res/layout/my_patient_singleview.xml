@@ -19,8 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="13dp"
         android:orientation="horizontal">
 
 
@@ -40,12 +40,18 @@
             android:textSize="17dp"
             android:textColor="#000000"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
 
         <ImageView
             android:id="@+id/imageView_my_patient_view_gender"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginStart="40dp" />
+            android:layout_marginStart="20dp" />
 
         <TextView
             android:id="@+id/textView_my_patient_view_gender"
@@ -75,6 +81,6 @@
             android:textSize="17dp"
             android:textColor="#000000"/>
 
-
     </LinearLayout>
+
 </LinearLayout>
