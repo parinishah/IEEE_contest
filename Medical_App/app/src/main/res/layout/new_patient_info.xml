@@ -164,10 +164,11 @@
                     android:text="PATIENT - ID"
                     android:textSize="13dp" />
 
-                <EditText
-                    android:id="@+id/editText_new_id"
+                <TextView
+                    android:id="@+id/Textview_new_id"
                     android:layout_width="0dp"
-                    android:layout_height="45dp"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1.5"
                     android:hint="Patient's ID"
                     android:singleLine="true"
@@ -245,12 +246,12 @@
                     android:id="@+id/textView_new_dob"
                     android:layout_width="0dp"
                     android:layout_height="37dp"
-                    android:layout_weight="1.5"
-                    android:hint="Patient's  DOB"
-                    android:textSize="18dp"
                     android:layout_marginStart="5dp"
+                    android:layout_weight="1.5"
+                    android:clickable="true"
                     android:gravity="center_vertical"
-                    android:clickable="true"/>
+                    android:hint="Patient's  DOB"
+                    android:textSize="18dp" />
 
                 <ImageButton
                     android:layout_width="30dp"

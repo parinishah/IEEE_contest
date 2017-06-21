@@ -2,6 +2,7 @@ package com.example.krish.medical_app.UI;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.krish.medical_app.Java_classes.Patient;
 import com.example.krish.medical_app.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -27,7 +30,7 @@ public class New_patient_info extends AppCompatActivity
     protected EditText firstname;
     protected EditText middlename;
     protected EditText lastname;
-    protected EditText patient_id;
+    protected TextView patient_id;
     protected RadioButton male;
     protected RadioButton female;
     protected RadioButton other;
@@ -42,8 +45,8 @@ public class New_patient_info extends AppCompatActivity
     protected EditText medical_history;
     protected TextView create;
     protected TextView cancel;
-    protected String doc_username;
-    protected Patient patient;
+    protected String doc_username,pat_id;
+    protected Patient patient_obj;
 
     protected DatePicker datepicker;
 
@@ -53,13 +56,15 @@ public class New_patient_info extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_patient_info);
 
+
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
+        pat_id = bundle.getString("patient_id");
 
         firstname = (EditText)findViewById(R.id.editText_new_first);
         middlename = (EditText)findViewById(R.id.editText_new_middle);
         lastname = (EditText)findViewById(R.id.editText_new_last);
-        patient_id = (EditText)findViewById(R.id.editText_new_id);
+        patient_id = (TextView)findViewById(R.id.Textview_new_id);
         dob = (TextView) findViewById(R.id.textView_new_dob);
         calendar = (ImageButton) findViewById(R.id.imageButton_new_calendar);
         age = (EditText)findViewById(R.id.editText_new_age);
@@ -74,6 +79,8 @@ public class New_patient_info extends AppCompatActivity
         other = (RadioButton)findViewById(R.id.radio_new_other);
         create = (TextView)findViewById(R.id.textView_new_create);
         cancel = (TextView)findViewById(R.id.textView_new_cancel_btn);
+
+        patient_id.setText(pat_id);
 
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,9 +118,20 @@ public class New_patient_info extends AppCompatActivity
                             dmy = "" + datei + "-" + month + "-" + year ;
                         }
 
-                        dob.setText(dmy);
+
                         dialog.dismiss();
-                        age.setText(getAge(year,month,datei));
+                        String s_age = getAge(year,month,datei);
+                        if(s_age.compareTo("NA")==0)
+                        {
+                            dob.setHintTextColor(Color.RED);
+                            dob.setHint("Enter Valid DOB");
+                        }
+                        else
+                        {
+                            dob.setText(dmy);
+                            age.setText(s_age);
+                        }
+
 
                     }
                 });
@@ -130,9 +148,65 @@ public class New_patient_info extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
+                String s_fname, s_dob,s_mobile,s_diagnosis,s_address,s_gender;
+                s_fname = firstname.getText().toString();
+                s_dob = dob.getText().toString();
+                s_mobile = mobile_num.getText().toString();
+                s_diagnosis = diagnosis.getText().toString();
+                s_address = address.getText().toString();
 
-                //patient = new Patient();
-                launch_My_patients(doc_username);
+                if(male.isChecked())
+                {
+                    s_gender = "male";
+                }
+                else if(female.isChecked())
+                {
+                    s_gender = "female";
+                }
+                else if(other.isChecked())
+                {
+                    s_gender = "other";
+                }
+                else
+                {
+                    s_gender = "NA";
+                }
+
+                if(s_fname.length()==0)
+                {
+                    firstname.setHintTextColor(Color.RED);
+                    firstname.setHint("Required Firstname");
+                }
+                else if(s_dob.length()==0)
+                {
+                    dob.setTextColor(Color.RED);
+                    dob.setText("Required DOB");
+                }
+                else if(s_address.length()==0)
+                {
+                    address.setHintTextColor(Color.RED);
+                    address.setHint("Required Address");
+                }
+                else if(s_mobile.length()==0)
+                {
+                    mobile_num.setHintTextColor(Color.RED);
+                    mobile_num.setHint("Required Mobile No.");
+                }
+                else if(s_diagnosis.length()==0)
+                {
+                    diagnosis.setHintTextColor(Color.RED);
+                    diagnosis.setHint("Required Diagnosis");
+                }
+
+                else
+                {
+                    patient_obj = new Patient(pat_id,s_fname,middlename.getText().toString(),lastname.getText().toString(),s_gender,s_dob,age.getText().toString(),
+                            email.getText().toString(),s_address,s_mobile,phone_num.getText().toString(),s_diagnosis,medical_history.getText().toString());
+                    patient_obj.firebase_connect(doc_username);
+                    launch_My_patients(doc_username);
+                }
+
+
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -164,8 +238,16 @@ public class New_patient_info extends AppCompatActivity
             age--;
         }
 
-        Integer ageInt = new Integer(age);
-        String ageS = ageInt.toString();
+        String ageS;
+        if(age++<0) {
+            ageS = "NA";
+
+        }
+        else
+        {
+            Integer ageInt = new Integer(age);
+            ageS = ageInt.toString();
+        }
 
         return ageS;
     }

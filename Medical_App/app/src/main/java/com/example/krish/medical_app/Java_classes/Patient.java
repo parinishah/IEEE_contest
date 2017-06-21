@@ -1,5 +1,11 @@
 package com.example.krish.medical_app.Java_classes;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by parini on 16-06-2017.
  */
@@ -19,6 +25,7 @@ public class Patient
     private String phone;
     private String diagnosis;
     private String medical_history;
+    protected DatabaseReference patient = FirebaseDatabase.getInstance().getReference();
 
     public Patient(String patient_id, String first_name, String middle_name, String last_name, String gender, String dob,
             String age, String email, String address, String mobile, String phone, String diagnosis, String medical_history) {
@@ -139,6 +146,27 @@ public class Patient
 
     public void setMedical_history(String medical_history) {
         this.medical_history = medical_history;
+    }
+
+    public void firebase_connect(String doc_username)
+    {
+
+        Map<String,String> map_patient = new HashMap<String,String>();
+        map_patient.put("patient_first_name",first_name);
+        map_patient.put("patient_middle_name",middle_name);
+        map_patient.put("patient_last_name",last_name);
+        map_patient.put("patient_last_name",last_name);
+        map_patient.put("patient_gender",gender);
+        map_patient.put("patient_dob",dob);
+        map_patient.put("patient_age",age);
+        map_patient.put("patient_email",email);
+        map_patient.put("patient_address",address);
+        map_patient.put("patient_mobile",mobile);
+        map_patient.put("patient_phone",phone);
+        map_patient.put("patient_diagnosis",diagnosis);
+        map_patient.put("patient_medical_history",medical_history);
+
+        patient.child(doc_username).child("patients").child(patient_id).setValue(map_patient);
     }
 }
 

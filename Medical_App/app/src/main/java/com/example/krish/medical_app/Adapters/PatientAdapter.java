@@ -44,7 +44,7 @@ public class PatientAdapter extends ArrayAdapter<Patient>
         patient_id.setText(patient.getPatient_id());
         patient_gender.setText(patient.getGender());
         patient_age.setText(patient.getAge());
-        patient_name.setText(patient.getFirst_name());
+        patient_name.setText(patient.getFirst_name() + " " +patient.getLast_name());
         if(patient.getGender().equals("male"))
         {
            gender.setImageResource(R.drawable.male_gender);

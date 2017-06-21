@@ -56,7 +56,9 @@ public class My_patients extends AppCompatActivity
         add_patient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_new_patient_info(doc_username);
+
+                String patient_id = existing_patients.child(doc_username).child("patients:").push().getKey();
+                launch_new_patient_info(doc_username,patient_id);
             }
         });
 
@@ -76,11 +78,12 @@ public class My_patients extends AppCompatActivity
                 patientadapter.clear();
 
                 for(DataSnapshot postSnapshot:dataSnapshot.child(doc_username).child("patients").getChildren()){
-                    String name = postSnapshot.child("patient_name").getValue().toString();
+                    String name = postSnapshot.child("patient_first_name").getValue().toString();
+                    String lname = postSnapshot.child("patient_last_name").getValue().toString();
                     String age= postSnapshot.child("patient_age").getValue().toString();
                     String gender= postSnapshot.child("patient_gender").getValue().toString();
                     String id= postSnapshot.getKey().toString();
-                    patient = new Patient(id,name,null,null,gender,null,age,null,null,null,null,null,null);
+                    patient = new Patient(id,name,null,lname,gender,null,age,null,null,null,null,null,null);
                     patientadapter.add(patient);
                 }
 
@@ -93,9 +96,10 @@ public class My_patients extends AppCompatActivity
         });
     }
 
-    public void launch_new_patient_info(String doc_username){
+    public void launch_new_patient_info(String doc_username,String patient_id){
         Intent i = new Intent(this, New_patient_info.class);
         i.putExtra("username",doc_username);
+        i.putExtra("patient_id",patient_id);
         startActivity(i);
     }
 
