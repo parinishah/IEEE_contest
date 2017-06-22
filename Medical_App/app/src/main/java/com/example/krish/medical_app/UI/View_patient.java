@@ -110,8 +110,27 @@ public class View_patient extends AppCompatActivity {
         view_patient.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                DatabaseReference set_data = view_patient.child(doc_username).child("patients").child(pat_id);
-                String v_title,v_name,v_gender,v_age,v_dob;
+                DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
+                String v_name,v_gender,v_age,v_dob,v_diagnosis,v_mobile,v_phone,v_medhis;
+                v_name = d1.child("patient_first_name").getValue().toString() +" "+ d1.child("patient_last_name").getValue().toString();
+                v_age = d1.child("patient_age").getValue().toString();
+                v_gender = d1.child("patient_gender").getValue().toString();
+                v_dob = d1.child("patient_dob").getValue().toString();
+                v_diagnosis = d1.child("patient_diagnosis").getValue().toString();
+                v_mobile = d1.child("patient_mobile").getValue().toString();
+                v_phone = d1.child("patient_phone").getValue().toString();
+                v_medhis = d1.child("patient_medical_history").getValue().toString();
+
+                patient.setText(v_name.toUpperCase());
+                patient_name.setText(v_name);
+                gender.setText(v_gender);
+                age.setText(v_age);
+                dob_value.setText(v_dob);
+                id_value.setText(pat_id);
+                diagnosis_value.setText(v_diagnosis);
+                mobile_value.setText(v_mobile);
+                phone_value.setText(v_phone);
+                medical_history_value.setText(v_medhis);
             }
 
             @Override
@@ -144,14 +163,6 @@ public class View_patient extends AppCompatActivity {
         startActivity(new Intent(this, New_patient_info.class));
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.patient_profile_options, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
