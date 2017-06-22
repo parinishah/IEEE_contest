@@ -120,9 +120,11 @@ public class New_patient_info extends AppCompatActivity
 
 
                         dialog.dismiss();
+                        dob.setText(dmy);
                         String s_age = getAge(year,month,datei);
                         if(s_age.compareTo("NA")==0)
                         {
+                            dob.setText("");
                             dob.setHintTextColor(Color.RED);
                             dob.setHint("Enter Valid DOB");
                         }
@@ -157,15 +159,15 @@ public class New_patient_info extends AppCompatActivity
 
                 if(male.isChecked())
                 {
-                    s_gender = "male";
+                    s_gender = "Male";
                 }
                 else if(female.isChecked())
                 {
-                    s_gender = "female";
+                    s_gender = "Female";
                 }
                 else if(other.isChecked())
                 {
-                    s_gender = "other";
+                    s_gender = "Other";
                 }
                 else
                 {
@@ -235,11 +237,11 @@ public class New_patient_info extends AppCompatActivity
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
         if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
-            age--;
+                age--;
         }
 
         String ageS;
-        if(age++<0) {
+        if(age<0) {
             ageS = "NA";
 
         }

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -20,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 /**
@@ -37,8 +40,9 @@ public class My_patients extends AppCompatActivity
     protected DatabaseReference existing_patients;
     protected Patient patient;
     protected ListView patient_list;
+    protected String patient_id;
 
-
+    ArrayList<Patient> patients;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,8 @@ public class My_patients extends AppCompatActivity
 
         existing_patients = FirebaseDatabase.getInstance().getReference();
 
+        patients = new ArrayList<>();
+
         options = (ImageButton) findViewById(R.id.imageButton_my_patients_options);
         add_patient = (ImageButton) findViewById(R.id.imageButton_my_patients_add_patient);
         listView = (ListView) findViewById(R.id.listView_my_patients);
@@ -57,14 +63,27 @@ public class My_patients extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                String patient_id = existing_patients.child(doc_username).child("patients:").push().getKey();
+                patient_id = existing_patients.child(doc_username).child("patients:").push().getKey();
                 launch_new_patient_info(doc_username,patient_id);
             }
         });
 
-        patientadapter = new PatientAdapter(getApplicationContext(), new ArrayList<Patient>());
+        patientadapter = new PatientAdapter(getApplicationContext(), patients);
         patient_list = (ListView)findViewById(R.id.listView_my_patients);
         patient_list.setAdapter(patientadapter);
+
+        patient_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                Patient p = patients.get(i);
+                Intent in = new Intent(My_patients.this, View_patient.class);
+                in.putExtra("patient_id",p.getPatient_id());
+                in.putExtra("username",doc_username);
+                startActivity(in);
+            }
+        });
 
     }
 
@@ -84,7 +103,8 @@ public class My_patients extends AppCompatActivity
                     String gender= postSnapshot.child("patient_gender").getValue().toString();
                     String id= postSnapshot.getKey().toString();
                     patient = new Patient(id,name,null,lname,gender,null,age,null,null,null,null,null,null);
-                    patientadapter.add(patient);
+                    patients.add(patient);
+                    patientadapter.notifyDataSetChanged();
                 }
 
             }

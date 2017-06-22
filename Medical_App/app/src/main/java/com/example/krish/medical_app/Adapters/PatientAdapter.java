@@ -63,4 +63,5 @@ public class PatientAdapter extends ArrayAdapter<Patient>
         return rootView;
 
     }
+
 }

@@ -24,8 +24,13 @@ public class Notes extends AppCompatActivity
     protected EditText title;
     protected EditText date;
     protected EditText note;
-    protected ImageButton add_prescription_icon;
-    protected TextView add_prescription;
+
+    protected EditText medication;
+    protected EditText dispense;
+    protected EditText unit;
+    protected EditText refills;
+    protected EditText sig;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,8 +42,13 @@ public class Notes extends AppCompatActivity
         title = (EditText) findViewById(R.id.editText_notes_title);
         date = (EditText) findViewById(R.id.editText_notes_date);
         note = (EditText) findViewById(R.id.editText_notes_note);
-        add_prescription_icon = (ImageButton) findViewById(R.id.imageButton_notes_add_prescription);
-        add_prescription = (TextView) findViewById(R.id.textView_notes_add_prescription);
+
+        medication = (EditText) findViewById(R.id.editText_prescription_medication);
+        dispense = (EditText) findViewById(R.id.editText_prescription_dispense);
+        unit = (EditText) findViewById(R.id.editText_prescription_unit);
+        refills = (EditText) findViewById(R.id.editText_prescription_refills);
+        sig = (EditText) findViewById(R.id.editText_prescription_sig);
+
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,19 +64,6 @@ public class Notes extends AppCompatActivity
             }
         });
 
-        add_prescription.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launch_prescription();
-            }
-        });
-
-        add_prescription_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launch_prescription();
-            }
-        });
 
     }
 
@@ -97,7 +94,7 @@ public class Notes extends AppCompatActivity
 
     public void launch_view_patient(){ startActivity(new Intent(this, View_patient.class));}
 
-    public void launch_prescription(){ startActivity(new Intent(this, Prescription.class));}
+
 
     public void delete_note()
     {

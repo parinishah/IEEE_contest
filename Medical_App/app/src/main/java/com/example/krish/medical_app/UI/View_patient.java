@@ -13,6 +13,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.krish.medical_app.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by KRISH on 08-06-2017.
@@ -34,11 +39,19 @@ public class View_patient extends AppCompatActivity {
     protected TextView medical_history_value;
     protected ImageButton notes;
     protected ImageButton images;
+    protected String doc_username,pat_id;
+    protected DatabaseReference view_patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_patient);
+
+        Bundle bundle = getIntent().getExtras();
+        doc_username = bundle.getString("username");
+        pat_id= bundle.getString("patient_id");
+
+        view_patient = FirebaseDatabase.getInstance().getReference();
 
         back = (ImageButton) findViewById(R.id.imageButton_view_back);
         more = (ImageButton) findViewById(R.id.imageButton_view_more);
@@ -55,10 +68,11 @@ public class View_patient extends AppCompatActivity {
         notes = (ImageButton) findViewById(R.id.imageButton_view_notes);
         images = (ImageButton) findViewById(R.id.imageButton_view_images);
 
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_my_patients();
+                launch_my_patients(doc_username);
             }
         });
 
@@ -93,11 +107,29 @@ public class View_patient extends AppCompatActivity {
             }
         });
 
+        view_patient.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DatabaseReference set_data = view_patient.child(doc_username).child("patients").child(pat_id);
+                String v_title,v_name,v_gender,v_age,v_dob;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 
-    public void launch_my_patients() {
-        startActivity(new Intent(this, My_patients.class));
+
+
+    public void launch_my_patients(String doc_username) {
+
+        Intent i = new Intent(this, My_patients.class);
+        i.putExtra("username",doc_username);
+        startActivity(i);
     }
 
     public void launch_notes() {
