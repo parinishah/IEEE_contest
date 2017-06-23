@@ -3,6 +3,7 @@ package com.example.krish.medical_app.UI;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.krish.medical_app.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by KRISH on 13-06-2017.
@@ -24,13 +27,13 @@ public class Notes extends AppCompatActivity
     protected EditText title;
     protected EditText date;
     protected EditText note;
-
     protected EditText medication;
     protected EditText dispense;
     protected EditText unit;
     protected EditText refills;
     protected EditText sig;
     protected String doc_username, pat_id,note_title;
+    protected DatabaseReference notes;
 
 
     @Override
@@ -43,12 +46,13 @@ public class Notes extends AppCompatActivity
         pat_id = bundle.getString("patient_id");
         note_title = bundle.getString("note_title");
 
+        notes = FirebaseDatabase.getInstance().getReference();
+
         delete = (ImageButton) findViewById(R.id.imageButton_notes_delete);
         save = (ImageButton) findViewById(R.id.imageButton_notes_save);
         title = (EditText) findViewById(R.id.editText_notes_title);
         date = (EditText) findViewById(R.id.editText_notes_date);
         note = (EditText) findViewById(R.id.editText_notes_note);
-
         medication = (EditText) findViewById(R.id.editText_prescription_medication);
         dispense = (EditText) findViewById(R.id.editText_prescription_dispense);
         unit = (EditText) findViewById(R.id.editText_prescription_unit);
@@ -70,6 +74,12 @@ public class Notes extends AppCompatActivity
             }
         });
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
