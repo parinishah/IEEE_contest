@@ -30,12 +30,18 @@ public class Notes extends AppCompatActivity
     protected EditText unit;
     protected EditText refills;
     protected EditText sig;
+    protected String doc_username, pat_id,note_title;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notes);
+
+        Bundle bundle = getIntent().getExtras();
+        doc_username = bundle.getString("username");
+        pat_id = bundle.getString("patient_id");
+        note_title = bundle.getString("note_title");
 
         delete = (ImageButton) findViewById(R.id.imageButton_notes_delete);
         save = (ImageButton) findViewById(R.id.imageButton_notes_save);
@@ -72,8 +78,8 @@ public class Notes extends AppCompatActivity
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.delete_popup);
 
-        final TextView delete = (TextView) findViewById(R.id.textView_delete_delete);
-        TextView cancel = (TextView) findViewById(R.id.textView_delete_cancel);
+        final TextView delete = (TextView)dialog.findViewById(R.id.textView_delete_delete);
+        TextView cancel = (TextView)dialog.findViewById(R.id.textView_delete_cancel);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

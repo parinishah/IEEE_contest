@@ -9,12 +9,22 @@ public class Note
     private String notes_id;
     private String date;
     private String text;
+    private String medication;
+    private String dispense;
+    private String unit;
+    private String refills;
+    private String sig;
 
-    Note(String notes_id, String date, String text)
+    public Note(String notes_id, String date, String text,String medication, String dispense, String unit, String refills, String sig)
     {
         this.notes_id = notes_id;
         this.date = date;
         this.text = text;
+        this.medication=medication;
+        this.dispense=dispense;
+        this.unit = unit;
+        this.refills = refills;
+        this.sig=sig;
     }
 
     public String getNotes_id() {
@@ -39,5 +49,45 @@ public class Note
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getMedication() {
+        return medication;
+    }
+
+    public void setMedication(String medication) {
+        this.medication = medication;
+    }
+
+    public String getDispense() {
+        return dispense;
+    }
+
+    public void setDispense(String dispense) {
+        this.dispense = dispense;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getRefills() {
+        return refills;
+    }
+
+    public void setRefills(String refills) {
+        this.refills = refills;
+    }
+
+    public String getSig() {
+        return sig;
+    }
+
+    public void setSig(String sig) {
+        this.sig = sig;
     }
 }

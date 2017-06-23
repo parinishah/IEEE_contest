@@ -42,7 +42,7 @@ public class My_patients extends AppCompatActivity
     protected ListView patient_list;
     protected String patient_id;
 
-    ArrayList<Patient> patients;
+    ArrayList<Patient> patient_array;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class My_patients extends AppCompatActivity
 
         existing_patients = FirebaseDatabase.getInstance().getReference();
 
-        patients = new ArrayList<>();
+        patient_array = new ArrayList<>();
 
         options = (ImageButton) findViewById(R.id.imageButton_my_patients_options);
         add_patient = (ImageButton) findViewById(R.id.imageButton_my_patients_add_patient);
@@ -68,7 +68,7 @@ public class My_patients extends AppCompatActivity
             }
         });
 
-        patientadapter = new PatientAdapter(getApplicationContext(), patients);
+        patientadapter = new PatientAdapter(getApplicationContext(), patient_array);
         patient_list = (ListView)findViewById(R.id.listView_my_patients);
         patient_list.setAdapter(patientadapter);
 
@@ -77,7 +77,7 @@ public class My_patients extends AppCompatActivity
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
 
-                Patient p = patients.get(i);
+                Patient p = patient_array.get(i);
                 Intent in = new Intent(My_patients.this, View_patient.class);
                 in.putExtra("patient_id",p.getPatient_id());
                 in.putExtra("username",doc_username);
@@ -103,7 +103,7 @@ public class My_patients extends AppCompatActivity
                     String gender= postSnapshot.child("patient_gender").getValue().toString();
                     String id= postSnapshot.getKey().toString();
                     patient = new Patient(id,name,null,lname,gender,null,age,null,null,null,null,null,null);
-                    patients.add(patient);
+                    patient_array.add(patient);
                     patientadapter.notifyDataSetChanged();
                 }
 

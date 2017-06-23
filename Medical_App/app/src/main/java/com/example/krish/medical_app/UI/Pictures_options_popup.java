@@ -21,7 +21,7 @@ public class Pictures_options_popup extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_patient_info);
+        setContentView(R.layout.pictures_options_popup);
 
         gallery = (TextView) findViewById(R.id.textView_pictures_options_gallery);
         camera = (TextView) findViewById(R.id.textView_pictures_options_camera);

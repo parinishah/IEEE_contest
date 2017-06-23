@@ -20,7 +20,6 @@
 
         <activity android:name=".UI.Signup"></activity>
         <activity android:name=".UI.New_patient_info"></activity>
-        <activity android:name=".UI.Prescription"></activity>
         <activity android:name=".UI.View_patient"></activity>
         <activity android:name=".UI.Delete_popup"></activity>
         <activity android:name=".UI.My_patients"></activity>

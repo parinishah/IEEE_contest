@@ -9,15 +9,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.krish.medical_app.Adapters.NoteAdapter;
+import com.example.krish.medical_app.Java_classes.Note;
 import com.example.krish.medical_app.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * Created by KRISH on 08-06-2017.
@@ -41,6 +48,10 @@ public class View_patient extends AppCompatActivity {
     protected ImageButton images;
     protected String doc_username,pat_id;
     protected DatabaseReference view_patient;
+    protected Note note;
+    protected ArrayList<Note> note_array;
+    protected NoteAdapter noteadapter;
+    protected ListView note_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,8 @@ public class View_patient extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
         pat_id= bundle.getString("patient_id");
+
+        note_array = new ArrayList<>();
 
         view_patient = FirebaseDatabase.getInstance().getReference();
 
@@ -68,6 +81,23 @@ public class View_patient extends AppCompatActivity {
         notes = (ImageButton) findViewById(R.id.imageButton_view_notes);
         images = (ImageButton) findViewById(R.id.imageButton_view_images);
 
+        noteadapter = new NoteAdapter(getApplicationContext(), note_array);
+        note_list = (ListView)findViewById(R.id.listView_notes);
+        note_list.setAdapter(noteadapter);
+
+        note_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Note n = note_array.get(i);
+                Intent in = new Intent(View_patient.this, Notes.class);
+                in.putExtra("patient_id",pat_id);
+                in.putExtra("username",doc_username);
+                in.putExtra("note_title",n.getNotes_id());
+                startActivity(in);
+            }
+        });
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +115,24 @@ public class View_patient extends AppCompatActivity {
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        return true;
+
+                        switch (item.getItemId()) {
+                            case R.id.patient_profile_options_edit:
+                                launch_new_patient_info();
+                                return true;
+
+                            case R.id.patient_profile_options_save_printable_copy:
+
+                                return true;
+
+                            case R.id.patient_profile_options_delete:
+                                dialogopener();
+                                return true;
+
+                            default:
+                                return true;
+                        }
+
                     }
                 });
 
@@ -103,10 +150,15 @@ public class View_patient extends AppCompatActivity {
         images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_pictures_options_popup();
+                dialogopener_images();
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         view_patient.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -131,6 +183,18 @@ public class View_patient extends AppCompatActivity {
                 mobile_value.setText(v_mobile);
                 phone_value.setText(v_phone);
                 medical_history_value.setText(v_medhis);
+
+                noteadapter.clear();
+
+                for(DataSnapshot postSnapshot:dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
+                    String date = postSnapshot.child("note_date").getValue().toString();
+                    String id = postSnapshot.getKey();
+                    note = new Note(id,date,null,null,null,null,null,null);
+                    note_array.add(note);
+                    noteadapter.notifyDataSetChanged();
+                }
+
+
             }
 
             @Override
@@ -138,11 +202,7 @@ public class View_patient extends AppCompatActivity {
 
             }
         });
-
-
     }
-
-
 
     public void launch_my_patients(String doc_username) {
 
@@ -152,36 +212,49 @@ public class View_patient extends AppCompatActivity {
     }
 
     public void launch_notes() {
-        startActivity(new Intent(this, Notes.class));
+
+        Intent i = new Intent(this, Notes.class);
+        i.putExtra("username",doc_username);
+        i.putExtra("patient_id",pat_id);
+        startActivity(i);
     }
 
-    public void launch_pictures_options_popup() {
-        startActivity(new Intent(this, Pictures_options_popup.class));
+    public void dialogopener_images()
+    {
+        final Dialog dialog = new Dialog(View_patient.this);
+        dialog.setContentView(R.layout.pictures_options_popup);
+
+        TextView gallery_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_gallery);
+        TextView camera_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_camera);
+        TextView cancel_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_cancel);
+
+        gallery_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        camera_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     public void launch_new_patient_info() {
         startActivity(new Intent(this, New_patient_info.class));
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.patient_profile_options_edit:
-                launch_new_patient_info();
-                return true;
-
-            case R.id.patient_profile_options_save_printable_copy:
-
-                return true;
-
-            case R.id.patient_profile_options_delete:
-                dialogopener();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public void dialogopener()
@@ -189,8 +262,8 @@ public class View_patient extends AppCompatActivity {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.delete_popup);
 
-        final TextView delete = (TextView) findViewById(R.id.textView_delete_delete);
-        TextView cancel = (TextView) findViewById(R.id.textView_delete_cancel);
+        final TextView delete = (TextView) dialog.findViewById(R.id.textView_delete_delete);
+        TextView cancel = (TextView) dialog.findViewById(R.id.textView_delete_cancel);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
