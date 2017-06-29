@@ -4,14 +4,17 @@ import android.content.Intent;
 import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.example.krish.medical_app.Adapters.PatientAdapter;
 import com.example.krish.medical_app.Java_classes.Patient;
@@ -41,6 +44,9 @@ public class My_patients extends AppCompatActivity
     protected Patient patient;
     protected ListView patient_list;
     protected String patient_id;
+    protected DrawerLayout drawerLayout;
+    protected TextView logout_btn;
+    protected TextView profile_btn;
 
     ArrayList<Patient> patient_array;
     @Override
@@ -58,6 +64,9 @@ public class My_patients extends AppCompatActivity
         options = (ImageButton) findViewById(R.id.imageButton_my_patients_options);
         add_patient = (ImageButton) findViewById(R.id.imageButton_my_patients_add_patient);
         listView = (ListView) findViewById(R.id.listView_my_patients);
+        logout_btn = (TextView) findViewById(R.id.logout_btn);
+        profile_btn = (TextView) findViewById(R.id.pro_btn);
+        drawerLayout = (DrawerLayout) findViewById(R.id.draw_layout);
 
         add_patient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +94,14 @@ public class My_patients extends AppCompatActivity
             }
         });
 
+        options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!drawerLayout.isDrawerOpen(Gravity.START)){
+                    drawerLayout.openDrawer(Gravity.START);
+                }
+            }
+        });
     }
 
     @Override
