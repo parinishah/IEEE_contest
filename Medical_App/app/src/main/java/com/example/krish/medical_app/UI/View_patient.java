@@ -8,6 +8,7 @@ import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
@@ -95,6 +96,26 @@ public class View_patient extends AppCompatActivity {
                 in.putExtra("username",doc_username);
                 in.putExtra("note_title",n.getNotes_id());
                 startActivity(in);
+            }
+        });
+
+        note_list.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+// Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+// Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+// Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
             }
         });
 
@@ -216,6 +237,7 @@ public class View_patient extends AppCompatActivity {
         Intent i = new Intent(this, Notes.class);
         i.putExtra("username",doc_username);
         i.putExtra("patient_id",pat_id);
+        i.putExtra("note_title","123");
         startActivity(i);
     }
 

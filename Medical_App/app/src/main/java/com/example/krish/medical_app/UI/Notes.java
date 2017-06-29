@@ -11,9 +11,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.krish.medical_app.Java_classes.Note;
 import com.example.krish.medical_app.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by KRISH on 13-06-2017.
@@ -34,6 +38,7 @@ public class Notes extends AppCompatActivity
     protected EditText sig;
     protected String doc_username, pat_id,note_title;
     protected DatabaseReference notes;
+    protected Note note_obj;
 
 
     @Override
@@ -70,7 +75,11 @@ public class Notes extends AppCompatActivity
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_view_patient();
+
+
+                note_obj = new  Note(title.getText().toString(),date.getText().toString(),note.getText().toString(),medication.getText().toString(),dispense.getText().toString(),unit.getText().toString(),refills.getText().toString(),sig.getText().toString());
+                note_obj.firebase_note(doc_username,pat_id);
+                launch_view_patient(doc_username,pat_id);
             }
         });
 
@@ -80,6 +89,49 @@ public class Notes extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+        notes.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               if(dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").child(note_title).exists())
+               {
+                   DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").child(note_title);
+                   String n_date = d1.child("note_date").getValue().toString();
+                   String n_note = d1.child("note_text").getValue().toString();
+                   String n_medication = d1.child("note_medication").getValue().toString();
+                   String n_dispense = d1.child("note_dispense").getValue().toString();
+                   String n_unit = d1.child("note_unit").getValue().toString();
+                   String n_refills = d1.child("note_refills").getValue().toString();
+                   String n_sig = d1.child("note_sig").getValue().toString();
+
+                   title.setText(note_title);
+                   date.setText(n_date);
+                   note.setText(n_note);
+                   medication.setText(n_medication);
+                   dispense.setText(n_dispense);
+                   unit.setText(n_unit);
+                   refills.setText(n_refills);
+                   sig.setText(n_sig);
+
+
+               }
+               /*else
+               {
+                   title.setText("");
+                   date.setText("");
+                   note.setText("");
+                   medication.setText("");
+                   dispense.setText("");
+                   unit.setText("");
+                   refills.setText("");
+                   sig.setText("");
+               }*/
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -108,7 +160,13 @@ public class Notes extends AppCompatActivity
         dialog.show();
     }
 
-    public void launch_view_patient(){ startActivity(new Intent(this, View_patient.class));}
+    public void launch_view_patient(String doc_username, String pat_id){
+
+        Intent i = new Intent(this, View_patient.class);
+        i.putExtra("username", doc_username);
+        i.putExtra("patient_id",pat_id);
+        startActivity(i);
+    }
 
 
 
