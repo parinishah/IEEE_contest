@@ -158,7 +158,6 @@ public class Patient
         map_patient.put("patient_last_name",last_name);
         map_patient.put("patient_gender",gender);
         map_patient.put("patient_dob",dob);
-        map_patient.put("patient_age",age);
         map_patient.put("patient_email",email);
         map_patient.put("patient_address",address);
         map_patient.put("patient_mobile",mobile);

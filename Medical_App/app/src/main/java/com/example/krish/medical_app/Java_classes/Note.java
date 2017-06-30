@@ -13,6 +13,7 @@ import java.util.Map;
 public class Note
 {
     private String notes_id;
+    private String title;
     private String date;
     private String text;
     private String medication;
@@ -23,8 +24,9 @@ public class Note
     private DatabaseReference doc_id = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference note;
 
-    public Note(String notes_id, String date, String text,String medication, String dispense, String unit, String refills, String sig)
+    public Note(String notes_id,String title, String date, String text,String medication, String dispense, String unit, String refills, String sig)
     {
+        this.title = title;
         this.notes_id = notes_id;
         this.date = date;
         this.text = text;
@@ -33,6 +35,14 @@ public class Note
         this.unit = unit;
         this.refills = refills;
         this.sig=sig;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getNotes_id() {
@@ -103,6 +113,7 @@ public class Note
     {
         note = doc_id.child(doc_username).child("patients").child(pat_id).child("notes");
         Map<String,String> map_note = new HashMap<String, String>();
+        map_note.put("note_title",title);
         map_note.put("note_date",date);
         map_note.put("note_text",text);
         map_note.put("note_medication",medication);

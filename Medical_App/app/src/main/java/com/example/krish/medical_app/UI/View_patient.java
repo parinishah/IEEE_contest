@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by KRISH on 08-06-2017.
@@ -48,7 +50,7 @@ public class View_patient extends AppCompatActivity {
     protected ImageButton notes;
     protected ImageButton images;
     protected String doc_username,pat_id;
-    protected DatabaseReference view_patient;
+    protected DatabaseReference view_patient,note_ref;
     protected Note note;
     protected ArrayList<Note> note_array;
     protected NoteAdapter noteadapter;
@@ -66,6 +68,7 @@ public class View_patient extends AppCompatActivity {
         note_array = new ArrayList<>();
 
         view_patient = FirebaseDatabase.getInstance().getReference();
+        note_ref = view_patient.child(doc_username).child("patients").child(pat_id).child("notes");
 
         back = (ImageButton) findViewById(R.id.imageButton_view_back);
         more = (ImageButton) findViewById(R.id.imageButton_view_more);
@@ -94,7 +97,7 @@ public class View_patient extends AppCompatActivity {
                 Intent in = new Intent(View_patient.this, Notes.class);
                 in.putExtra("patient_id",pat_id);
                 in.putExtra("username",doc_username);
-                in.putExtra("note_title",n.getNotes_id());
+                in.putExtra("note_id",n.getNotes_id());
                 startActivity(in);
             }
         });
@@ -177,6 +180,8 @@ public class View_patient extends AppCompatActivity {
 
     }
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -184,9 +189,8 @@ public class View_patient extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
-                String v_name,v_gender,v_age,v_dob,v_diagnosis,v_mobile,v_phone,v_medhis;
+                String v_name,v_gender,v_dob,v_diagnosis,v_mobile,v_phone,v_medhis;
                 v_name = d1.child("patient_first_name").getValue().toString() +" "+ d1.child("patient_last_name").getValue().toString();
-                v_age = d1.child("patient_age").getValue().toString();
                 v_gender = d1.child("patient_gender").getValue().toString();
                 v_dob = d1.child("patient_dob").getValue().toString();
                 v_diagnosis = d1.child("patient_diagnosis").getValue().toString();
@@ -197,7 +201,7 @@ public class View_patient extends AppCompatActivity {
                 patient.setText(v_name.toUpperCase());
                 patient_name.setText(v_name);
                 gender.setText(v_gender);
-                age.setText(v_age);
+                age.setText(getAge(v_dob));
                 dob_value.setText(v_dob);
                 id_value.setText(pat_id);
                 diagnosis_value.setText(v_diagnosis);
@@ -209,8 +213,9 @@ public class View_patient extends AppCompatActivity {
 
                 for(DataSnapshot postSnapshot:dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
                     String date = postSnapshot.child("note_date").getValue().toString();
+                    String title = postSnapshot.child("note_title").getValue().toString();
                     String id = postSnapshot.getKey();
-                    note = new Note(id,date,null,null,null,null,null,null);
+                    note = new Note(id,title,date,null,null,null,null,null,null);
                     note_array.add(note);
                     noteadapter.notifyDataSetChanged();
                 }
@@ -237,7 +242,8 @@ public class View_patient extends AppCompatActivity {
         Intent i = new Intent(this, Notes.class);
         i.putExtra("username",doc_username);
         i.putExtra("patient_id",pat_id);
-        i.putExtra("note_title","123");
+        String notes_id = note_ref.push().getKey().toString();
+        i.putExtra("note_id",notes_id);
         startActivity(i);
     }
 
@@ -311,5 +317,38 @@ public class View_patient extends AppCompatActivity {
     public void onBackPressed()
     {    }
 
+    public String getAge(String v_dob)
+    {
+        String[] temp = v_dob.split("-");
+        int year, month, day;
+
+        day = Integer.parseInt(temp[0]);
+        month = Integer.parseInt(temp[1]);
+        year = Integer.parseInt(temp[2]);
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        String ageS;
+        if(age<0) {
+            ageS = "NA";
+
+        }
+        else
+        {
+            Integer ageInt = new Integer(age);
+            ageS = ageInt.toString();
+        }
+
+        return ageS;
+    }
 
 }

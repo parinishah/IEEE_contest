@@ -2,10 +2,15 @@ package com.example.krish.medical_app.UI;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.icu.text.DateFormat;
+import android.icu.text.RelativeDateTimeFormatter;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
+
 /**
  * Created by KRISH on 13-06-2017.
  */
@@ -29,14 +36,14 @@ public class Notes extends AppCompatActivity
     protected ImageButton delete;
     protected ImageButton save;
     protected EditText title;
-    protected EditText date;
+    protected TextView date;
     protected EditText note;
     protected EditText medication;
     protected EditText dispense;
     protected EditText unit;
     protected EditText refills;
     protected EditText sig;
-    protected String doc_username, pat_id,note_title;
+    protected String doc_username, pat_id,note_id;
     protected DatabaseReference notes;
     protected Note note_obj;
 
@@ -49,20 +56,23 @@ public class Notes extends AppCompatActivity
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
         pat_id = bundle.getString("patient_id");
-        note_title = bundle.getString("note_title");
+        note_id = bundle.getString("note_id");
 
         notes = FirebaseDatabase.getInstance().getReference();
 
         delete = (ImageButton) findViewById(R.id.imageButton_notes_delete);
         save = (ImageButton) findViewById(R.id.imageButton_notes_save);
         title = (EditText) findViewById(R.id.editText_notes_title);
-        date = (EditText) findViewById(R.id.editText_notes_date);
+        date = (TextView) findViewById(R.id.editText_notes_date);
         note = (EditText) findViewById(R.id.editText_notes_note);
         medication = (EditText) findViewById(R.id.editText_prescription_medication);
         dispense = (EditText) findViewById(R.id.editText_prescription_dispense);
         unit = (EditText) findViewById(R.id.editText_prescription_unit);
         refills = (EditText) findViewById(R.id.editText_prescription_refills);
         sig = (EditText) findViewById(R.id.editText_prescription_sig);
+
+        String date_s = String.valueOf(android.text.format.DateFormat.format("dd-MM-yyyy", new java.util.Date()));
+        date.setText(date_s);
 
 
         delete.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +87,7 @@ public class Notes extends AppCompatActivity
             public void onClick(View view) {
 
 
-                note_obj = new  Note(title.getText().toString(),date.getText().toString(),note.getText().toString(),medication.getText().toString(),dispense.getText().toString(),unit.getText().toString(),refills.getText().toString(),sig.getText().toString());
+                note_obj = new  Note(note_id,title.getText().toString(),date.getText().toString(),note.getText().toString(),medication.getText().toString(),dispense.getText().toString(),unit.getText().toString(),refills.getText().toString(),sig.getText().toString());
                 note_obj.firebase_note(doc_username,pat_id);
                 launch_view_patient(doc_username,pat_id);
             }
@@ -92,10 +102,12 @@ public class Notes extends AppCompatActivity
         notes.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               if(dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").child(note_title).exists())
+
+               if(dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").child(note_id).exists())
                {
-                   DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").child(note_title);
+                   DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").child(note_id);
                    String n_date = d1.child("note_date").getValue().toString();
+                   String n_title = d1.child("note_title").getValue().toString();
                    String n_note = d1.child("note_text").getValue().toString();
                    String n_medication = d1.child("note_medication").getValue().toString();
                    String n_dispense = d1.child("note_dispense").getValue().toString();
@@ -103,7 +115,7 @@ public class Notes extends AppCompatActivity
                    String n_refills = d1.child("note_refills").getValue().toString();
                    String n_sig = d1.child("note_sig").getValue().toString();
 
-                   title.setText(note_title);
+                   title.setText(n_title);
                    date.setText(n_date);
                    note.setText(n_note);
                    medication.setText(n_medication);
@@ -114,17 +126,7 @@ public class Notes extends AppCompatActivity
 
 
                }
-               /*else
-               {
-                   title.setText("");
-                   date.setText("");
-                   note.setText("");
-                   medication.setText("");
-                   dispense.setText("");
-                   unit.setText("");
-                   refills.setText("");
-                   sig.setText("");
-               }*/
+
             }
 
             @Override

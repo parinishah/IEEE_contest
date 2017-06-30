@@ -228,7 +228,7 @@ public class New_patient_info extends AppCompatActivity
         startActivity(i);
     }
 
-    private String getAge(int year, int month, int day){
+    public String getAge(int year, int month, int day){
         Calendar dob = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
 

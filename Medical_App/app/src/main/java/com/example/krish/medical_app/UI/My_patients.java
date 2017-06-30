@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by KRISH on 13-06-2017.
@@ -111,12 +112,13 @@ public class My_patients extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                patientadapter.clear();
+            patientadapter.clear();
 
                 for(DataSnapshot postSnapshot:dataSnapshot.child(doc_username).child("patients").getChildren()){
                     String name = postSnapshot.child("patient_first_name").getValue().toString();
                     String lname = postSnapshot.child("patient_last_name").getValue().toString();
-                    String age= postSnapshot.child("patient_age").getValue().toString();
+                    String dob = postSnapshot.child("patient_dob").getValue().toString();
+                    String age= getAge(dob);
                     String gender= postSnapshot.child("patient_gender").getValue().toString();
                     String id= postSnapshot.getKey().toString();
                     patient = new Patient(id,name,null,lname,gender,null,age,null,null,null,null,null,null);
@@ -146,5 +148,45 @@ public class My_patients extends AppCompatActivity
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+    public String getAge(String v_dob)
+    {
+        String s1, s2, s3;
+        s1 = ""+ v_dob.charAt(0) + v_dob.charAt(1);
+        s2 = "" + v_dob.charAt(3) + v_dob.charAt(4);
+        s3 = "" + v_dob.charAt(6) + v_dob.charAt(7) + v_dob.charAt(8) + v_dob.charAt(9);
+
+        int day,month,year;
+
+        Log.i("0 is ", s1);
+        Log.i("1 is ", s2);
+        Log.i("2 is ", s3);
+        day = Integer.parseInt(s1);
+        month = Integer.parseInt(s2);
+        year = Integer.parseInt(s3);
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        String ageS;
+        if(age<0) {
+            ageS = "NA";
+
+        }
+        else
+        {
+            Integer ageInt = new Integer(age);
+            ageS = ageInt.toString();
+        }
+
+        return ageS;
     }
 }
