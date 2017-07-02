@@ -47,6 +47,9 @@ public class Signup extends AppCompatActivity
         login = (TextView) findViewById(R.id.textView_signup_login_btn);
         signup = (TextView) findViewById(R.id.textView_signup_signup_btn);
 
+        final String username_s = username.getText().toString();
+        final String email_s = email.getText().toString();
+        final String password_s = password.getText().toString();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +75,7 @@ public class Signup extends AppCompatActivity
                         else
                         {
                             if(password.getText().toString().equals(confirm_password.getText().toString()))
-                            { launch_doctor_profile();}
+                            { launch_doctor_profile(username_s,password_s,email_s);}
                             else
                             {
                                 password.setText("");
@@ -98,12 +101,12 @@ public class Signup extends AppCompatActivity
     {
         startActivity(new Intent(this, Login.class));
     }
-    public void launch_doctor_profile()
+    public void launch_doctor_profile(String username,String password,String email)
     {
         Intent i = new Intent(this,Doctor_profile.class);
-        i.putExtra("username",username.getText().toString());
-        i.putExtra("password",password.getText().toString());
-        i.putExtra("email",email.getText().toString());
+        i.putExtra("username",username);
+        i.putExtra("password",password);
+        i.putExtra("email",email);
         startActivity(i);
 
     }

@@ -189,36 +189,41 @@ public class View_patient extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
-                String v_name,v_gender,v_dob,v_diagnosis,v_mobile,v_phone,v_medhis;
-                v_name = d1.child("patient_first_name").getValue().toString() +" "+ d1.child("patient_last_name").getValue().toString();
-                v_gender = d1.child("patient_gender").getValue().toString();
-                v_dob = d1.child("patient_dob").getValue().toString();
-                v_diagnosis = d1.child("patient_diagnosis").getValue().toString();
-                v_mobile = d1.child("patient_mobile").getValue().toString();
-                v_phone = d1.child("patient_phone").getValue().toString();
-                v_medhis = d1.child("patient_medical_history").getValue().toString();
+                if(d1.exists())
+                {
+                    String v_name,v_gender,v_dob,v_diagnosis,v_mobile,v_phone,v_medhis;
+                    v_name = d1.child("patient_first_name").getValue().toString() +" "+ d1.child("patient_last_name").getValue().toString();
+                    v_gender = d1.child("patient_gender").getValue().toString();
+                    v_dob = d1.child("patient_dob").getValue().toString();
+                    v_diagnosis = d1.child("patient_diagnosis").getValue().toString();
+                    v_mobile = d1.child("patient_mobile").getValue().toString();
+                    v_phone = d1.child("patient_phone").getValue().toString();
+                    v_medhis = d1.child("patient_medical_history").getValue().toString();
 
-                patient.setText(v_name.toUpperCase());
-                patient_name.setText(v_name);
-                gender.setText(v_gender);
-                age.setText(getAge(v_dob));
-                dob_value.setText(v_dob);
-                id_value.setText(pat_id);
-                diagnosis_value.setText(v_diagnosis);
-                mobile_value.setText(v_mobile);
-                phone_value.setText(v_phone);
-                medical_history_value.setText(v_medhis);
+                    patient.setText(v_name.toUpperCase());
+                    patient_name.setText(v_name);
+                    gender.setText(v_gender);
+                    age.setText(getAge(v_dob));
+                    dob_value.setText(v_dob);
+                    id_value.setText(pat_id);
+                    diagnosis_value.setText(v_diagnosis);
+                    mobile_value.setText(v_mobile);
+                    phone_value.setText(v_phone);
+                    medical_history_value.setText(v_medhis);
 
-                noteadapter.clear();
+                    noteadapter.clear();
 
-                for(DataSnapshot postSnapshot:dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
-                    String date = postSnapshot.child("note_date").getValue().toString();
-                    String title = postSnapshot.child("note_title").getValue().toString();
-                    String id = postSnapshot.getKey();
-                    note = new Note(id,title,date,null,null,null,null,null,null);
-                    note_array.add(note);
-                    noteadapter.notifyDataSetChanged();
+                    for(DataSnapshot postSnapshot:dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
+                        String date = postSnapshot.child("note_date").getValue().toString();
+                        String title = postSnapshot.child("note_title").getValue().toString();
+                        String id = postSnapshot.getKey();
+                        note = new Note(id,title,date,null,null,null,null,null,null);
+                        note_array.add(note);
+                        noteadapter.notifyDataSetChanged();
+                    }
+
                 }
+
 
 
             }
@@ -296,7 +301,7 @@ public class View_patient extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                delete_patient();
+                delete_patient(doc_username,pat_id);
             }
         });
 
@@ -310,9 +315,10 @@ public class View_patient extends AppCompatActivity {
         dialog.show();
     }
 
-    public void delete_patient()
+    public void delete_patient(String doc_username,String pat_id)
     {
-        //code to delete patient
+        view_patient.child(doc_username).child("patients").child(pat_id).removeValue();
+        launch_my_patients(doc_username);
     }
     public void onBackPressed()
     {    }

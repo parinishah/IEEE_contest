@@ -1,6 +1,7 @@
 package com.example.krish.medical_app.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -78,6 +79,26 @@ public class My_patients extends AppCompatActivity
             }
         });
 
+        profile_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
+        });
+
+        logout_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("doctor_username",null);
+                editor.commit();
+                launch_login();
+            }
+        });
+
         patientadapter = new PatientAdapter(getApplicationContext(), patient_array);
         patient_list = (ListView)findViewById(R.id.listView_my_patients);
         patient_list.setAdapter(patientadapter);
@@ -141,6 +162,12 @@ public class My_patients extends AppCompatActivity
         i.putExtra("patient_id",patient_id);
         startActivity(i);
     }
+
+    public void launch_login()
+    {
+        startActivity(new Intent(this,Login.class));
+    }
+
 
     @Override
     public void onBackPressed() {

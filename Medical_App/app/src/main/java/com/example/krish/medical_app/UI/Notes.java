@@ -148,7 +148,7 @@ public class Notes extends AppCompatActivity
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                delete_note();
+                delete_note(doc_username,pat_id);
             }
         });
 
@@ -172,9 +172,10 @@ public class Notes extends AppCompatActivity
 
 
 
-    public void delete_note()
+    public void delete_note(String doc_username,String pat_id)
     {
-        //code to delete note
+        notes.child(doc_username).child("patients").child(pat_id).child("notes").child(note_id).removeValue();
+        launch_view_patient(doc_username,pat_id);
     }
 
     @Override
