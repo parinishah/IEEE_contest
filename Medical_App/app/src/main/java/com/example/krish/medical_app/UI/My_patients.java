@@ -99,6 +99,21 @@ public class My_patients extends AppCompatActivity
             }
         });
 
+
+        options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!drawerLayout.isDrawerOpen(Gravity.START)){
+                    drawerLayout.openDrawer(Gravity.START);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         patientadapter = new PatientAdapter(getApplicationContext(), patient_array);
         patient_list = (ListView)findViewById(R.id.listView_my_patients);
         patient_list.setAdapter(patientadapter);
@@ -116,19 +131,6 @@ public class My_patients extends AppCompatActivity
             }
         });
 
-        options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!drawerLayout.isDrawerOpen(Gravity.START)){
-                    drawerLayout.openDrawer(Gravity.START);
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         existing_patients.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -185,9 +187,6 @@ public class My_patients extends AppCompatActivity
 
         int day,month,year;
 
-        Log.i("0 is ", s1);
-        Log.i("1 is ", s2);
-        Log.i("2 is ", s3);
         day = Integer.parseInt(s1);
         month = Integer.parseInt(s2);
         year = Integer.parseInt(s3);

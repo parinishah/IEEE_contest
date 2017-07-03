@@ -15,36 +15,12 @@
         android:textStyle="bold"
         android:textColor="#000000"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="13dp"
-        android:orientation="horizontal">
 
-
-        <ImageView
-            android:id="@+id/imageView_my_patient_view_id"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/patient_id" />
-
-        <TextView
-            android:id="@+id/textView_my_patient_view_id"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginStart="5dp"
-            android:gravity="center"
-            android:text="2"
-            android:textSize="17dp"
-            android:textColor="#000000"/>
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp">
 
         <ImageView

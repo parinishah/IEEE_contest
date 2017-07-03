@@ -29,11 +29,11 @@
 
                 <ImageButton
                     android:id="@+id/imageButton_my_patients_options"
-                    android:layout_width="37dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:background="@drawable/menu"
                     android:layout_marginTop="10dp"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginLeft="5dp"
                     />
 
                 <SearchView
@@ -71,10 +71,10 @@
         </android.support.design.widget.AppBarLayout>
 
         <ListView
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/listView_my_patients"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 
