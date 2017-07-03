@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,6 +15,11 @@ import android.widget.TextView;
 
 import com.example.krish.medical_app.Java_classes.Doctor;
 import com.example.krish.medical_app.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by KRISH on 16-06-2017.
@@ -29,9 +35,10 @@ public class Doctor_profile extends AppCompatActivity
     protected RadioButton female;
     protected RadioButton others;
     protected ImageButton back;
-    protected TextView save;
+    protected TextView save,doc_username;
     protected Doctor doctor_obj;
     protected String signup_username,signup_email,signup_password;
+    protected DatabaseReference doc_profile;
 
 
     @Override
@@ -39,7 +46,15 @@ public class Doctor_profile extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doctor_profile);
 
+        doc_profile = FirebaseDatabase.getInstance().getReference();
+
         final Bundle bundle = getIntent().getExtras();
+
+        signup_email = bundle.getString("email");
+        signup_password = bundle.getString("password");
+        signup_username = bundle.getString("username");
+
+        doc_username = (TextView)findViewById(R.id.editText_doctor_username);
         fullname = (EditText)findViewById(R.id.editText_doctor_fullname);
         email = (EditText)findViewById(R.id.editText_doctor_email);
         mobile = (EditText)findViewById(R.id.editText_doctor_mobile);
@@ -50,10 +65,8 @@ public class Doctor_profile extends AppCompatActivity
         back = (ImageButton) findViewById(R.id.imageButton_doctor_back);
         save = (TextView) findViewById(R.id.textView_doctor_save);
 
-        signup_email = bundle.getString("email");
-        signup_username = bundle.getString("username");
-        signup_password = bundle.getString("password");
 
+        doc_username.setText(signup_username);
         email.setText(signup_email);
 
 
@@ -71,15 +84,15 @@ public class Doctor_profile extends AppCompatActivity
                 String Gender = "NA";
                 if (male.isChecked())
                 {
-                    Gender = "male";
+                    Gender = "Male";
                 }
                 else if(female.isChecked())
                 {
-                    Gender = "female";
+                    Gender = "Female";
                 }
                 else if(others.isChecked())
                 {
-                    Gender = "other";
+                    Gender = "Other";
                 }
 
                 doctor_obj = new Doctor(signup_username,signup_password,signup_email,
@@ -94,6 +107,47 @@ public class Doctor_profile extends AppCompatActivity
                 launch_my_patients(signup_username);
             }
         });
+
+        doc_profile.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(signup_username).exists())
+                {
+                    doc_username.setText(signup_username);
+                    fullname.setText(dataSnapshot.child(signup_username).child("name").getValue().toString());
+                    email.setText(signup_email);
+                    mobile.setText(dataSnapshot.child(signup_username).child("mobile").getValue().toString());
+                    qualification.setText(dataSnapshot.child(signup_username).child("qualification").getValue().toString());
+                    String gender_s = dataSnapshot.child(signup_username).child("qualification").getValue().toString();
+                    if(gender_s.equals("Male"))
+                    {
+                        male.setChecked(true);
+                    }
+                    else if(gender_s.equals("Female"))
+                    {
+                        female.setChecked(true);
+                    }
+                    if(gender_s.equals("Other"))
+                    {
+                        others.setChecked(true);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
 
     }
 

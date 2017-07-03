@@ -151,7 +151,7 @@ public class Patient
     public void firebase_connect(String doc_username)
     {
 
-        Map<String,String> map_patient = new HashMap<String,String>();
+        Map<String,Object> map_patient = new HashMap<String,Object>();
         map_patient.put("patient_first_name",first_name);
         map_patient.put("patient_middle_name",middle_name);
         map_patient.put("patient_last_name",last_name);

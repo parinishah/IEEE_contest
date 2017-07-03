@@ -81,44 +81,121 @@
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        >
+        android:layout_gravity="start">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@android:color/black"
-                />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:background="#3498db"
+            android:weightSum="2">
+
             <TextView
-                android:id="@+id/pro_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="View Profile"
-                android:textSize="24dp"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@android:color/black"
-                />
-            <TextView
-                android:id="@+id/logout_btn"
+                android:layout_weight="2"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Logout"
-                android:textSize="24dp"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@android:color/black"
-                />
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/textView_navigation_dr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textSize="20dp"
+                    android:text="Dr. "/>
+
+                <TextView
+                    android:id="@+id/textView_navigation_fullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Full name"
+                    android:textColor="#ffffff"
+                    android:textSize="20dp"/>
+
+
+            </LinearLayout>
+
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#ffffff">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/imageView_navigation_view_profile"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/view_profile"
+                    android:layout_marginStart="20dp"
+                    android:clickable="true"/>
+
+                <TextView
+                    android:id="@+id/pro_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="View Profile"
+                    android:textSize="24dp"
+                    android:textColor="#000000"
+                    android:layout_marginStart="20dp"
+                    android:clickable="true"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/imageView_navigation_logout"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/logout"
+                    android:layout_marginStart="20dp"/>
+
+                <TextView
+                    android:id="@+id/logout_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:textColor="#000000"
+                    android:textSize="24dp"
+                    android:layout_marginStart="20dp"
+                    android:clickable="true"
+                    />
+
+            </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
     </android.support.design.widget.NavigationView>
 
 

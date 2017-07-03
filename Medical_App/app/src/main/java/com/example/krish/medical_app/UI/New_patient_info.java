@@ -16,8 +16,11 @@ import android.widget.TextView;
 
 import com.example.krish.medical_app.Java_classes.Patient;
 import com.example.krish.medical_app.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -47,8 +50,7 @@ public class New_patient_info extends AppCompatActivity
     protected TextView cancel;
     protected String doc_username,pat_id;
     protected Patient patient_obj;
-
-    protected DatePicker datepicker;
+    protected DatabaseReference edit_patient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -56,7 +58,7 @@ public class New_patient_info extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_patient_info);
 
-
+        edit_patient = FirebaseDatabase.getInstance().getReference();
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
         pat_id = bundle.getString("patient_id");
@@ -221,6 +223,50 @@ public class New_patient_info extends AppCompatActivity
 
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        edit_patient.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
+                if(d1.exists()) {
+                    firstname.setText(d1.child("patient_first_name").getValue().toString());
+                    middlename.setText(d1.child("patient_middle_name").getValue().toString());
+                    lastname.setText(d1.child("patient_last_name").getValue().toString());
+                    patient_id.setText(d1.getKey().toString());
+                    dob.setText(d1.child("patient_dob").getValue().toString());
+                    age.setText(getAge(dob.getText().toString()));
+                    email.setText(d1.child("patient_email").getValue().toString());
+                    address.setText(d1.child("patient_address").getValue().toString());
+                    mobile_num.setText(d1.child("patient_mobile").getValue().toString());
+                    phone_num.setText(d1.child("patient_phone").getValue().toString());
+                    diagnosis.setText(d1.child("patient_diagnosis").getValue().toString());
+                    medical_history.setText(d1.child("patient_medical_history").getValue().toString());
+                    String gender_s = d1.child("patient_gender").getValue().toString();
+                    if (gender_s.equals("Male")) {
+                        male.setChecked(true);
+                    }
+                    else if (gender_s.equals("Female"))
+                    {
+                        female.setChecked(true);
+                    }
+                    else if (gender_s.equals("Other"))
+                    {
+                        other.setChecked(true);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void launch_My_patients(String doc_username)
     {
         Intent i = new Intent(this,My_patients.class);
@@ -254,6 +300,39 @@ public class New_patient_info extends AppCompatActivity
         return ageS;
     }
 
+    public String getAge(String v_dob)
+    {
+        String[] temp = v_dob.split("-");
+        int year, month, day;
+
+        day = Integer.parseInt(temp[0]);
+        month = Integer.parseInt(temp[1]);
+        year = Integer.parseInt(temp[2]);
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        String ageS;
+        if(age<0) {
+            ageS = "NA";
+
+        }
+        else
+        {
+            Integer ageInt = new Integer(age);
+            ageS = ageInt.toString();
+        }
+
+        return ageS;
+    }
     @Override
     public void onBackPressed() {
     }

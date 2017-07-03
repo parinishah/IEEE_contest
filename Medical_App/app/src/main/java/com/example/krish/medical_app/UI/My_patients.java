@@ -34,13 +34,12 @@ import java.util.Calendar;
  * Created by KRISH on 13-06-2017.
  */
 
-public class My_patients extends AppCompatActivity
-{
+public class My_patients extends AppCompatActivity {
 
     protected ImageButton options;
     protected ImageButton add_patient;
     protected ListView listView;
-    protected String doc_username;
+    protected String doc_username, name_d, password, email;
     protected PatientAdapter patientadapter;
     protected DatabaseReference existing_patients;
     protected Patient patient;
@@ -49,8 +48,10 @@ public class My_patients extends AppCompatActivity
     protected DrawerLayout drawerLayout;
     protected TextView logout_btn;
     protected TextView profile_btn;
+    protected TextView doc_name;
 
     ArrayList<Patient> patient_array;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,8 @@ public class My_patients extends AppCompatActivity
 
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
+
+        Log.i("Username mypatients",doc_username);
 
         existing_patients = FirebaseDatabase.getInstance().getReference();
 
@@ -68,6 +71,8 @@ public class My_patients extends AppCompatActivity
         listView = (ListView) findViewById(R.id.listView_my_patients);
         logout_btn = (TextView) findViewById(R.id.logout_btn);
         profile_btn = (TextView) findViewById(R.id.pro_btn);
+        doc_name = (TextView) findViewById(R.id.textView_navigation_fullname);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.draw_layout);
 
         add_patient.setOnClickListener(new View.OnClickListener() {
@@ -75,14 +80,14 @@ public class My_patients extends AppCompatActivity
             public void onClick(View view) {
 
                 patient_id = existing_patients.child(doc_username).child("patients:").push().getKey();
-                launch_new_patient_info(doc_username,patient_id);
+                launch_new_patient_info(doc_username, patient_id);
             }
         });
 
         profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                launch_doc_profile(doc_username, password, email);
 
             }
         });
@@ -93,7 +98,7 @@ public class My_patients extends AppCompatActivity
 
                 SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("doctor_username",null);
+                editor.putString("doctor_username", null);
                 editor.commit();
                 launch_login();
             }
@@ -103,8 +108,9 @@ public class My_patients extends AppCompatActivity
         options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!drawerLayout.isDrawerOpen(Gravity.START)){
+                if (!drawerLayout.isDrawerOpen(Gravity.START)) {
                     drawerLayout.openDrawer(Gravity.START);
+                    doc_name.setText(name_d);
                 }
             }
         });
@@ -115,7 +121,7 @@ public class My_patients extends AppCompatActivity
         super.onStart();
 
         patientadapter = new PatientAdapter(getApplicationContext(), patient_array);
-        patient_list = (ListView)findViewById(R.id.listView_my_patients);
+        patient_list = (ListView) findViewById(R.id.listView_my_patients);
         patient_list.setAdapter(patientadapter);
 
         patient_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -125,8 +131,8 @@ public class My_patients extends AppCompatActivity
 
                 Patient p = patient_array.get(i);
                 Intent in = new Intent(My_patients.this, View_patient.class);
-                in.putExtra("patient_id",p.getPatient_id());
-                in.putExtra("username",doc_username);
+                in.putExtra("patient_id", p.getPatient_id());
+                in.putExtra("username", doc_username);
                 startActivity(in);
             }
         });
@@ -135,16 +141,20 @@ public class My_patients extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-            patientadapter.clear();
+                name_d = dataSnapshot.child(doc_username).child("name").getValue().toString();
+                password = dataSnapshot.child(doc_username).child("password").getValue().toString();
+                email = dataSnapshot.child(doc_username).child("email").getValue().toString();
 
-                for(DataSnapshot postSnapshot:dataSnapshot.child(doc_username).child("patients").getChildren()){
+                patientadapter.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").getChildren()) {
                     String name = postSnapshot.child("patient_first_name").getValue().toString();
                     String lname = postSnapshot.child("patient_last_name").getValue().toString();
                     String dob = postSnapshot.child("patient_dob").getValue().toString();
-                    String age= getAge(dob);
-                    String gender= postSnapshot.child("patient_gender").getValue().toString();
-                    String id= postSnapshot.getKey().toString();
-                    patient = new Patient(id,name,null,lname,gender,null,age,null,null,null,null,null,null);
+                    String age = getAge(dob);
+                    String gender = postSnapshot.child("patient_gender").getValue().toString();
+                    String id = postSnapshot.getKey().toString();
+                    patient = new Patient(id, name, null, lname, gender, null, age, null, null, null, null, null, null);
                     patient_array.add(patient);
                     patientadapter.notifyDataSetChanged();
                 }
@@ -158,16 +168,24 @@ public class My_patients extends AppCompatActivity
         });
     }
 
-    public void launch_new_patient_info(String doc_username,String patient_id){
+    public void launch_new_patient_info(String doc_username, String patient_id) {
         Intent i = new Intent(this, New_patient_info.class);
-        i.putExtra("username",doc_username);
-        i.putExtra("patient_id",patient_id);
+        i.putExtra("username", doc_username);
+        i.putExtra("patient_id", patient_id);
         startActivity(i);
     }
 
-    public void launch_login()
+    public void launch_login() {
+        startActivity(new Intent(this, Login.class));
+    }
+
+    public void launch_doc_profile(String doc_username, String password, String email)
     {
-        startActivity(new Intent(this,Login.class));
+        Intent i = new Intent(this,Doctor_profile.class);
+        i. putExtra("username",doc_username);
+        i.putExtra("password",password);
+        i.putExtra("email",email);
+        startActivity(i);
     }
 
 

@@ -142,7 +142,7 @@ public class View_patient extends AppCompatActivity {
 
                         switch (item.getItemId()) {
                             case R.id.patient_profile_options_edit:
-                                launch_new_patient_info();
+                                launch_new_patient_info(doc_username,pat_id);
                                 return true;
 
                             case R.id.patient_profile_options_save_printable_copy:
@@ -167,7 +167,7 @@ public class View_patient extends AppCompatActivity {
         notes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_notes();
+                launch_notes(doc_username,pat_id);
             }
         });
 
@@ -242,7 +242,7 @@ public class View_patient extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void launch_notes() {
+    public void launch_notes(String doc_username,String pat_id) {
 
         Intent i = new Intent(this, Notes.class);
         i.putExtra("username",doc_username);
@@ -286,8 +286,12 @@ public class View_patient extends AppCompatActivity {
         dialog.show();
     }
 
-    public void launch_new_patient_info() {
-        startActivity(new Intent(this, New_patient_info.class));
+    public void launch_new_patient_info(String doc_username,String pat_id) {
+
+        Intent i = new Intent(this, New_patient_info.class);
+        i.putExtra("username",doc_username);
+        i.putExtra("patient_id",pat_id);
+        startActivity(i);
     }
 
     public void dialogopener()

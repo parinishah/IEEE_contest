@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -47,9 +48,7 @@ public class Signup extends AppCompatActivity
         login = (TextView) findViewById(R.id.textView_signup_login_btn);
         signup = (TextView) findViewById(R.id.textView_signup_signup_btn);
 
-        final String username_s = username.getText().toString();
-        final String email_s = email.getText().toString();
-        final String password_s = password.getText().toString();
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +59,9 @@ public class Signup extends AppCompatActivity
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final String username_s = username.getText().toString();
+                final String email_s = email.getText().toString();
+                final String password_s = password.getText().toString();
 
                 check_existing.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -75,7 +77,8 @@ public class Signup extends AppCompatActivity
                         else
                         {
                             if(password.getText().toString().equals(confirm_password.getText().toString()))
-                            { launch_doctor_profile(username_s,password_s,email_s);}
+                            {
+                                launch_doctor_profile(username_s,password_s,email_s);}
                             else
                             {
                                 password.setText("");

@@ -92,7 +92,7 @@ public class Doctor
 
     public void firebase_doctor()
     {
-        Map<String,String> map_doctor = new HashMap<String,String>();
+       Map<String,Object> map_doctor = new HashMap<String,Object>();
         map_doctor.put("email",Email);
         map_doctor.put("password",Password);
         map_doctor.put("name",Fullname);
@@ -100,8 +100,13 @@ public class Doctor
         map_doctor.put("gender",Gender);
         map_doctor.put("qualification",Qualification);
 
+        /*doctor.child(Username).child("email").setValue(Email);
+        doctor.child(Username).child("password").setValue(Password);
+        doctor.child(Username).child("name").setValue(Fullname);
+        doctor.child(Username).child("mobile").setValue(Mobile);
+        doctor.child(Username).child("gender").setValue(Gender);
+        doctor.child(Username).child("qualification").setValue(Qualification);*/
 
-
-        doctor.child(Username).setValue(map_doctor);
+        doctor.child(Username).updateChildren(map_doctor);
     }
 }
