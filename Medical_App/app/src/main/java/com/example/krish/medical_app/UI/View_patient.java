@@ -2,12 +2,14 @@ package com.example.krish.medical_app.UI;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -25,12 +27,14 @@ import android.widget.TextView;
 
 import com.example.krish.medical_app.Adapters.NoteAdapter;
 import com.example.krish.medical_app.Java_classes.Note;
+import com.example.krish.medical_app.Manifest;
 import com.example.krish.medical_app.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.master.permissionhelper.PermissionHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,9 +68,6 @@ public class View_patient extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private static int REQUEST_IMAGE_CAPTURE = 2;
 
-    protected ImageView imageView;
-    protected ImageView imageView1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +97,6 @@ public class View_patient extends AppCompatActivity {
         notes = (ImageButton) findViewById(R.id.imageButton_view_notes);
         images = (ImageButton) findViewById(R.id.imageButton_view_images);
 
-        imageView = (ImageView) findViewById(R.id.imgView);
-        imageView1 = (ImageView) findViewById(R.id.imgView1);
 
         noteadapter = new NoteAdapter(getApplicationContext(), note_array);
         note_list = (ListView)findViewById(R.id.listView_notes);
@@ -188,13 +187,120 @@ public class View_patient extends AppCompatActivity {
         images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!(isReadAllowedofCamera())&&!(isReadAllowedofRead())&&!(isReadAllowedofWrite())){
+                    request(0);
+                }
+                else if (!(isReadAllowedofCamera())){
+                    request(1);
+                }
+                else if(!(isReadAllowedofRead())&&!(isReadAllowedofWrite())){
+                    request(2);
+                }
                 dialogopener_images();
             }
         });
 
     }
 
+    private boolean isReadAllowedofCamera() {
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.CAMERA);
 
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        //If permission is not granted returning false
+        return false;
+    }
+
+    private boolean isReadAllowedofRead() {
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        //If permission is not granted returning false
+        return false;
+    }
+
+    private boolean isReadAllowedofWrite() {
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        //If permission is not granted returning false
+        return false;
+    }
+
+    private void request(int id){
+        if(id ==0){
+            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+            permissionHelper.request(new PermissionHelper.PermissionCallback() {
+                @Override
+                public void onPermissionGranted() {
+
+                }
+
+                @Override
+                public void onPermissionDenied() {
+
+
+                }
+
+                @Override
+                public void onPermissionDeniedBySystem() {
+
+                }
+            });
+        }
+        else if(id ==1){
+            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.CAMERA}, 100);
+            permissionHelper.request(new PermissionHelper.PermissionCallback() {
+                @Override
+                public void onPermissionGranted() {
+
+                }
+
+                @Override
+                public void onPermissionDenied() {
+
+
+                }
+
+                @Override
+                public void onPermissionDeniedBySystem() {
+
+                }
+            });
+        }
+        else if(id ==2){
+            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+            permissionHelper.request(new PermissionHelper.PermissionCallback() {
+                @Override
+                public void onPermissionGranted() {
+
+                }
+
+                @Override
+                public void onPermissionDenied() {
+
+
+                }
+
+                @Override
+                public void onPermissionDeniedBySystem() {
+
+                }
+            });
+        }
+
+    }
 
     @Override
     protected void onStart() {
@@ -265,15 +371,17 @@ public class View_patient extends AppCompatActivity {
         i.putExtra("note_id",notes_id);
         startActivity(i);
     }
-
+    ImageView imageView,imageView1;
     public void dialogopener_images()
     {
         final Dialog dialog = new Dialog(View_patient.this);
         dialog.setContentView(R.layout.pictures_options_popup);
 
-        TextView gallery_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_gallery);
+        final TextView gallery_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_gallery);
         TextView camera_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_camera);
         TextView cancel_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_cancel);
+        imageView = (ImageView) dialog.findViewById(R.id.imgView);
+        imageView1 = (ImageView) dialog.findViewById(R.id.imgView1);
 
         gallery_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,6 +397,7 @@ public class View_patient extends AppCompatActivity {
         camera_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
