@@ -2,7 +2,12 @@ package com.example.krish.medical_app.UI;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -55,6 +61,11 @@ public class View_patient extends AppCompatActivity {
     protected ArrayList<Note> note_array;
     protected NoteAdapter noteadapter;
     protected ListView note_list;
+    private static int RESULT_LOAD_IMAGE = 1;
+    private static int REQUEST_IMAGE_CAPTURE = 2;
+
+    protected ImageView imageView;
+    protected ImageView imageView1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +95,9 @@ public class View_patient extends AppCompatActivity {
         medical_history_value = (TextView) findViewById(R.id.textView_view_medical_history_value);
         notes = (ImageButton) findViewById(R.id.imageButton_view_notes);
         images = (ImageButton) findViewById(R.id.imageButton_view_images);
+
+        imageView = (ImageView) findViewById(R.id.imgView);
+        imageView1 = (ImageView) findViewById(R.id.imgView1);
 
         noteadapter = new NoteAdapter(getApplicationContext(), note_array);
         note_list = (ListView)findViewById(R.id.listView_notes);
@@ -264,14 +278,36 @@ public class View_patient extends AppCompatActivity {
         gallery_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
 
         camera_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+            }
+        });
 
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageView1.setVisibility(View.VISIBLE);
+                imageView.setVisibility(View.GONE);
+            }
+        });
+        imageView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageView1.setVisibility(View.GONE);
+                imageView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -284,6 +320,38 @@ public class View_patient extends AppCompatActivity {
 
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            imageView1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+        }
+
+        else if (requestCode == REQUEST_IMAGE_CAPTURE)
+        {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+
+            imageView.setImageBitmap(photo);
+            imageView1.setImageBitmap(photo);
+        }
+
     }
 
     public void launch_new_patient_info(String doc_username,String pat_id) {

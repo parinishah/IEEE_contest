@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.krish.medical_app">
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -24,7 +28,7 @@
         <activity android:name=".UI.Delete_popup"></activity>
         <activity android:name=".UI.My_patients"></activity>
         <activity android:name=".UI.Notes"></activity>
-        <activity android:name=".UI.Pictures_options_popup"></activity>
+        <activity android:name=".UI.Pictures_options_popup"> </activity>
         <activity android:name=".UI.Doctor_profile"></activity>
     </application>
 
