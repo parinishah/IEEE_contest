@@ -102,6 +102,7 @@ public class Doctor_profile extends AppCompatActivity
                 SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("doctor_username",signup_username);
+                editor.putString("doctor_username",signup_username);
                 editor.commit();
 
                 launch_my_patients(signup_username);
@@ -154,6 +155,7 @@ public class Doctor_profile extends AppCompatActivity
     public void launch_my_patients(String doc_username) {
 
         Intent i =new Intent(this, My_patients.class);
+        i.putExtra("username",doc_username);
         i.putExtra("username",doc_username);
         startActivity(i);
     }

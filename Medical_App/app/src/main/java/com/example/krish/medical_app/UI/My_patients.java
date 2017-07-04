@@ -1,5 +1,6 @@
 package com.example.krish.medical_app.UI;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Movie;
@@ -39,7 +40,7 @@ public class My_patients extends AppCompatActivity {
     protected ImageButton options;
     protected ImageButton add_patient;
     protected ListView listView;
-    protected String doc_username, name_d, password, email;
+    protected String doc_username;
     protected PatientAdapter patientadapter;
     protected DatabaseReference existing_patients;
     protected Patient patient;
@@ -49,6 +50,7 @@ public class My_patients extends AppCompatActivity {
     protected TextView logout_btn;
     protected TextView profile_btn;
     protected TextView doc_name;
+    protected TextView delete_acc;
 
     ArrayList<Patient> patient_array;
 
@@ -60,7 +62,8 @@ public class My_patients extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
 
-        Log.i("Username mypatients",doc_username);
+        SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+        doc_username = sharedPref.getString("doctor_username", null);
 
         existing_patients = FirebaseDatabase.getInstance().getReference();
 
@@ -72,6 +75,7 @@ public class My_patients extends AppCompatActivity {
         logout_btn = (TextView) findViewById(R.id.logout_btn);
         profile_btn = (TextView) findViewById(R.id.pro_btn);
         doc_name = (TextView) findViewById(R.id.textView_navigation_fullname);
+        delete_acc = (TextView) findViewById(R.id.delete_account_btn);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.draw_layout);
 
@@ -87,8 +91,30 @@ public class My_patients extends AppCompatActivity {
         profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_doc_profile(doc_username, password, email);
 
+                existing_patients.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                       String password= dataSnapshot.child(doc_username).child("password").getValue().toString();
+                       String email= dataSnapshot.child(doc_username).child("email").getValue().toString();
+                        launch_doc_profile(doc_username, password, email);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+
+        delete_acc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dailogopner_delete_acc();
             }
         });
 
@@ -96,10 +122,6 @@ public class My_patients extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("doctor_username", null);
-                editor.commit();
                 launch_login();
             }
         });
@@ -110,7 +132,18 @@ public class My_patients extends AppCompatActivity {
             public void onClick(View v) {
                 if (!drawerLayout.isDrawerOpen(Gravity.START)) {
                     drawerLayout.openDrawer(Gravity.START);
-                    doc_name.setText(name_d);
+
+                    existing_patients.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            doc_name.setText(dataSnapshot.child(doc_username).child("name").getValue().toString());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
         });
@@ -141,9 +174,6 @@ public class My_patients extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                name_d = dataSnapshot.child(doc_username).child("name").getValue().toString();
-                password = dataSnapshot.child(doc_username).child("password").getValue().toString();
-                email = dataSnapshot.child(doc_username).child("email").getValue().toString();
 
                 patientadapter.clear();
 
@@ -176,6 +206,11 @@ public class My_patients extends AppCompatActivity {
     }
 
     public void launch_login() {
+
+        SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("doctor_username",null);
+        editor.apply();
         startActivity(new Intent(this, Login.class));
     }
 
@@ -232,5 +267,36 @@ public class My_patients extends AppCompatActivity {
         }
 
         return ageS;
+    }
+
+    public void dailogopner_delete_acc()
+    {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.delete_popup);
+
+        final TextView delete = (TextView) dialog.findViewById(R.id.textView_delete_delete);
+        TextView cancel = (TextView) dialog.findViewById(R.id.textView_delete_cancel);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete_doctor(doc_username);
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+    public void delete_doctor(String doc_username)
+    {
+        DatabaseReference d1 = FirebaseDatabase.getInstance().getReference();
+        d1.child(doc_username).removeValue();
+        launch_login();
     }
 }

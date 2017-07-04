@@ -180,5 +180,6 @@ public class Notes extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        launch_view_patient(doc_username,pat_id);
     }
 }
