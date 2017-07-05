@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -24,26 +25,36 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.krish.medical_app.Adapters.NoteAdapter;
 import com.example.krish.medical_app.Java_classes.Note;
 import com.example.krish.medical_app.Manifest;
 import com.example.krish.medical_app.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.master.permissionhelper.PermissionHelper;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * Created by KRISH on 08-06-2017.
  */
 
 public class View_patient extends AppCompatActivity {
+
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     protected ImageButton back;
     protected ImageButton more;
@@ -56,15 +67,19 @@ public class View_patient extends AppCompatActivity {
     protected TextView diagnosis_value;
     protected TextView mobile_value;
     protected TextView phone_value;
+    protected TextView reffered_by;
+    protected TextView department;
     protected TextView medical_history_value;
     protected ImageButton notes;
     protected ImageButton images;
     protected String doc_username,pat_id;
     protected DatabaseReference view_patient,note_ref;
+    protected StorageReference photos_storage;
     protected Note note;
     protected ArrayList<Note> note_array;
     protected NoteAdapter noteadapter;
     protected ListView note_list;
+    protected Dialog dialog_images;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int REQUEST_IMAGE_CAPTURE = 2;
 
@@ -85,6 +100,8 @@ public class View_patient extends AppCompatActivity {
         back = (ImageButton) findViewById(R.id.imageButton_view_back);
         more = (ImageButton) findViewById(R.id.imageButton_view_more);
         patient = (TextView) findViewById(R.id.textView_view_patient);
+        reffered_by = (TextView) findViewById(R.id.textView_view_reffered);
+        department = (TextView) findViewById(R.id.textView_view_department);
         patient_name = (TextView) findViewById(R.id.textView_view_patient_name);
         gender = (TextView) findViewById(R.id.textView_view_gender);
         age = (TextView) findViewById(R.id.textView_view_age);
@@ -319,7 +336,7 @@ public class View_patient extends AppCompatActivity {
                 DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
                 if(d1.exists())
                 {
-                    String v_name,v_gender,v_dob,v_diagnosis,v_mobile,v_phone,v_medhis;
+                    String v_name,v_gender,v_dob,v_diagnosis,v_mobile,v_phone,v_medhis,v_reffered,v_department;
                     v_name = d1.child("patient_first_name").getValue().toString() +" "+ d1.child("patient_last_name").getValue().toString();
                     v_gender = d1.child("patient_gender").getValue().toString();
                     v_dob = d1.child("patient_dob").getValue().toString();
@@ -327,9 +344,14 @@ public class View_patient extends AppCompatActivity {
                     v_mobile = d1.child("patient_mobile").getValue().toString();
                     v_phone = d1.child("patient_phone").getValue().toString();
                     v_medhis = d1.child("patient_medical_history").getValue().toString();
+                    v_reffered = dataSnapshot.child(doc_username).child("name").getValue().toString();
+                    v_department=  d1.child("patient_department").getValue().toString();
+
 
                     patient.setText(v_name.toUpperCase());
                     patient_name.setText(v_name);
+                    reffered_by.setText(v_reffered);
+                    department.setText(v_department);
                     gender.setText(v_gender);
                     age.setText(getAge(v_dob));
                     dob_value.setText(v_dob);
@@ -383,14 +405,14 @@ public class View_patient extends AppCompatActivity {
     ImageView imageView,imageView1;
     public void dialogopener_images()
     {
-        final Dialog dialog = new Dialog(View_patient.this);
-        dialog.setContentView(R.layout.pictures_options_popup);
+        dialog_images = new Dialog(View_patient.this);
+        dialog_images.setContentView(R.layout.pictures_options_popup);
 
-        final TextView gallery_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_gallery);
-        TextView camera_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_camera);
-        TextView cancel_btn = (TextView) dialog.findViewById(R.id.textView_pictures_options_cancel);
-        imageView = (ImageView) dialog.findViewById(R.id.imgView);
-        imageView1 = (ImageView) dialog.findViewById(R.id.imgView1);
+        final TextView gallery_btn = (TextView) dialog_images.findViewById(R.id.textView_pictures_options_gallery);
+        TextView camera_btn = (TextView) dialog_images.findViewById(R.id.textView_pictures_options_camera);
+        TextView cancel_btn = (TextView) dialog_images.findViewById(R.id.textView_pictures_options_cancel);
+        imageView = (ImageView) dialog_images.findViewById(R.id.imgView);
+        imageView1 = (ImageView) dialog_images.findViewById(R.id.imgView1);
 
         gallery_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -442,12 +464,12 @@ public class View_patient extends AppCompatActivity {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                dialog_images.dismiss();
             }
         });
 
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        dialog_images.setCanceledOnTouchOutside(false);
+        dialog_images.show();
     }
 
     @Override
@@ -462,13 +484,26 @@ public class View_patient extends AppCompatActivity {
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
 
+            String imagePath =  cursor.getString(cursor.getColumnIndex(filePathColumn[0]));
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
+
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
 
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            imageView1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            imageView.setImageBitmap(bitmap);
+            imageView1.setImageBitmap(bitmap);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+            byte[] data_compress = baos.toByteArray();
+            pic_storage(data_compress);
+            dialog_images.dismiss();
+
 
         }
 
@@ -480,10 +515,12 @@ public class View_patient extends AppCompatActivity {
 
                 imageView.setImageBitmap(photo);
                 imageView1.setImageBitmap(photo);
-            }
-            else
-            {
 
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.PNG,100, baos);
+                byte[] data_compress = baos.toByteArray();
+                pic_storage(data_compress);
+                dialog_images.dismiss();
             }
 
         }
@@ -567,4 +604,25 @@ public class View_patient extends AppCompatActivity {
         return ageS;
     }
 
+    public void pic_storage(byte[] data_compress)
+    {
+        String path = "Prescriptions/"+ UUID.randomUUID()+".png";
+        photos_storage = FirebaseStorage.getInstance().getReference(path);
+
+        UploadTask uploadTask = photos_storage.putBytes(data_compress);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Toast toast = Toast.makeText(getApplicationContext(),"Upload Successfully",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast toast = Toast.makeText(getApplicationContext(),"Upload Unsuccessful",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+    }
 }

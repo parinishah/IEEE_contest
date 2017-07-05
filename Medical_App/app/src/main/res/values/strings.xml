@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">Medical_App</string>
 
+    <string name="department_prompt">Choose department</string>
+
+    <string-array name="department_array">
+        <item>Endodontics</item>
+        <item>Prosthodontics</item>
+        <item>Periodontics</item>
+        <item>Paedodontics</item>
+        <item>Orthodontics</item>
+        <item>Oral Diagnosis and Radiology</item>
+        <item>Oral Pathology</item>
+        <item>Public and Health Care Dentistry</item>
+    </string-array>
+
 
 </resources>

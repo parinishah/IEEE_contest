@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.krish.medical_app.Java_classes.Patient;
@@ -21,6 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
 
@@ -46,12 +49,12 @@ public class New_patient_info extends AppCompatActivity
     protected EditText phone_num;
     protected EditText diagnosis;
     protected EditText medical_history;
+    protected Spinner department_spinner;
     protected TextView create;
     protected TextView cancel;
     protected String doc_username,pat_id;
     protected Patient patient_obj;
     protected DatabaseReference edit_patient;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -81,6 +84,7 @@ public class New_patient_info extends AppCompatActivity
         other = (RadioButton)findViewById(R.id.radio_new_other);
         create = (TextView)findViewById(R.id.textView_new_create);
         cancel = (TextView)findViewById(R.id.textView_new_cancel_btn);
+        department_spinner = (Spinner) findViewById(R.id.spinner_new_department);
 
         patient_id.setText(pat_id);
 
@@ -159,6 +163,7 @@ public class New_patient_info extends AppCompatActivity
                 s_diagnosis = diagnosis.getText().toString();
                 s_address = address.getText().toString();
 
+
                 if(male.isChecked())
                 {
                     s_gender = "Male";
@@ -204,7 +209,7 @@ public class New_patient_info extends AppCompatActivity
 
                 else
                 {
-                    patient_obj = new Patient(pat_id,s_fname,middlename.getText().toString(),lastname.getText().toString(),s_gender,s_dob,age.getText().toString(),
+                    patient_obj = new Patient(pat_id,s_fname,middlename.getText().toString(),lastname.getText().toString(),department_spinner.getSelectedItem().toString(),s_gender,s_dob,age.getText().toString(),
                             email.getText().toString(),s_address,s_mobile,phone_num.getText().toString(),s_diagnosis,medical_history.getText().toString());
                     patient_obj.firebase_connect(doc_username);
                     launch_My_patients(doc_username);
@@ -232,9 +237,17 @@ public class New_patient_info extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
                 if(d1.exists()) {
+                    int position = 0;
+                    for (int i = 0; i < 8; i++){
+
+                        if (department_spinner.getItemAtPosition(i).equals(d1.child("patient_department").getValue().toString())){
+                            position = i;
+                        }
+                    }
                     firstname.setText(d1.child("patient_first_name").getValue().toString());
                     middlename.setText(d1.child("patient_middle_name").getValue().toString());
                     lastname.setText(d1.child("patient_last_name").getValue().toString());
+                    department_spinner.setSelection(position);
                     patient_id.setText(d1.getKey().toString());
                     dob.setText(d1.child("patient_dob").getValue().toString());
                     age.setText(getAge(dob.getText().toString()));

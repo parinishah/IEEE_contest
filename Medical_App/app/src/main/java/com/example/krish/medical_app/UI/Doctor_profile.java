@@ -37,6 +37,7 @@ public class Doctor_profile extends AppCompatActivity
     protected RadioButton others;
     protected ImageButton back;
     protected TextView save,doc_username;
+    protected EditText college;
     protected Doctor doctor_obj;
     protected String signup_username,signup_email,signup_password;
     protected DatabaseReference doc_profile;
@@ -60,6 +61,7 @@ public class Doctor_profile extends AppCompatActivity
         email = (EditText)findViewById(R.id.editText_doctor_email);
         mobile = (EditText)findViewById(R.id.editText_doctor_mobile);
         qualification = (EditText)findViewById(R.id.editText_doctor_qualification);
+        college = (EditText)findViewById(R.id.editText_doctor_college);
         male = (RadioButton)findViewById(R.id.radio_doctor_male);
         female = (RadioButton)findViewById(R.id.radio_doctor_female);
         others = (RadioButton)findViewById(R.id.radio_doctor_other);
@@ -107,7 +109,7 @@ public class Doctor_profile extends AppCompatActivity
                 }
 
                 doctor_obj = new Doctor(signup_username,signup_password,signup_email,
-                        fullname.getText().toString(),Gender,mobile.getText().toString(),qualification.getText().toString());
+                        fullname.getText().toString(),college.getText().toString(),Gender,mobile.getText().toString(),qualification.getText().toString());
                 doctor_obj.firebase_doctor();
 
                 SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
@@ -128,6 +130,7 @@ public class Doctor_profile extends AppCompatActivity
                     doc_username.setText(signup_username);
                     fullname.setText(dataSnapshot.child(signup_username).child("name").getValue().toString());
                     email.setText(signup_email);
+                    college.setText(dataSnapshot.child(signup_username).child("college").getValue().toString());
                     mobile.setText(dataSnapshot.child(signup_username).child("mobile").getValue().toString());
                     qualification.setText(dataSnapshot.child(signup_username).child("qualification").getValue().toString());
                     String gender_s = dataSnapshot.child(signup_username).child("qualification").getValue().toString();

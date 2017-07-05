@@ -16,6 +16,7 @@ public class Patient
     private String first_name;
     private String middle_name;
     private String last_name;
+    private String department;
     private String gender;
     private String dob;
     private String age;
@@ -27,7 +28,7 @@ public class Patient
     private String medical_history;
     protected DatabaseReference patient = FirebaseDatabase.getInstance().getReference();
 
-    public Patient(String patient_id, String first_name, String middle_name, String last_name, String gender, String dob,
+    public Patient(String patient_id, String first_name, String middle_name, String last_name,String department, String gender, String dob,
             String age, String email, String address, String mobile, String phone, String diagnosis, String medical_history) {
         this.first_name = first_name;
         this.middle_name = middle_name;
@@ -42,6 +43,15 @@ public class Patient
         this.phone = phone;
         this.diagnosis = diagnosis;
         this.medical_history = medical_history;
+        this.department = department;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getFirst_name() {
@@ -155,7 +165,7 @@ public class Patient
         map_patient.put("patient_first_name",first_name);
         map_patient.put("patient_middle_name",middle_name);
         map_patient.put("patient_last_name",last_name);
-        map_patient.put("patient_last_name",last_name);
+        map_patient.put("patient_department",department);
         map_patient.put("patient_gender",gender);
         map_patient.put("patient_dob",dob);
         map_patient.put("patient_email",email);

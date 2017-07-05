@@ -19,10 +19,11 @@ public class Doctor
     private String Fullname;
     private String Gender;
     private String Mobile;
+    private String College;
     private String Qualification;
     private DatabaseReference doctor = FirebaseDatabase.getInstance().getReference();
 
-    public Doctor(String Username, String Password,String Email,String Fullname,String Gender,String Mobile,String Qualification)
+    public Doctor(String Username, String Password,String Email,String Fullname,String College,String Gender,String Mobile,String Qualification)
     {
         this.Username = Username;
         this.Password = Password;
@@ -31,6 +32,7 @@ public class Doctor
         this.Gender = Gender;
         this.Mobile = Mobile;
         this.Qualification = Qualification;
+        this.College = College;
 
     }
 
@@ -97,6 +99,7 @@ public class Doctor
         map_doctor.put("password",Password);
         map_doctor.put("name",Fullname);
         map_doctor.put("mobile",Mobile);
+        map_doctor.put("college",College);
         map_doctor.put("gender",Gender);
         map_doctor.put("qualification",Qualification);
 
