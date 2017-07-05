@@ -196,7 +196,10 @@ public class View_patient extends AppCompatActivity {
                 else if(!(isReadAllowedofRead())&&!(isReadAllowedofWrite())){
                     request(2);
                 }
-                dialogopener_images();
+
+                    dialogopener_images();
+
+
             }
         });
 
@@ -239,12 +242,12 @@ public class View_patient extends AppCompatActivity {
     }
 
     private void request(int id){
+
         if(id ==0){
             PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
             permissionHelper.request(new PermissionHelper.PermissionCallback() {
                 @Override
                 public void onPermissionGranted() {
-
                 }
 
                 @Override
@@ -298,6 +301,11 @@ public class View_patient extends AppCompatActivity {
 
                 }
             });
+        }
+
+        if(isReadAllowedofCamera()&&isReadAllowedofRead()&&isReadAllowedofWrite())
+        {
+            dialogopener_images();
         }
 
     }
@@ -371,6 +379,7 @@ public class View_patient extends AppCompatActivity {
         i.putExtra("note_id",notes_id);
         startActivity(i);
     }
+
     ImageView imageView,imageView1;
     public void dialogopener_images()
     {
@@ -386,21 +395,31 @@ public class View_patient extends AppCompatActivity {
         gallery_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                if(isReadAllowedofWrite()&&isReadAllowedofRead()) {
+                    Intent i = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+                }
+                else{
+                    request(2);
+                }
             }
         });
 
         camera_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(isReadAllowedofCamera()) {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
 
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+                else{
+                    request(1);
                 }
             }
         });
@@ -455,13 +474,23 @@ public class View_patient extends AppCompatActivity {
 
         else if (requestCode == REQUEST_IMAGE_CAPTURE)
         {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            if(data.getExtras() != null)
+            {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-            imageView.setImageBitmap(photo);
-            imageView1.setImageBitmap(photo);
+                imageView.setImageBitmap(photo);
+                imageView1.setImageBitmap(photo);
+            }
+            else
+            {
+
+            }
+
         }
 
+
     }
+
 
     public void launch_new_patient_info(String doc_username,String pat_id) {
 

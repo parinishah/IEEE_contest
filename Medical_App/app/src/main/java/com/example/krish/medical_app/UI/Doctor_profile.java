@@ -2,6 +2,7 @@ package com.example.krish.medical_app.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -93,6 +94,16 @@ public class Doctor_profile extends AppCompatActivity
                 else if(others.isChecked())
                 {
                     Gender = "Other";
+                }
+                else if(qualification.getText().toString().equals(null))
+                {
+                    qualification.setHintTextColor(Color.RED);
+                    qualification.setHint("Required Title");
+                }
+                else if (mobile.getText().toString().equals(null))
+                {
+                    mobile.setHintTextColor(Color.RED);
+                    mobile.setHint("Required Title");
                 }
 
                 doctor_obj = new Doctor(signup_username,signup_password,signup_email,

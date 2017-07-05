@@ -2,6 +2,7 @@ package com.example.krish.medical_app.UI;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.icu.text.DateFormat;
 import android.icu.text.RelativeDateTimeFormatter;
 import android.icu.text.SimpleDateFormat;
@@ -86,10 +87,17 @@ public class Notes extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-
-                note_obj = new  Note(note_id,title.getText().toString(),date.getText().toString(),note.getText().toString(),medication.getText().toString(),dispense.getText().toString(),unit.getText().toString(),refills.getText().toString(),sig.getText().toString());
-                note_obj.firebase_note(doc_username,pat_id);
-                launch_view_patient(doc_username,pat_id);
+                if(title.getText().toString().equals(null))
+                {
+                    title.setHintTextColor(Color.RED);
+                    title.setHint("Required Title");
+                }
+                else
+                {
+                    note_obj = new Note(note_id, title.getText().toString(), date.getText().toString(), note.getText().toString(), medication.getText().toString(), dispense.getText().toString(), unit.getText().toString(), refills.getText().toString(), sig.getText().toString());
+                    note_obj.firebase_note(doc_username, pat_id);
+                    launch_view_patient(doc_username, pat_id);
+                }
             }
         });
 
