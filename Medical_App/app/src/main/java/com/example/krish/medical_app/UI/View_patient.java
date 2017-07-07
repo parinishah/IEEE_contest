@@ -54,7 +54,8 @@ import java.util.UUID;
 
 public class View_patient extends AppCompatActivity {
 
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    // private FirebaseStorage storage = FirebaseStorage.getInstance();
+
 
     protected ImageButton back;
     protected ImageButton more;

@@ -180,11 +180,12 @@ public class My_patients extends AppCompatActivity {
                 for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").getChildren()) {
                     String name = postSnapshot.child("patient_first_name").getValue().toString();
                     String lname = postSnapshot.child("patient_last_name").getValue().toString();
+                    String department = postSnapshot.child("patient_department").getValue().toString();
                     String dob = postSnapshot.child("patient_dob").getValue().toString();
                     String age = getAge(dob);
                     String gender = postSnapshot.child("patient_gender").getValue().toString();
                     String id = postSnapshot.getKey().toString();
-                    patient = new Patient(id, name, null, lname, gender, null, age, null, null, null, null, null, null);
+                    patient = new Patient(id, name, null, lname, department, gender, null, age, null, null, null, null, null, null);
                     patient_array.add(patient);
                     patientadapter.notifyDataSetChanged();
                 }
