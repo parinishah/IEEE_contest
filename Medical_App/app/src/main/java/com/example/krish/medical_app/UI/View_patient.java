@@ -177,7 +177,7 @@ public class View_patient extends AppCompatActivity {
                                 return true;
 
                             case R.id.patient_profile_options_save_printable_copy:
-
+                                launch_printable(doc_username,pat_id);
                                 return true;
 
                             case R.id.patient_profile_options_delete:
@@ -375,8 +375,6 @@ public class View_patient extends AppCompatActivity {
 
                 }
 
-
-
             }
 
             @Override
@@ -390,6 +388,13 @@ public class View_patient extends AppCompatActivity {
 
         Intent i = new Intent(this, My_patients.class);
         i.putExtra("username",doc_username);
+        startActivity(i);
+    }
+
+    public void launch_printable(String doc_username,String pat_id){
+        Intent i = new Intent(this, Printable.class);
+        i.putExtra("username",doc_username);
+        i.putExtra("patient_id",pat_id);
         startActivity(i);
     }
 
