@@ -84,6 +84,7 @@ public class View_patient extends AppCompatActivity {
     protected Dialog dialog_images;
     protected Dialog dialog_view_image;
    // protected ImageView imagevw;
+    protected ImageView img_p;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int REQUEST_IMAGE_CAPTURE = 2;
 
@@ -450,7 +451,7 @@ public class View_patient extends AppCompatActivity {
 
                         View newLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.photos_singleview, picture_list, false);
 
-                        ImageView img_p = (ImageView) newLayout.findViewById(R.id.imgView);
+                        img_p = (ImageView) newLayout.findViewById(R.id.imgView);
                         TextView date_p = (TextView)newLayout.findViewById(R.id.textView_photos_singleview_date_value);
 
                         date_p.setText(date);
@@ -534,8 +535,7 @@ public class View_patient extends AppCompatActivity {
         final TextView gallery_btn = (TextView) dialog_images.findViewById(R.id.textView_pictures_options_gallery);
         TextView camera_btn = (TextView) dialog_images.findViewById(R.id.textView_pictures_options_camera);
         TextView cancel_btn = (TextView) dialog_images.findViewById(R.id.textView_pictures_options_cancel);
-        imageView = (ImageView) dialog_images.findViewById(R.id.imgView);
-        imageView1 = (ImageView) dialog_images.findViewById(R.id.imgView1);
+
 
         gallery_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -567,20 +567,6 @@ public class View_patient extends AppCompatActivity {
             }
         });
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageView1.setVisibility(View.VISIBLE);
-                imageView.setVisibility(View.GONE);
-            }
-        });
-        imageView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageView1.setVisibility(View.GONE);
-                imageView.setVisibility(View.VISIBLE);
-            }
-        });
 
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -616,8 +602,8 @@ public class View_patient extends AppCompatActivity {
             cursor.close();
 
 
-            imageView.setImageBitmap(bitmap);
-            imageView1.setImageBitmap(bitmap);
+            //img_p.setImageBitmap(bitmap);
+
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -630,8 +616,7 @@ public class View_patient extends AppCompatActivity {
             if (data.getExtras() != null) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-                imageView.setImageBitmap(photo);
-                imageView1.setImageBitmap(photo);
+                //img_p.setImageBitmap(photo);
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 photo.compress(Bitmap.CompressFormat.PNG, 100, baos);
