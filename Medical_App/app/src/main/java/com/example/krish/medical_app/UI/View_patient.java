@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,9 +90,11 @@ public class View_patient extends AppCompatActivity {
     protected ArrayList<Picture> picture_array;
     protected NoteAdapter noteadapter;
     protected PictureAdapter pictureadapter;
-    protected ListView note_list;
+    protected LinearLayout note_list;
     protected ListView picture_list;
     protected Dialog dialog_images;
+    protected Dialog dialog_view_image;
+   // protected ImageView imagevw;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int REQUEST_IMAGE_CAPTURE = 2;
 
@@ -124,13 +129,15 @@ public class View_patient extends AppCompatActivity {
         medical_history_value = (TextView) findViewById(R.id.textView_view_medical_history_value);
         notes = (ImageButton) findViewById(R.id.imageButton_view_notes);
         images = (ImageButton) findViewById(R.id.imageButton_view_images);
-
+       // imagevw = (ImageView) findViewById(R.id.imageView_view_image);
 
         noteadapter = new NoteAdapter(getApplicationContext(), note_array);
-        note_list = (ListView) findViewById(R.id.listView_notes);
-        note_list.setAdapter(noteadapter);
+        note_list = (LinearLayout) findViewById(R.id.listView_notes);
 
-        note_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        //note_list.setAdapter(noteadapter);
+
+        /*note_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -141,7 +148,7 @@ public class View_patient extends AppCompatActivity {
                 in.putExtra("note_id", n.getNotes_id());
                 startActivity(in);
             }
-        });
+        });*/
 
         note_list.setOnTouchListener(new ListView.OnTouchListener() {
             @Override
@@ -172,11 +179,7 @@ public class View_patient extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Picture p = picture_array.get(i);
-                //Intent in = new Intent(View_patient.this, Notes.class);
-               // in.putExtra("patient_id", pat_id);
-                //in.putExtra("username", doc_username);
-                //in.putExtra("note_id", n.getNotes_id());
-                //startActivity(in);
+                dialogopener_view_image(p);
             }
         });
 
@@ -411,6 +414,17 @@ public class View_patient extends AppCompatActivity {
                         String date = postSnapshot.child("note_date").getValue().toString();
                         String title = postSnapshot.child("note_title").getValue().toString();
                         String id = postSnapshot.getKey();
+
+                        View newLayout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.notes_singleview, note_list, false);
+
+                        TextView title_n = (TextView)newLayout.findViewById(R.id.textView_notes_singleview_title);
+                        TextView date_n = (TextView)newLayout.findViewById(R.id.textView_notes_singleview_date_value);
+
+                        title_n.setText(title);
+                        date_n.setText(date);
+
+                        note_list.addView(newLayout);
+
                         note = new Note(id, title, date, null, null, null, null, null, null);
                         note_array.add(note);
                         noteadapter.notifyDataSetChanged();
@@ -686,6 +700,21 @@ public class View_patient extends AppCompatActivity {
                 toast.show();
             }
         });
+    }
+
+
+    public void dialogopener_view_image(Picture picture) {
+        dialog_view_image = new Dialog(View_patient.this);
+        dialog_view_image.setContentView(R.layout.view_image);
+
+        ImageView image = (ImageView)dialog_view_image.findViewById(R.id.imageView_view_image);
+        Glide.with(dialog_view_image.getContext()).
+                load(picture.getPath())
+                .into(image);
+
+        //imagevw.setVisibility(View.INVISIBLE);
+        dialog_view_image.setCanceledOnTouchOutside(false);
+        dialog_view_image.show();
     }
 
 }

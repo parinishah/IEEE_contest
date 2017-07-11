@@ -30,7 +30,7 @@ public class Pictures_options_popup extends AppCompatActivity {
     private static int REQUEST_IMAGE_CAPTURE = 2;
 
     ImageView imageView;
-    ImageView imageView1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +40,7 @@ public class Pictures_options_popup extends AppCompatActivity {
         camera = (TextView) findViewById(R.id.textView_pictures_options_camera);
         cancel = (TextView) findViewById(R.id.textView_pictures_options_cancel);
         imageView = (ImageView) findViewById(R.id.imgView);
-        imageView1 = (ImageView) findViewById(R.id.imgView1);
+
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,20 +62,8 @@ public class Pictures_options_popup extends AppCompatActivity {
                 }
             }
         });
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageView1.setVisibility(View.VISIBLE);
-                imageView.setVisibility(View.GONE);
-            }
-        });
-        imageView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageView1.setVisibility(View.GONE);
-                imageView.setVisibility(View.VISIBLE);
-            }
-        });
+
+
 
     }
 
@@ -97,13 +85,13 @@ public class Pictures_options_popup extends AppCompatActivity {
 
 
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            imageView1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
 
         } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
 
             imageView.setImageBitmap(photo);
-            imageView1.setImageBitmap(photo);
+
         }
 
     }

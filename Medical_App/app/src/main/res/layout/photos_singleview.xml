@@ -17,6 +17,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="start"
+            android:clickable="false"
             app:srcCompat="@drawable/add_image" />
 
         <TextView
