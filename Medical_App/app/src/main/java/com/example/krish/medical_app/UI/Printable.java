@@ -161,6 +161,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         File filePath = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(filePath));
+            Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_SHORT).show();
             boolean_save=true;
         } catch (IOException e) {
             e.printStackTrace();

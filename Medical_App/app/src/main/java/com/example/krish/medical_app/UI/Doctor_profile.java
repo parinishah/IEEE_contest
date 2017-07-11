@@ -76,7 +76,31 @@ public class Doctor_profile extends AppCompatActivity
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launch_my_patients(signup_username);
+
+                if(fullname.getText().toString().equals(null))
+                {
+                    fullname.setHintTextColor(Color.RED);
+                    fullname.setHint("Required Qualification");
+                }
+                else if(qualification.getText().toString().equals(null))
+                {
+                    qualification.setHintTextColor(Color.RED);
+                    qualification.setHint("Required Qualification");
+                }
+                else if(college.getText().toString().equals(null))
+                {
+                    college.setHintTextColor(Color.RED);
+                    college.setHint("Required Qualification");
+                }
+                else if (mobile.getText().toString().equals(null))
+                {
+                    mobile.setHintTextColor(Color.RED);
+                    mobile.setHint("Required Mobile Number");
+                }
+                else
+                {
+                    launch_my_patients(signup_username);
+                }
             }
         });
 
@@ -97,15 +121,25 @@ public class Doctor_profile extends AppCompatActivity
                 {
                     Gender = "Other";
                 }
+                else if(fullname.getText().toString().equals(null))
+                {
+                    fullname.setHintTextColor(Color.RED);
+                    fullname.setHint("Required Qualification");
+                }
                 else if(qualification.getText().toString().equals(null))
                 {
                     qualification.setHintTextColor(Color.RED);
-                    qualification.setHint("Required Title");
+                    qualification.setHint("Required Qualification");
+                }
+                else if(college.getText().toString().equals(null))
+                {
+                    college.setHintTextColor(Color.RED);
+                    college.setHint("Required Qualification");
                 }
                 else if (mobile.getText().toString().equals(null))
                 {
                     mobile.setHintTextColor(Color.RED);
-                    mobile.setHint("Required Title");
+                    mobile.setHint("Required Mobile Number");
                 }
 
                 doctor_obj = new Doctor(signup_username,signup_password,signup_email,
@@ -174,8 +208,4 @@ public class Doctor_profile extends AppCompatActivity
         startActivity(i);
     }
 
-    @Override
-    public void onBackPressed() {
-       
-    }
 }
