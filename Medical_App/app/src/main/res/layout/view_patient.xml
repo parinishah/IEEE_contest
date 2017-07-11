@@ -337,10 +337,8 @@
 
             <LinearLayout
                 android:id="@+id/listView_notes"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:orientation="vertical"
                 />
@@ -366,15 +364,16 @@
                 android:background="#000000"
                 app:srcCompat="?attr/dividerHorizontal" />
 
-            <ListView
+            <LinearLayout
                 android:id="@+id/listView_photos"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
 
-            </ListView>
+            </LinearLayout>
 
         </LinearLayout>
 
