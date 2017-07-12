@@ -207,6 +207,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         try {
             document.writeTo(new FileOutputStream(filePath));
             Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "FIleManager -> sdcard -> Dentogram -> "+v_name+".pdf", Toast.LENGTH_SHORT).show();
             boolean_save=true;
         } catch (IOException e) {
             e.printStackTrace();

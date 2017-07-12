@@ -134,7 +134,7 @@ public class Doctor_profile extends AppCompatActivity
                 if(fullname.getText().toString().equals(""))
                 {
                     fullname.setHintTextColor(Color.RED);
-                    fullname.setHint("Required Qualification");
+                    fullname.setHint("Required Full Name");
                 }
                 else if(qualification.getText().toString().equals(""))
                 {
@@ -144,7 +144,7 @@ public class Doctor_profile extends AppCompatActivity
                 else if(college.getText().toString().equals(""))
                 {
                     college.setHintTextColor(Color.RED);
-                    college.setHint("Required Qualification");
+                    college.setHint("Required College");
                 }
                 else if (mobile.getText().toString().equals(""))
                 {

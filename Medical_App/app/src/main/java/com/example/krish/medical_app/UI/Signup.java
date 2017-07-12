@@ -2,12 +2,14 @@ package com.example.krish.medical_app.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.krish.medical_app.Java_classes.Doctor;
 import com.example.krish.medical_app.R;
@@ -17,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.File;
 
 /**
  * Created by parini on 07-06-2017.
@@ -49,6 +53,13 @@ public class Signup extends AppCompatActivity
         signup = (TextView) findViewById(R.id.textView_signup_signup_btn);
 
 
+        String folderPath = Environment.getExternalStorageDirectory() + "/Dentogram/";
+        File file = new File(folderPath);
+        if(!(file.exists()))
+        {
+            if(file.mkdirs());
+            Toast.makeText(getApplicationContext(), "Folder Created Successfully", Toast.LENGTH_SHORT).show();
+        }
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
