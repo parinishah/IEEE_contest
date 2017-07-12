@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.krish.medical_app.Java_classes.Note;
 import com.example.krish.medical_app.Java_classes.Picture;
 import com.example.krish.medical_app.R;
@@ -41,8 +42,10 @@ import com.google.firebase.storage.UploadTask;
 import com.master.permissionhelper.PermissionHelper;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -72,7 +75,7 @@ public class View_patient extends AppCompatActivity {
     protected TextView medical_history_value;
     protected ImageButton notes;
     protected ImageButton images;
-    protected String doc_username, pat_id;
+    protected String doc_username, pat_id,image_id;
     protected DatabaseReference view_patient, note_ref;
     protected StorageReference photos_storage;
     protected ArrayList<Note> note_array;
@@ -82,7 +85,7 @@ public class View_patient extends AppCompatActivity {
     protected LinearLayout note_list;
     protected LinearLayout picture_list;
     protected Dialog dialog_images;
-    protected Dialog dialog_view_image;
+   // protected Dialog dialog_view_image;
    // protected ImageView imagevw;
     protected ImageView img_p;
     private static int RESULT_LOAD_IMAGE = 1;
@@ -397,6 +400,8 @@ public class View_patient extends AppCompatActivity {
                     phone_value.setText(v_phone);
                     medical_history_value.setText(v_medhis);
 
+                    note_list.removeAllViews();
+                    picture_list.removeAllViews();
                     //noteadapter.clear();
                     //pictureadapter.clear();
 
@@ -405,20 +410,20 @@ public class View_patient extends AppCompatActivity {
                         String title = postSnapshot.child("note_title").getValue().toString();
                         String id = postSnapshot.getKey();
 
-                        View newLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.notes_singleview, note_list, false);
+                        View newLayout_notes = LayoutInflater.from(getBaseContext()).inflate(R.layout.notes_singleview, note_list, false);
 
-                        TextView title_n = (TextView)newLayout.findViewById(R.id.textView_notes_singleview_title);
-                        TextView date_n = (TextView)newLayout.findViewById(R.id.textView_notes_singleview_date_value);
+                        TextView title_n = (TextView)newLayout_notes.findViewById(R.id.textView_notes_singleview_title);
+                        TextView date_n = (TextView)newLayout_notes.findViewById(R.id.textView_notes_singleview_date_value);
 
                         title_n.setText(title);
                         date_n.setText(date);
 
 
-                        newLayout.setTag(id);
-                        newLayout.setClickable(true);
-                        newLayout.setFocusable(true);
+                        newLayout_notes.setTag(id);
+                        newLayout_notes.setClickable(true);
+                        newLayout_notes.setFocusable(true);
 
-                        newLayout.setOnClickListener(new View.OnClickListener() {
+                        newLayout_notes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent in = new Intent(View_patient.this, Notes.class);
@@ -430,7 +435,7 @@ public class View_patient extends AppCompatActivity {
                             }
                         });
 
-                        note_list.addView(newLayout);
+                        note_list.addView(newLayout_notes);
 
                         View v = new View(getBaseContext());
                         v.setLayoutParams(new LinearLayout.LayoutParams(
@@ -455,8 +460,9 @@ public class View_patient extends AppCompatActivity {
                         TextView date_p = (TextView)newLayout.findViewById(R.id.textView_photos_singleview_date_value);
 
                         date_p.setText(date);
-                        Glide.with(newLayout.getContext()).
-                                load(path)
+                        Glide.with(newLayout.getContext())
+                                .load(path)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(img_p);
 
 
@@ -468,8 +474,7 @@ public class View_patient extends AppCompatActivity {
                         newLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Picture p = new Picture(id,path,date);
-                                dialogopener_view_image(p);
+                               launch_view_image(doc_username,pat_id,path,id);
 
                             }
                         });
@@ -703,25 +708,27 @@ public class View_patient extends AppCompatActivity {
     }
 
     public void pic_storage(byte[] data_compress) {
-        String path = "Prescriptions/" + UUID.randomUUID() + ".png";
-        photos_storage = FirebaseStorage.getInstance().getReference(path);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = sdf.format(new Date());
+        image_id = currentDateandTime + "";
+
+        String image_path = "Prescriptions/" + image_id + ".png";
+        photos_storage = FirebaseStorage.getInstance().getReference(image_path);
 
         UploadTask uploadTask = photos_storage.putBytes(data_compress);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                ImageView pres = (ImageView) findViewById(R.id.imgView);
                 String path = taskSnapshot.getDownloadUrl().toString();
                 String date_s = String.valueOf(android.text.format.DateFormat.format("dd-MM-yyyy", new java.util.Date()));
-                String id = UUID.randomUUID() + "";
 
                 Map<String,String> map_picture = new HashMap<String,String>();
                 map_picture.put("date",date_s);
                 map_picture.put("path",path);
 
                 view_patient.child(doc_username).child("patients").child(pat_id)
-                        .child("image links").child(id).setValue(map_picture);
+                        .child("image links").child(image_id).setValue(map_picture);
 
 
 
@@ -739,17 +746,14 @@ public class View_patient extends AppCompatActivity {
     }
 
 
-    public void dialogopener_view_image(Picture picture) {
-        dialog_view_image = new Dialog(View_patient.this);
-        dialog_view_image.setContentView(R.layout.view_image);
-
-        ImageView image = (ImageView)dialog_view_image.findViewById(R.id.imageView_view_image);
-        Glide.with(dialog_view_image.getContext()).
-                load(picture.getPath())
-                .into(image);
-
-        dialog_view_image.setCanceledOnTouchOutside(false);
-        dialog_view_image.show();
+    public void launch_view_image(String doc_username, String pat_id,String path,String image_id)
+    {
+        Intent i = new Intent(this, View_image.class);
+        i.putExtra("username", doc_username);
+        i.putExtra("patient_id", pat_id);
+        i.putExtra("image_link", path);
+        i.putExtra("image_id",image_id);
+        startActivity(i);
     }
 
 }

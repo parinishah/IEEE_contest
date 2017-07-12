@@ -136,7 +136,11 @@ public class My_patients extends AppCompatActivity {
                     existing_patients.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            doc_name.setText(dataSnapshot.child(doc_username).child("name").getValue().toString());
+                            if(dataSnapshot.child(doc_username).child("name").exists())
+                            {
+                                doc_name.setText(dataSnapshot.child(doc_username).child("name").getValue().toString());
+                            }
+
                         }
 
                         @Override
@@ -177,19 +181,22 @@ public class My_patients extends AppCompatActivity {
 
                 patientadapter.clear();
 
-                for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").getChildren()) {
-                    String name = postSnapshot.child("patient_first_name").getValue().toString();
-                    String lname = postSnapshot.child("patient_last_name").getValue().toString();
-                    String department = postSnapshot.child("patient_department").getValue().toString();
-                    String dob = postSnapshot.child("patient_dob").getValue().toString();
-                    String age = getAge(dob);
-                    String gender = postSnapshot.child("patient_gender").getValue().toString();
-                    String id = postSnapshot.getKey().toString();
-                    patient = new Patient(id, name, null, lname, department, gender, null, age, null, null, null, null, null, null);
-                    patient_array.add(patient);
-                    patientadapter.notifyDataSetChanged();
-                }
+                if(doc_username!=null)
+                {
+                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").getChildren()) {
+                        String name = postSnapshot.child("patient_first_name").getValue().toString();
+                        String lname = postSnapshot.child("patient_last_name").getValue().toString();
+                        String department = postSnapshot.child("patient_department").getValue().toString();
+                        String dob = postSnapshot.child("patient_dob").getValue().toString();
+                        String age = getAge(dob);
+                        String gender = postSnapshot.child("patient_gender").getValue().toString();
+                        String id = postSnapshot.getKey().toString();
+                        patient = new Patient(id, name, null, lname, department, gender, null, age, null, null, null, null, null, null);
+                        patient_array.add(patient);
+                        patientadapter.notifyDataSetChanged();
+                    }
 
+                }
             }
 
             @Override
@@ -221,6 +228,7 @@ public class My_patients extends AppCompatActivity {
         i. putExtra("username",doc_username);
         i.putExtra("password",password);
         i.putExtra("email",email);
+        i.putExtra("ui_status","false");
         startActivity(i);
     }
 

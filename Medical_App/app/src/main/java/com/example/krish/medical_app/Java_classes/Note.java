@@ -5,6 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by parini on 16-06-2017.
@@ -112,7 +113,7 @@ public class Note
     public void firebase_note(String doc_username,String pat_id)
     {
         note = doc_id.child(doc_username).child("patients").child(pat_id).child("notes");
-        Map<String,String> map_note = new HashMap<String, String>();
+        Map<String,Object> map_note = new HashMap<String, Object>();
         map_note.put("note_title",title);
         map_note.put("note_date",date);
         map_note.put("note_text",text);
@@ -122,6 +123,6 @@ public class Note
         map_note.put("note_refills",refills);
         map_note.put("note_sig",sig);
 
-        note.child(notes_id).setValue(map_note);
+        note.child(notes_id).updateChildren(map_note);
     }
 }

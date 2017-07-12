@@ -110,6 +110,7 @@ public class Signup extends AppCompatActivity
         i.putExtra("username",username);
         i.putExtra("password",password);
         i.putExtra("email",email);
+        i.putExtra("ui_status","true");
         startActivity(i);
 
     }

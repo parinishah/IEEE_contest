@@ -166,7 +166,7 @@ public class Notes extends AppCompatActivity
                 dialog.dismiss();
             }
         });
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 
@@ -188,6 +188,6 @@ public class Notes extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        launch_view_patient(doc_username,pat_id);
+
     }
 }

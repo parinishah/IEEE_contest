@@ -175,7 +175,7 @@ public class Patient
         map_patient.put("patient_diagnosis",diagnosis);
         map_patient.put("patient_medical_history",medical_history);
 
-        patient.child(doc_username).child("patients").child(patient_id).setValue(map_patient);
+        patient.child(doc_username).child("patients").child(patient_id).updateChildren(map_patient);
     }
 }
 

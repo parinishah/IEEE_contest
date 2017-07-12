@@ -39,7 +39,7 @@ public class Doctor_profile extends AppCompatActivity
     protected TextView save,doc_username;
     protected EditText college;
     protected Doctor doctor_obj;
-    protected String signup_username,signup_email,signup_password;
+    protected String signup_username,signup_email,signup_password,signup;
     protected DatabaseReference doc_profile;
 
 
@@ -55,6 +55,7 @@ public class Doctor_profile extends AppCompatActivity
         signup_email = bundle.getString("email");
         signup_password = bundle.getString("password");
         signup_username = bundle.getString("username");
+        signup = bundle.getString("ui_status");
 
         doc_username = (TextView)findViewById(R.id.editText_doctor_username);
         fullname = (EditText)findViewById(R.id.editText_doctor_fullname);
@@ -77,7 +78,16 @@ public class Doctor_profile extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                if(fullname.getText().toString().equals(null))
+                if(signup.equals("true"))
+                {
+                    launch_signup();
+                }
+                else if(signup.equals("false"))
+                {
+                    launch_my_patients(signup_username);
+                }
+
+                /*if(fullname.getText().toString().equals(null))
                 {
                     fullname.setHintTextColor(Color.RED);
                     fullname.setHint("Required Qualification");
@@ -100,7 +110,7 @@ public class Doctor_profile extends AppCompatActivity
                 else
                 {
                     launch_my_patients(signup_username);
-                }
+                }*/
             }
         });
 
@@ -148,7 +158,6 @@ public class Doctor_profile extends AppCompatActivity
 
                 SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("doctor_username",signup_username);
                 editor.putString("doctor_username",signup_username);
                 editor.commit();
 
@@ -205,6 +214,12 @@ public class Doctor_profile extends AppCompatActivity
         Intent i =new Intent(this, My_patients.class);
         i.putExtra("username",doc_username);
         i.putExtra("username",doc_username);
+        startActivity(i);
+    }
+
+    public void launch_signup()
+    {
+        Intent i =new Intent(this, Signup.class);
         startActivity(i);
     }
 
