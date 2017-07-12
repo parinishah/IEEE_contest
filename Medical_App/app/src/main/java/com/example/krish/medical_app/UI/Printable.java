@@ -4,6 +4,12 @@ package com.example.krish.medical_app.UI;
  * Created by KRISH on 08-07-2017.
  */
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -267,5 +273,42 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
             }
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    Snackbar sb = null;
+    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo ni = manager.getActiveNetworkInfo();
+            boolean isConnected = ni != null &&
+                    ni.isConnectedOrConnecting();
+
+
+            if (isConnected) {
+                try{
+                    sb.dismiss();
+                }
+                catch (Exception ex)
+                {
+                    Log.e("Exception", ex.getStackTrace().toString());
+                }
+            } else {
+                sb = Snackbar.make(findViewById(R.id.printable_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
+                sb.setAction("Start Wifi", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                        wifi.setWifiEnabled(true);
+                    }
+                }).setActionTextColor(getResources().getColor(R.color.holo_blue_light));
+                sb.show();
+            }
+        }
+    };
 
 }

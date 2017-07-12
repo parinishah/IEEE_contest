@@ -1,11 +1,19 @@
 package com.example.krish.medical_app.UI;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -349,4 +357,42 @@ public class New_patient_info extends AppCompatActivity
     @Override
     public void onBackPressed() {
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    Snackbar sb = null;
+    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo ni = manager.getActiveNetworkInfo();
+            boolean isConnected = ni != null &&
+                    ni.isConnectedOrConnecting();
+
+
+            if (isConnected) {
+                try{
+                    sb.dismiss();
+                }
+                catch (Exception ex)
+                {
+                    Log.e("Exception", ex.getStackTrace().toString());
+                }
+            } else {
+                sb = Snackbar.make(findViewById(R.id.new_patient_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
+                sb.setAction("Start Wifi", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                        wifi.setWifiEnabled(true);
+                    }
+                }).setActionTextColor(getResources().getColor(R.color.holo_blue_light));
+                sb.show();
+            }
+        }
+    };
 }
