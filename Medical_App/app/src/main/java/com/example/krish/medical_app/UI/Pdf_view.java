@@ -14,6 +14,11 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.shockwave.pdfium.PdfDocument;
 
 import java.io.File;
@@ -21,10 +26,10 @@ import java.util.List;
 
 public class Pdf_view extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener
 {
-
+    protected DatabaseReference view_pdf;
     PDFView pdfView;
     Integer pageNumber = 0;
-    String pdfFileName;
+    String pdfFileName,doc_username,pat_id,v_name;
     String TAG="PDFViewActivity";
     int position=-1;
 
@@ -32,8 +37,41 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pdf_view);
+
+        Bundle bundle = getIntent().getExtras();
+        doc_username = bundle.getString("username");
+        pat_id = bundle.getString("patient_id");
+
+        view_pdf = FirebaseDatabase.getInstance().getReference();
+
         init();
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        view_pdf.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
+
+                if (d1.exists())
+                {
+                    v_name = d1.child("patient_first_name").getValue().toString() + " " + d1.child("patient_last_name").getValue().toString();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     private void init(){
         pdfView= (PDFView)findViewById(R.id.pdfview);
@@ -41,7 +79,8 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
         displayFromSdcard();
     }
     private void displayFromSdcard() {
-        pdfFileName ="/sdcard/patient.pdf";
+
+        pdfFileName ="/sdcard/Dentogram/"+v_name+".pdf";
         File file = new File(pdfFileName);
 
         Log.e("File path",file.getAbsolutePath());

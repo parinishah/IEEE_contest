@@ -38,6 +38,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.krish.medical_app.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,6 +52,8 @@ import java.io.IOException;
 public class Printable extends AppCompatActivity implements View.OnClickListener
 {
 
+    protected DatabaseReference pdf;
+    protected String v_name, v_gender, v_dob, v_diagnosis, v_mobile, v_phone, v_medhis, v_reffered, v_department;
     protected TextView create;
     protected ImageView back;
     protected String doc_username, pat_id;
@@ -65,6 +72,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         doc_username = bundle.getString("username");
         pat_id = bundle.getString("patient_id");
         init();
+        pdf = FirebaseDatabase.getInstance().getReference();
         fn_permission();
         listener();
 
@@ -76,6 +84,38 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         });
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        pdf.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
+
+                if (d1.exists())
+                {
+                    v_name = d1.child("patient_first_name").getValue().toString() + " " + d1.child("patient_last_name").getValue().toString();
+                    v_gender = d1.child("patient_gender").getValue().toString();
+                    v_dob = d1.child("patient_dob").getValue().toString();
+                    v_diagnosis = d1.child("patient_diagnosis").getValue().toString();
+                    v_mobile = d1.child("patient_mobile").getValue().toString();
+                    v_phone = d1.child("patient_phone").getValue().toString();
+                    v_medhis = d1.child("patient_medical_history").getValue().toString();
+                    v_reffered = dataSnapshot.child(doc_username).child("name").getValue().toString();
+                    v_department = d1.child("patient_department").getValue().toString();
+                }
+
+                }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void init()
     {
@@ -97,8 +137,10 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
             case R.id.textView_printable_create_pdf:
 
                 if (boolean_save) {
-                    Intent intent = new Intent(getApplicationContext(), Pdf_view.class);
-                    startActivity(intent);
+                    Intent i = new Intent(getApplicationContext(), Pdf_view.class);
+                    i.putExtra("username", doc_username);
+                    i.putExtra("patient_id",pat_id);
+                    startActivity(i);
 
                 } else {
                     if (boolean_permission) {
@@ -133,13 +175,13 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         float hight = displaymetrics.heightPixels ;
         float width = displaymetrics.widthPixels ;
 
-        int convertHighet = (int) hight, convertWidth = (int) width;
+        int convertHeight = (int) hight, convertWidth = (int) width;
 
 //        Resources mResources = getResources();
 //        Bitmap bitmap = BitmapFactory.decodeResource(mResources, R.drawable.screenshot);
 
         PdfDocument document = new PdfDocument();
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(convertWidth, convertHighet, 1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(convertWidth, convertHeight, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
 
         Canvas canvas = page.getCanvas();
@@ -149,7 +191,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         canvas.drawPaint(paint);
 
 
-        bitmap = Bitmap.createScaledBitmap(bitmap, convertWidth, convertHighet, true);
+        bitmap = Bitmap.createScaledBitmap(bitmap, convertWidth, convertHeight, true);
 
         paint.setColor(Color.BLUE);
         canvas.drawBitmap(bitmap, 0, 0 , null);
@@ -157,7 +199,10 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
 
         // write the document content
-        String targetPdf = "/sdcard/patient.pdf";
+
+
+
+        String targetPdf = "/sdcard/Dentogram/"+v_name+".pdf";
         File filePath = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(filePath));

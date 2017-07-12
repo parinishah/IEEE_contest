@@ -131,37 +131,40 @@ public class Doctor_profile extends AppCompatActivity
                 {
                     Gender = "Other";
                 }
-                else if(fullname.getText().toString().equals(null))
+                if(fullname.getText().toString().equals(""))
                 {
                     fullname.setHintTextColor(Color.RED);
                     fullname.setHint("Required Qualification");
                 }
-                else if(qualification.getText().toString().equals(null))
+                else if(qualification.getText().toString().equals(""))
                 {
                     qualification.setHintTextColor(Color.RED);
                     qualification.setHint("Required Qualification");
                 }
-                else if(college.getText().toString().equals(null))
+                else if(college.getText().toString().equals(""))
                 {
                     college.setHintTextColor(Color.RED);
                     college.setHint("Required Qualification");
                 }
-                else if (mobile.getText().toString().equals(null))
+                else if (mobile.getText().toString().equals(""))
                 {
                     mobile.setHintTextColor(Color.RED);
                     mobile.setHint("Required Mobile Number");
                 }
+                else
+                {
+                    doctor_obj = new Doctor(signup_username, signup_password, signup_email,
+                            fullname.getText().toString(), college.getText().toString(), Gender, mobile.getText().toString(), qualification.getText().toString());
+                    doctor_obj.firebase_doctor();
 
-                doctor_obj = new Doctor(signup_username,signup_password,signup_email,
-                        fullname.getText().toString(),college.getText().toString(),Gender,mobile.getText().toString(),qualification.getText().toString());
-                doctor_obj.firebase_doctor();
+                    SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("doctor_username", signup_username);
+                    editor.commit();
 
-                SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("doctor_username",signup_username);
-                editor.commit();
+                    launch_my_patients(signup_username);
+                }
 
-                launch_my_patients(signup_username);
             }
         });
 
@@ -213,7 +216,7 @@ public class Doctor_profile extends AppCompatActivity
 
         Intent i =new Intent(this, My_patients.class);
         i.putExtra("username",doc_username);
-        i.putExtra("username",doc_username);
+        //i.putExtra("username",doc_username);done
         startActivity(i);
     }
 
@@ -222,5 +225,5 @@ public class Doctor_profile extends AppCompatActivity
         Intent i =new Intent(this, Signup.class);
         startActivity(i);
     }
-
 }
+
