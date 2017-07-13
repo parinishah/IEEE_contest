@@ -31,11 +31,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.shockwave.pdfium.PdfDocument;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class Pdf_view extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener
 {
     protected DatabaseReference view_pdf;
+    protected String v_time;
     PDFView pdfView;
     Integer pageNumber = 0;
     String pdfFileName,doc_username,pat_id,v_name;
@@ -46,6 +49,11 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pdf_view);
+
+
+        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = sdf.format(new Date());
+        v_time = currentDateandTime + "";*/
 
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
@@ -88,6 +96,7 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
         displayFromSdcard();
     }
     private void displayFromSdcard() {
+
 
         pdfFileName ="/sdcard/Dentogram/"+v_name+".pdf";
         File file = new File(pdfFileName);

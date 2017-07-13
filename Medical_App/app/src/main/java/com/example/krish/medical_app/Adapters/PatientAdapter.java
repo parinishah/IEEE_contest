@@ -23,7 +23,7 @@ import java.util.List;
  * Created by parini on 20-06-2017.
  */
 
-public class PatientAdapter extends ArrayAdapter<Patient> implements Filterable
+public class PatientAdapter extends ArrayAdapter<Patient> //implements Filterable
 {
 
     public List<Patient> objects;
@@ -69,7 +69,7 @@ public class PatientAdapter extends ArrayAdapter<Patient> implements Filterable
 
     }
 
-
+/*
     @NonNull
     @Override
     public Filter getFilter() {
@@ -116,5 +116,5 @@ public class PatientAdapter extends ArrayAdapter<Patient> implements Filterable
 
 
     };
-
+*/
 }

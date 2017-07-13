@@ -65,7 +65,7 @@ public class Signup extends AppCompatActivity
         if(!(file.exists()))
         {
             if(file.mkdirs());
-            Toast.makeText(getApplicationContext(), "Folder Created Successfully", Toast.LENGTH_SHORT).show();
+
         }
 
         login.setOnClickListener(new View.OnClickListener() {

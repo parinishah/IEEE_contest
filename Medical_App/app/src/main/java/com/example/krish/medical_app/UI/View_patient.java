@@ -121,7 +121,7 @@ public class View_patient extends AppCompatActivity {
         more = (ImageButton) findViewById(R.id.imageButton_view_more);
         patient = (TextView) findViewById(R.id.textView_view_patient);
         reffered_by = (TextView) findViewById(R.id.textView_view_reffered);
-        department = (TextView) findViewById(R.id.textView_view_department);
+        department = (TextView) findViewById(R.id.textView_view_id_department);
         patient_name = (TextView) findViewById(R.id.textView_view_patient_name);
         gender = (TextView) findViewById(R.id.textView_view_gender);
         age = (TextView) findViewById(R.id.textView_view_age);
@@ -406,7 +406,7 @@ public class View_patient extends AppCompatActivity {
                     reffered_by.setText(v_reffered);
                     department.setText(v_department);
                     gender.setText(v_gender);
-                    age.setText(getAge(v_dob));
+                    age.setText(getAge(v_dob)+" years");
                     dob_value.setText(v_dob);
                     id_value.setText(pat_id);
                     diagnosis_value.setText(v_diagnosis);

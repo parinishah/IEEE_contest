@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.krish.medical_app.R;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.io.File;
 
 import static java.security.AccessController.getContext;
 
@@ -43,6 +47,16 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        String folderPath = Environment.getExternalStorageDirectory() + "/Dentogram/";
+        File file = new File(folderPath);
+        if(!(file.exists()))
+        {
+            if(file.mkdirs());
+
+        }
+
+        forgot_password.setVisibility(View.GONE);
 
         SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
         doctor_username = sharedPref.getString("doctor_username", null);

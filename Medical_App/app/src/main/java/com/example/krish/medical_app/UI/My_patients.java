@@ -72,6 +72,8 @@ public class My_patients extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_patients);
 
+        search.setVisibility(View.GONE);
+
 
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
@@ -82,7 +84,6 @@ public class My_patients extends AppCompatActivity {
         existing_patients = FirebaseDatabase.getInstance().getReference();
 
         patient_array = new ArrayList<>();
-
 
 
         search = (SearchView)findViewById(R.id.search_bar_my_patients_search);
@@ -98,23 +99,7 @@ public class My_patients extends AppCompatActivity {
         avi.show();
 
 
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.i("Text submit",query);
 
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                Log.i("Text searched",newText);
-                patientadapter.getFilter().filter(newText);
-
-                return false;
-
-            }
-        });
         //Adding listener to searchView\
        /* new search.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {
@@ -230,6 +215,24 @@ public class My_patients extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        /*search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.i("Text submit",query);
+
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.i("Text searched",newText);
+
+                return false;
+
+            }
+        });*/
 
         existing_patients.addValueEventListener(new ValueEventListener() {
             @Override

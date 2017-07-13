@@ -13,8 +13,10 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import android.Manifest;
@@ -59,8 +61,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class Printable extends AppCompatActivity implements View.OnClickListener
-{
+public class Printable extends AppCompatActivity implements View.OnClickListener {
 
     protected DatabaseReference pdf;
     protected String v_name, v_gender, v_dob, v_diagnosis, v_mobile, v_phone, v_date, v_medhis, v_reffered, v_department;
@@ -76,6 +77,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     protected TextView notes;
     protected TextView create;
     protected ImageView back;
+    protected LinearLayout note_list;
     protected String doc_username, pat_id;
     LinearLayout pdflayout;
     public static int REQUEST_PERMISSIONS = 1;
@@ -115,8 +117,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
                 DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
 
-                if (d1.exists())
-                {
+                if (d1.exists()) {
                     v_name = d1.child("patient_first_name").getValue().toString() + " " + d1.child("patient_last_name").getValue().toString();
                     v_gender = d1.child("patient_gender").getValue().toString();
                     v_dob = d1.child("patient_dob").getValue().toString();
@@ -130,7 +131,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
                     v_date = String.valueOf(android.text.format.DateFormat.format("dd-MM-yyyy", new java.util.Date()));
 
                     patient_name.setText(v_name);
-                    age.setText(getAge(v_dob)+" years");
+                    age.setText(getAge(v_dob) + " years");
                     patient_gender.setText(v_gender);
                     mobile.setText(v_mobile);
                     date.setText(v_date);
@@ -139,9 +140,38 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
                     diagnosis.setText(v_diagnosis);
                     medical_history.setText(v_medhis);
 
-                }
 
-                }
+                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
+                        String id = postSnapshot.getKey();
+                        String note_text = postSnapshot.child("note_title").getValue().toString() +" - ";
+
+                        View newLayout_notes = LayoutInflater.from(getBaseContext()).inflate(R.layout.print_singleview, note_list, false);
+
+                        TextView note_n = (TextView) newLayout_notes.findViewById(R.id.textView_print_singleview);
+
+                        note_n.setText(note_text);
+
+                        newLayout_notes.setTag(id);
+                        newLayout_notes.setClickable(true);
+                        newLayout_notes.setFocusable(true);
+
+                        note_list.addView(newLayout_notes);
+
+                        View v = new View(getBaseContext());
+                        v.setLayoutParams(new LinearLayout.LayoutParams(
+                                ActionBar.LayoutParams.MATCH_PARENT,
+                                5
+                        ));
+
+                        v.setBackgroundColor(Color.parseColor("#B3B3B3"));
+                        note_list.addView(v);
+                    }
+
+
+
+                    }
+
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -150,26 +180,26 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         });
     }
 
-    private void init()
-    {
+    private void init() {
 
-        patient_name = (TextView)findViewById(R.id.textView_print_name_value);
-        age = (TextView)findViewById(R.id.textView_print_age_value);
-        patient_gender = (TextView)findViewById(R.id.textView_print_gender_value);
-        mobile = (TextView)findViewById(R.id.textView_print_mobile_value);
-        date = (TextView)findViewById(R.id.textView_print_date_value);
-        doctor = (TextView)findViewById(R.id.textView_print_reffered_value);
-        department = (TextView)findViewById(R.id.textView_print_department_value);
-        diagnosis = (TextView)findViewById(R.id.textView_print_diagnosis_value);
-        medical_history = (TextView)findViewById(R.id.textView_print_medical_history_value);
-        notes = (TextView)findViewById(R.id.textView_print_notes_value);
-        create = (TextView)findViewById(R.id.textView_printable_create_pdf);
+        patient_name = (TextView) findViewById(R.id.textView_print_name_value);
+        age = (TextView) findViewById(R.id.textView_print_age_value);
+        patient_gender = (TextView) findViewById(R.id.textView_print_gender_value);
+        mobile = (TextView) findViewById(R.id.textView_print_mobile_value);
+        date = (TextView) findViewById(R.id.textView_print_date_value);
+        doctor = (TextView) findViewById(R.id.textView_print_reffered_value);
+        department = (TextView) findViewById(R.id.textView_print_department_value);
+        diagnosis = (TextView) findViewById(R.id.textView_print_diagnosis_value);
+        medical_history = (TextView) findViewById(R.id.textView_print_medical_history_value);
+        //notes = (TextView) findViewById(R.id.textView_print_notes_value);
+        create = (TextView) findViewById(R.id.textView_printable_create_pdf);
         pdflayout = (LinearLayout) findViewById(R.id.linearLayout_printable);
         back = (ImageView) findViewById(R.id.imageView_print_back);
+        note_list = (LinearLayout)findViewById(R.id.LinearLayout_print_notes_value);
 
     }
 
-    private void listener(){
+    private void listener() {
         create.setOnClickListener(this);
     }
 
@@ -182,7 +212,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
                 if (boolean_save) {
                     Intent i = new Intent(getApplicationContext(), Pdf_view.class);
                     i.putExtra("username", doc_username);
-                    i.putExtra("patient_id",pat_id);
+                    i.putExtra("patient_id", pat_id);
                     startActivity(i);
 
                 } else {
@@ -202,26 +232,20 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    public void launch_view_patients(String doc_username, String pat_id)
-    {
+    public void launch_view_patients(String doc_username, String pat_id) {
         Intent i = new Intent(this, View_patient.class);
         i.putExtra("username", doc_username);
-        i.putExtra("patient_id",pat_id);
+        i.putExtra("patient_id", pat_id);
         startActivity(i);
     }
 
-    private void createPdf(){
-        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
+    private void createPdf() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        float hight = displaymetrics.heightPixels ;
-        float width = displaymetrics.widthPixels ;
+        float height = displaymetrics.heightPixels;
+        float width = displaymetrics.widthPixels;
 
-        int convertHeight = (int) hight, convertWidth = (int) width;
-
-//        Resources mResources = getResources();
-//        Bitmap bitmap = BitmapFactory.decodeResource(mResources, R.drawable.screenshot);
+        int convertHeight = (int) height, convertWidth = (int) width;
 
         PdfDocument document = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(convertWidth, convertHeight, 1).create();
@@ -237,27 +261,26 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         bitmap = Bitmap.createScaledBitmap(bitmap, convertWidth, convertHeight, true);
 
         paint.setColor(Color.BLUE);
-        canvas.drawBitmap(bitmap, 0, 0 , null);
+        canvas.drawBitmap(bitmap, 0, 0, null);
         document.finishPage(page);
 
 
         // write the document content
 
 
-
-        final String targetPdf = "/sdcard/Dentogram/"+v_name+".pdf";
+        final String targetPdf = "/sdcard/Dentogram/" + v_name + ".pdf";
         File filePath = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(filePath));
             //           Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_SHORT).show();
             //          Toast.makeText(getApplicationContext(), "FIleManager -> sdcard -> Dentogram -> "+v_name+".pdf", Toast.LENGTH_SHORT).show();
-            Snackbar sb1 = Snackbar.make(findViewById(R.id.printable_ui), "PDF Created Successfully",Snackbar.LENGTH_INDEFINITE);
+            Snackbar sb1 = Snackbar.make(findViewById(R.id.printable_ui), "PDF Created Successfully", Snackbar.LENGTH_INDEFINITE);
             sb1.setAction("Open PDF", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     File file = new File(targetPdf);
                     Intent target = new Intent(Intent.ACTION_VIEW);
-                    target.setDataAndType(Uri.fromFile(file),"application/pdf");
+                    target.setDataAndType(Uri.fromFile(file), "application/pdf");
                     target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
                     Intent intent = Intent.createChooser(target, "Open File");
@@ -269,7 +292,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
                 }
             }).setActionTextColor(getResources().getColor(R.color.holo_blue_light));
             sb1.show();
-            boolean_save=true;
+            boolean_save = true;
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
@@ -278,7 +301,6 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         // close the document
         document.close();
     }
-
 
 
     public static Bitmap loadBitmapFromView(View v, int width, int height) {
@@ -290,7 +312,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     }
 
     private void fn_permission() {
-        if ((ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)||
+        if ((ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
 
             if ((ActivityCompat.shouldShowRequestPermissionRationale(Printable.this, android.Manifest.permission.READ_EXTERNAL_STORAGE))) {
@@ -312,6 +334,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -337,15 +360,15 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         month = Integer.parseInt(temp[1]);
         year = Integer.parseInt(temp[2]);
 
-            Calendar dob = Calendar.getInstance();
-            Calendar today = Calendar.getInstance();
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
 
-            dob.set(year, month, day);
+        dob.set(year, month, day);
 
-            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-            if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
-                age--;
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
         }
 
         String ageS;
@@ -363,11 +386,11 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+        registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     Snackbar sb = null;
-    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+    private BroadcastReceiver networkStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -377,15 +400,13 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
 
             if (isConnected) {
-                try{
+                try {
                     sb.dismiss();
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
             } else {
-                sb = Snackbar.make(findViewById(R.id.printable_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
+                sb = Snackbar.make(findViewById(R.id.printable_ui), "No Internet Connection", Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
