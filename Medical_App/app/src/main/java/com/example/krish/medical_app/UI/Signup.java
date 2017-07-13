@@ -81,50 +81,42 @@ public class Signup extends AppCompatActivity
                 final String email_s = email.getText().toString();
                 final String password_s = password.getText().toString();
 
-                if(username_s == null)
-                {
+                if (username_s.equals("")) {
                     username.setHint("Enter valid Username");
-                }
-                else if(email_s == null)
-                {
+                } else if (email_s.equals("")) {
                     email.setHint("Enter Email");
-                }
-
-                check_existing.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(username.getText().toString()).exists())
-                        {
-                            username.setText("");
-                            password.setText("");
-                            confirm_password.setText("");
-                            email.setText("");
-                            username.setHint("Username already exists!");
-                        }
-                        else
-                        {
-                            if(password.getText().toString().equals(confirm_password.getText().toString()))
-                            {
-                                launch_doctor_profile(username_s,password_s,email_s);}
-                            else
-                            {
+                } else {
+                    check_existing.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.child(username.getText().toString()).exists()) {
+                                username.setText("");
                                 password.setText("");
                                 confirm_password.setText("");
-                                confirm_password.setHint("Password didn't match!");
+                                email.setText("");
+                                username.setHint("Username already exists!");
+                            } else {
+                                if (password.getText().toString().equals(confirm_password.getText().toString())) {
+                                    launch_doctor_profile(username_s, password_s, email_s);
+                                } else {
+                                    password.setText("");
+                                    confirm_password.setText("");
+                                    confirm_password.setHint("Password didn't match!");
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
-
+                        }
+                    });
 
 
+                }
             }
         });
+
     }
 
     public void launch_login()

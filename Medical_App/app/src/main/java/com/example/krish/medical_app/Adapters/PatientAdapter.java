@@ -8,24 +8,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.krish.medical_app.Java_classes.Patient;
 import com.example.krish.medical_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by parini on 20-06-2017.
  */
 
-public class PatientAdapter extends ArrayAdapter<Patient>
+public class PatientAdapter extends ArrayAdapter<Patient> implements Filterable
 {
+
+    public List<Patient> objects;
 
     public PatientAdapter(Context context, List<Patient> patients)
     {
         super(context,0, patients);
+        this.objects = patients;
     }
 
     @NonNull
@@ -62,5 +68,53 @@ public class PatientAdapter extends ArrayAdapter<Patient>
         return rootView;
 
     }
+
+
+    @NonNull
+    @Override
+    public Filter getFilter() {
+        return myFilter;
+    }
+
+    Filter myFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults filterResults = new FilterResults();
+            ArrayList<Patient> tempList=new ArrayList<>();
+            //constraint is the result from text you want to filter against.
+            //objects is your data set you will filter from
+            if(constraint != null && objects!=null) {
+                int length=objects.size();
+                int i=0;
+                while(i<length){
+                    Patient item=objects.get(i);
+                    //do whatever you wanna do here
+                    //adding result set output array
+
+                    tempList.add(item);
+
+                    i++;
+                }
+                //following two lines is very important
+                //as publish result can only take FilterResults objects
+                filterResults.values = tempList;
+                filterResults.count = tempList.size();
+            }
+            return filterResults;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence contraint, FilterResults results) {
+            objects = (ArrayList<Patient>) results.values;
+            if (results.count > 0) {
+                notifyDataSetChanged();
+            } else {
+                notifyDataSetInvalidated();
+            }
+        }
+
+
+    };
 
 }

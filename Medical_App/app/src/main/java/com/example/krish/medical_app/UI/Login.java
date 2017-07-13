@@ -72,39 +72,33 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            if((dataSnapshot.child(username.getText().toString()).exists()))
+                        usernm = username.getText().toString();
+
+                            if ((dataSnapshot.child(username.getText().toString()).exists()))
                             {
-                                usernm = username.getText().toString();
+                                if (!(usernm.equals(""))) {
 
-                                if(!(usernm.equals(null)))
-                                {
-
-                                    if(dataSnapshot.child(usernm).child("password").getValue().toString().equals(password.getText().toString()))
-                                    {
+                                    if (dataSnapshot.child(usernm).child("password").getValue().toString().equals(password.getText().toString())) {
                                         SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPref.edit();
-                                        editor.putString("doctor_username",usernm);
+                                        editor.putString("doctor_username", usernm);
                                         editor.commit();
                                         launch_my_patients(usernm);
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         password.setText("");
                                         password.setHint("Incorrect Password");
                                         username.setHintTextColor(Color.WHITE);
 
                                     }
 
-                                }
-
-                                else
-                                {
+                                } else {
                                     username.setText("");
+                                    username.setHint("Username Required");
                                     password.setText("");
 
                                 }
 
-                            }
+                        }
 
                     }
 

@@ -4,11 +4,14 @@ package com.example.krish.medical_app.UI;
  * Created by KRISH on 08-07-2017.
  */
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -242,12 +245,30 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
 
 
-        String targetPdf = "/sdcard/Dentogram/"+v_name+".pdf";
+        final String targetPdf = "/sdcard/Dentogram/"+v_name+".pdf";
         File filePath = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(filePath));
-            Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext(), "FIleManager -> sdcard -> Dentogram -> "+v_name+".pdf", Toast.LENGTH_SHORT).show();
+            //           Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_SHORT).show();
+            //          Toast.makeText(getApplicationContext(), "FIleManager -> sdcard -> Dentogram -> "+v_name+".pdf", Toast.LENGTH_SHORT).show();
+            Snackbar sb1 = Snackbar.make(findViewById(R.id.printable_ui), "PDF Created Successfully",Snackbar.LENGTH_INDEFINITE);
+            sb1.setAction("Open PDF", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    File file = new File(targetPdf);
+                    Intent target = new Intent(Intent.ACTION_VIEW);
+                    target.setDataAndType(Uri.fromFile(file),"application/pdf");
+                    target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                    Intent intent = Intent.createChooser(target, "Open File");
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        // Instruct the user to install a PDF reader here, or something
+                    }
+                }
+            }).setActionTextColor(getResources().getColor(R.color.holo_blue_light));
+            sb1.show();
             boolean_save=true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -316,15 +337,15 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         month = Integer.parseInt(temp[1]);
         year = Integer.parseInt(temp[2]);
 
-        Calendar dob = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
+            Calendar dob = Calendar.getInstance();
+            Calendar today = Calendar.getInstance();
 
-        dob.set(year, month, day);
+            dob.set(year, month, day);
 
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+            int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
-            age--;
+            if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+                age--;
         }
 
         String ageS;

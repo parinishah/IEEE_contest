@@ -1,6 +1,7 @@
 package com.example.krish.medical_app.UI;
 
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+
 import com.example.krish.medical_app.Adapters.PatientAdapter;
 import com.example.krish.medical_app.Java_classes.Patient;
 import com.example.krish.medical_app.R;
@@ -45,6 +47,7 @@ import java.util.Calendar;
 
 public class My_patients extends AppCompatActivity {
 
+    protected SearchView search;
     protected ImageButton options;
     protected ImageButton add_patient;
     protected ListView listView;
@@ -61,12 +64,14 @@ public class My_patients extends AppCompatActivity {
     protected TextView delete_acc;
     protected AVLoadingIndicatorView avi;
 
+
     ArrayList<Patient> patient_array;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_patients);
+
 
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
@@ -78,6 +83,9 @@ public class My_patients extends AppCompatActivity {
 
         patient_array = new ArrayList<>();
 
+
+
+        search = (SearchView)findViewById(R.id.search_bar_my_patients_search);
         options = (ImageButton) findViewById(R.id.imageButton_my_patients_options);
         add_patient = (ImageButton) findViewById(R.id.imageButton_my_patients_add_patient);
         listView = (ListView) findViewById(R.id.listView_my_patients);
@@ -88,6 +96,43 @@ public class My_patients extends AppCompatActivity {
         avi =  (AVLoadingIndicatorView) findViewById(R.id.avi);
 
         avi.show();
+
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.i("Text submit",query);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.i("Text searched",newText);
+                patientadapter.getFilter().filter(newText);
+
+                return false;
+
+            }
+        });
+        //Adding listener to searchView\
+       /* new search.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+
+        });
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.i("Text searched",query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        };
+*/
 
         drawerLayout = (DrawerLayout) findViewById(R.id.draw_layout);
 
