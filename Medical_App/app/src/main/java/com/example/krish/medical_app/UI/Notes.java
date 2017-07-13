@@ -86,7 +86,15 @@ public class Notes extends AppCompatActivity
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogopener();
+                if(title.length()!=0)
+                {
+                    dialogopener();
+                }
+                else
+                {
+                    launch_view_patient(doc_username, pat_id);
+                }
+
             }
         });
 
@@ -94,7 +102,7 @@ public class Notes extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                if(title.getText().toString().equals(null))
+                if(title.length()==0)
                 {
                     title.setHintTextColor(Color.RED);
                     title.setHint("Required Title");
@@ -193,10 +201,7 @@ public class Notes extends AppCompatActivity
         launch_view_patient(doc_username,pat_id);
     }
 
-    @Override
-    public void onBackPressed() {
 
-    }
 
     @Override
     protected void onResume() {
@@ -235,4 +240,9 @@ public class Notes extends AppCompatActivity
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

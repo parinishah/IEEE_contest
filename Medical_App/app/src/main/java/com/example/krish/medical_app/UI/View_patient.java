@@ -48,6 +48,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.master.permissionhelper.PermissionHelper;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -83,6 +84,7 @@ public class View_patient extends AppCompatActivity {
     protected TextView medical_history_value;
     protected ImageButton notes;
     protected ImageButton images;
+    protected AVLoadingIndicatorView avi;
     protected String doc_username, pat_id,image_id;
     protected DatabaseReference view_patient, note_ref;
     protected StorageReference photos_storage;
@@ -103,6 +105,7 @@ public class View_patient extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_patient);
+
 
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
@@ -130,6 +133,9 @@ public class View_patient extends AppCompatActivity {
         medical_history_value = (TextView) findViewById(R.id.textView_view_medical_history_value);
         notes = (ImageButton) findViewById(R.id.imageButton_view_notes);
         images = (ImageButton) findViewById(R.id.imageButton_view_images);
+
+        avi =  (AVLoadingIndicatorView) findViewById(R.id.avi);
+        avi.hide();
        // imagevw = (ImageView) findViewById(R.id.imageView_view_image);
 
        // noteadapter = new NoteAdapter(getApplicationContext(), note_array);
@@ -681,8 +687,6 @@ public class View_patient extends AppCompatActivity {
         launch_my_patients(doc_username);
     }
 
-    public void onBackPressed() {
-    }
 
     public String getAge(String v_dob) {
         String[] temp = v_dob.split("-");
@@ -723,6 +727,8 @@ public class View_patient extends AppCompatActivity {
         String image_path = "Prescriptions/" + image_id + ".png";
         photos_storage = FirebaseStorage.getInstance().getReference(image_path);
 
+        avi.show();
+
         UploadTask uploadTask = photos_storage.putBytes(data_compress);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -739,7 +745,7 @@ public class View_patient extends AppCompatActivity {
                         .child("image links").child(image_id).setValue(map_picture);
 
 
-
+                avi.hide();
                 //Glide.with(getApplicationContext()).load(path).into(pres);
                 Toast toast = Toast.makeText(getApplicationContext(), "Upload Successfully", Toast.LENGTH_SHORT);
                 toast.show();
@@ -802,4 +808,8 @@ public class View_patient extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

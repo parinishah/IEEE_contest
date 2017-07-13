@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -71,35 +72,40 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-
-                        if((dataSnapshot.child(username.getText().toString()).exists()) )
-                        {
-                            usernm = username.getText().toString();
-                            if(!usernm.equals(null))
+                            if((dataSnapshot.child(username.getText().toString()).exists()))
                             {
-                                if(dataSnapshot.child(usernm).child("password").getValue().toString().equals(password.getText().toString()))
+                                usernm = username.getText().toString();
+
+                                if(!(usernm.equals(null)))
                                 {
-                                    SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPref.edit();
-                                    editor.putString("doctor_username",usernm);
-                                    editor.commit();
-                                    launch_my_patients(usernm);
+
+                                    if(dataSnapshot.child(usernm).child("password").getValue().toString().equals(password.getText().toString()))
+                                    {
+                                        SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putString("doctor_username",usernm);
+                                        editor.commit();
+                                        launch_my_patients(usernm);
+                                    }
+                                    else
+                                    {
+                                        password.setText("");
+                                        password.setHint("Incorrect Password");
+                                        username.setHintTextColor(Color.WHITE);
+
+                                    }
+
                                 }
+
                                 else
                                 {
+                                    username.setText("");
                                     password.setText("");
-                                    password.setHint("Incorrect Password");
 
                                 }
+
                             }
 
-                        }
-                        else
-                        {
-                            username.setText("");
-                            password.setText("");
-                            username.setHint("incorrect username!");
-                        }
                     }
 
                     @Override

@@ -354,9 +354,7 @@ public class New_patient_info extends AppCompatActivity
 
         return ageS;
     }
-    @Override
-    public void onBackPressed() {
-    }
+
 
     @Override
     protected void onResume() {
@@ -395,4 +393,8 @@ public class New_patient_info extends AppCompatActivity
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+    }
 }

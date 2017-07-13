@@ -54,12 +54,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 public class Printable extends AppCompatActivity implements View.OnClickListener
 {
 
     protected DatabaseReference pdf;
-    protected String v_name, v_gender, v_dob, v_diagnosis, v_mobile, v_phone, v_medhis, v_reffered, v_department;
+    protected String v_name, v_gender, v_dob, v_diagnosis, v_mobile, v_phone, v_date, v_medhis, v_reffered, v_department;
+    protected TextView patient_name;
+    protected TextView age;
+    protected TextView patient_gender;
+    protected TextView mobile;
+    protected TextView date;
+    protected TextView doctor;
+    protected TextView department;
+    protected TextView diagnosis;
+    protected TextView medical_history;
+    protected TextView notes;
     protected TextView create;
     protected ImageView back;
     protected String doc_username, pat_id;
@@ -112,6 +123,19 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
                     v_medhis = d1.child("patient_medical_history").getValue().toString();
                     v_reffered = dataSnapshot.child(doc_username).child("name").getValue().toString();
                     v_department = d1.child("patient_department").getValue().toString();
+
+                    v_date = String.valueOf(android.text.format.DateFormat.format("dd-MM-yyyy", new java.util.Date()));
+
+                    patient_name.setText(v_name);
+                    age.setText(getAge(v_dob)+" years");
+                    patient_gender.setText(v_gender);
+                    mobile.setText(v_mobile);
+                    date.setText(v_date);
+                    doctor.setText(v_reffered);
+                    department.setText(v_department);
+                    diagnosis.setText(v_diagnosis);
+                    medical_history.setText(v_medhis);
+
                 }
 
                 }
@@ -126,6 +150,16 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     private void init()
     {
 
+        patient_name = (TextView)findViewById(R.id.textView_print_name_value);
+        age = (TextView)findViewById(R.id.textView_print_age_value);
+        patient_gender = (TextView)findViewById(R.id.textView_print_gender_value);
+        mobile = (TextView)findViewById(R.id.textView_print_mobile_value);
+        date = (TextView)findViewById(R.id.textView_print_date_value);
+        doctor = (TextView)findViewById(R.id.textView_print_reffered_value);
+        department = (TextView)findViewById(R.id.textView_print_department_value);
+        diagnosis = (TextView)findViewById(R.id.textView_print_diagnosis_value);
+        medical_history = (TextView)findViewById(R.id.textView_print_medical_history_value);
+        notes = (TextView)findViewById(R.id.textView_print_notes_value);
         create = (TextView)findViewById(R.id.textView_printable_create_pdf);
         pdflayout = (LinearLayout) findViewById(R.id.linearLayout_printable);
         back = (ImageView) findViewById(R.id.imageView_print_back);
@@ -273,6 +307,38 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
             }
         }
     }
+
+    public String getAge(String v_dob) {
+        String[] temp = v_dob.split("-");
+        int year, month, day;
+
+        day = Integer.parseInt(temp[0]);
+        month = Integer.parseInt(temp[1]);
+        year = Integer.parseInt(temp[2]);
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+        String ageS;
+        if (age < 0) {
+            ageS = "NA";
+
+        } else {
+            Integer ageInt = new Integer(age);
+            ageS = ageInt.toString();
+        }
+
+        return ageS;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -311,4 +377,8 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         }
     };
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

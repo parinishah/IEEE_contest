@@ -81,6 +81,15 @@ public class Signup extends AppCompatActivity
                 final String email_s = email.getText().toString();
                 final String password_s = password.getText().toString();
 
+                if(username_s == null)
+                {
+                    username.setHint("Enter valid Username");
+                }
+                else if(email_s == null)
+                {
+                    email.setHint("Enter Email");
+                }
+
                 check_existing.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

@@ -162,10 +162,6 @@ public class View_image extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed() {
-
-    }
-    @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
@@ -202,4 +198,9 @@ public class View_image extends AppCompatActivity
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

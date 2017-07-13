@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class My_patients extends AppCompatActivity {
     protected TextView profile_btn;
     protected TextView doc_name;
     protected TextView delete_acc;
+    protected AVLoadingIndicatorView avi;
 
     ArrayList<Patient> patient_array;
 
@@ -83,6 +85,9 @@ public class My_patients extends AppCompatActivity {
         profile_btn = (TextView) findViewById(R.id.pro_btn);
         doc_name = (TextView) findViewById(R.id.textView_navigation_fullname);
         delete_acc = (TextView) findViewById(R.id.delete_account_btn);
+        avi =  (AVLoadingIndicatorView) findViewById(R.id.avi);
+
+        avi.show();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.draw_layout);
 
@@ -202,6 +207,7 @@ public class My_patients extends AppCompatActivity {
                         patient_array.add(patient);
                         patientadapter.notifyDataSetChanged();
                     }
+                    avi.hide();
 
                 }
             }
