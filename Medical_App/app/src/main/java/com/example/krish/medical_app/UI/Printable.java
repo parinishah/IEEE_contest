@@ -59,7 +59,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Printable extends AppCompatActivity implements View.OnClickListener {
 
@@ -143,7 +145,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
                     for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
                         String id = postSnapshot.getKey();
-                        String note_text = postSnapshot.child("note_title").getValue().toString() +" - ";
+                        String note_text = postSnapshot.child("note_title").getValue().toString() +" - " + postSnapshot.child("note_text").getValue().toString() ;
 
                         View newLayout_notes = LayoutInflater.from(getBaseContext()).inflate(R.layout.print_singleview, note_list, false);
 
@@ -267,8 +269,11 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
         // write the document content
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = sdf.format(new Date());
+        String v_time = currentDateandTime + "";
 
-        final String targetPdf = "/sdcard/Dentogram/" + v_name + ".pdf";
+        final String targetPdf = "/sdcard/Dentogram/" + v_name +"-"+ v_time +".pdf";
         File filePath = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(filePath));

@@ -56,7 +56,7 @@ public class Login extends AppCompatActivity {
 
         }
 
-        forgot_password.setVisibility(View.GONE);
+        //forgot_password.setVisibility(View.VISIBLE);
 
         SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
         doctor_username = sharedPref.getString("doctor_username", null);

@@ -98,7 +98,11 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
     private void displayFromSdcard() {
 
 
-        pdfFileName ="/sdcard/Dentogram/"+v_name+".pdf";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = sdf.format(new Date());
+        String v_time = currentDateandTime + "";
+
+        pdfFileName ="/sdcard/Dentogram/"+v_name+"-"+v_time+".pdf";
         File file = new File(pdfFileName);
 
         Log.e("File path",file.getAbsolutePath());

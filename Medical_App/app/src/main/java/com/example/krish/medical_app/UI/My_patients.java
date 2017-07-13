@@ -47,7 +47,7 @@ import java.util.Calendar;
 
 public class My_patients extends AppCompatActivity {
 
-    protected SearchView search;
+   // protected SearchView search;
     protected ImageButton options;
     protected ImageButton add_patient;
     protected ListView listView;
@@ -72,7 +72,7 @@ public class My_patients extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_patients);
 
-        search.setVisibility(View.GONE);
+        //search.setVisibility(View.INVISIBLE);
 
 
         Bundle bundle = getIntent().getExtras();
@@ -86,7 +86,7 @@ public class My_patients extends AppCompatActivity {
         patient_array = new ArrayList<>();
 
 
-        search = (SearchView)findViewById(R.id.search_bar_my_patients_search);
+        //search = (SearchView)findViewById(R.id.search_bar_my_patients_search);
         options = (ImageButton) findViewById(R.id.imageButton_my_patients_options);
         add_patient = (ImageButton) findViewById(R.id.imageButton_my_patients_add_patient);
         listView = (ListView) findViewById(R.id.listView_my_patients);

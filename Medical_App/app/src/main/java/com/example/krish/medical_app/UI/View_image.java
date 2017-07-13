@@ -38,7 +38,6 @@ import com.google.firebase.storage.StorageReference;
 public class View_image extends AppCompatActivity
 {
 
-        //
     protected ImageView view_image;
     protected ImageView delete_image;
     protected ImageView back_image;
