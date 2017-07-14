@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.froyo.dentogram.Java_classes.Patient;
+import com.example.froyo.dentogram.R;
 
 
 import java.util.ArrayList;

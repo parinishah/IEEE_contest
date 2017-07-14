@@ -28,9 +28,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 
-import com.example.krish.medical_app.Adapters.PatientAdapter;
-import com.example.krish.medical_app.Java_classes.Patient;
-import com.example.krish.medical_app.R;
+import com.example.froyo.dentogram.Adapters.PatientAdapter;
+import com.example.froyo.dentogram.Java_classes.Patient;
+import com.example.froyo.dentogram.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

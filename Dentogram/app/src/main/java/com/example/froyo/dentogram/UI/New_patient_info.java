@@ -23,8 +23,8 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.krish.medical_app.Java_classes.Patient;
-import com.example.krish.medical_app.R;
+import com.example.froyo.dentogram.Java_classes.Patient;
+import com.example.froyo.dentogram.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

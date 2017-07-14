@@ -24,8 +24,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.krish.medical_app.Java_classes.Note;
-import com.example.krish.medical_app.R;
+import com.example.froyo.dentogram.Java_classes.Note;
+import com.example.froyo.dentogram.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

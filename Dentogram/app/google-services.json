@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "742881530987",
+    "firebase_url": "https://dentogram-566ac.firebaseio.com",
+    "project_id": "dentogram-566ac",
+    "storage_bucket": "dentogram-566ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742881530987:android:9da7d0cf9acc4125",
+        "android_client_info": {
+          "package_name": "com.example.froyo.dentogram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742881530987-ld08jlinoptdn4lmnsglkuhi928t71kk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.froyo.dentogram",
+            "certificate_hash": "04ba6dcd4a861897523070052a7db2d5799dd514"
+          }
+        },
+        {
+          "client_id": "742881530987-6csnfms3apkjr122dhehi60cjrq87ptg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDukNLc-3-ionCYkYevItU8IvkjRFDj7lI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742881530987-6csnfms3apkjr122dhehi60cjrq87ptg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

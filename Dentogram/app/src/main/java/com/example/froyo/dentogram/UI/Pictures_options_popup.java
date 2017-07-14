@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.krish.medical_app.R;
+import com.example.froyo.dentogram.R;
 
 import static android.R.attr.data;
 

@@ -22,7 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.froyo.dentogram.Java_classes.Doctor;
-import com.example.krish.medical_app.R;
+import com.example.froyo.dentogram.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -95,30 +95,7 @@ public class Doctor_profile extends AppCompatActivity
                     launch_my_patients(signup_username);
                 }
 
-                /*if(fullname.getText().toString().equals(null))
-                {
-                    fullname.setHintTextColor(Color.RED);
-                    fullname.setHint("Required Qualification");
-                }
-                else if(qualification.getText().toString().equals(null))
-                {
-                    qualification.setHintTextColor(Color.RED);
-                    qualification.setHint("Required Qualification");
-                }
-                else if(college.getText().toString().equals(null))
-                {
-                    college.setHintTextColor(Color.RED);
-                    college.setHint("Required Qualification");
-                }
-                else if (mobile.getText().toString().equals(null))
-                {
-                    mobile.setHintTextColor(Color.RED);
-                    mobile.setHint("Required Mobile Number");
-                }
-                else
-                {
-                    launch_my_patients(signup_username);
-                }*/
+                
             }
         });
 
@@ -161,7 +138,7 @@ public class Doctor_profile extends AppCompatActivity
                 }
                 else
                 {
-                    doctor_obj = new Doctor(signup_username, signup_password, signup_email,
+                    doctor_obj = new Doctor(signup_username, signup_password, email.getText().toString(),
                             fullname.getText().toString(), college.getText().toString(), Gender, mobile.getText().toString(), qualification.getText().toString());
                     doctor_obj.firebase_doctor();
 
@@ -183,11 +160,11 @@ public class Doctor_profile extends AppCompatActivity
                 {
                     doc_username.setText(signup_username);
                     fullname.setText(dataSnapshot.child(signup_username).child("name").getValue().toString());
-                    email.setText(signup_email);
+                    email.setText(dataSnapshot.child(signup_username).child("email").getValue().toString());
                     college.setText(dataSnapshot.child(signup_username).child("college").getValue().toString());
                     mobile.setText(dataSnapshot.child(signup_username).child("mobile").getValue().toString());
                     qualification.setText(dataSnapshot.child(signup_username).child("qualification").getValue().toString());
-                    String gender_s = dataSnapshot.child(signup_username).child("qualification").getValue().toString();
+                    String gender_s = dataSnapshot.child(signup_username).child("gender").getValue().toString();
                     if(gender_s.equals("Male"))
                     {
                         male.setChecked(true);
@@ -224,7 +201,6 @@ public class Doctor_profile extends AppCompatActivity
 
         Intent i =new Intent(this, My_patients.class);
         i.putExtra("username",doc_username);
-        //i.putExtra("username",doc_username);done
         startActivity(i);
     }
 

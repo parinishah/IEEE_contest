@@ -18,8 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.krish.medical_app.Java_classes.Doctor;
-import com.example.krish.medical_app.R;
+import com.example.froyo.dentogram.Java_classes.Doctor;
+import com.example.froyo.dentogram.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
