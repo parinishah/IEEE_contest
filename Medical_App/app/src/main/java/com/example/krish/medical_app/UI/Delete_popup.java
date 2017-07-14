@@ -21,6 +21,7 @@ public class Delete_popup extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.delete_popup);
 
         delete = (TextView) findViewById(R.id.textView_delete_delete);

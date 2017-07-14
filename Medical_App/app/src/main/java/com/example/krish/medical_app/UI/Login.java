@@ -46,6 +46,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.login);
 
         String folderPath = Environment.getExternalStorageDirectory() + "/Dentogram/";

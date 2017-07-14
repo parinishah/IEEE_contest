@@ -48,6 +48,7 @@ public class View_image extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.view_image);
 
         link_delete = FirebaseDatabase.getInstance().getReference();

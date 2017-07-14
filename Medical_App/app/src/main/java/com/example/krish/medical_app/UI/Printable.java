@@ -93,6 +93,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.printable);
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");

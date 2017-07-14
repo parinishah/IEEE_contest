@@ -47,7 +47,7 @@ public class PatientAdapter extends ArrayAdapter<Patient> //implements Filterabl
         ImageView gender = (ImageView) rootView.findViewById(R.id.imageView_my_patient_view_gender);
 
         patient_gender.setText(patient.getGender());
-        patient_age.setText(patient.getAge());
+        patient_age.setText(patient.getAge()+" years");
         patient_name.setText(patient.getFirst_name() + " " +patient.getLast_name());
 
         if(patient.getGender().equals("Male"))

@@ -50,7 +50,7 @@ public class New_patient_info extends AppCompatActivity
     protected RadioButton other;
     protected TextView dob;
     protected ImageButton calendar;
-    protected EditText age;
+    protected TextView age;
     protected EditText email;
     protected EditText address;
     protected EditText mobile_num;
@@ -67,6 +67,7 @@ public class New_patient_info extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.new_patient_info);
 
         edit_patient = FirebaseDatabase.getInstance().getReference();
@@ -80,7 +81,7 @@ public class New_patient_info extends AppCompatActivity
         patient_id = (TextView)findViewById(R.id.Textview_new_id);
         dob = (TextView) findViewById(R.id.textView_new_dob);
         calendar = (ImageButton) findViewById(R.id.imageButton_new_calendar);
-        age = (EditText)findViewById(R.id.editText_new_age);
+        age = (TextView) findViewById(R.id.editText_new_age);
         email = (EditText)findViewById(R.id.editText_new_email);
         address = (EditText)findViewById(R.id.editText_new_address);
         mobile_num = (EditText)findViewById(R.id.editText_new_mobile);
@@ -145,7 +146,7 @@ public class New_patient_info extends AppCompatActivity
                         else
                         {
                             dob.setText(dmy);
-                            age.setText(s_age);
+                            age.setText(s_age + " years");
                         }
 
 
@@ -258,7 +259,7 @@ public class New_patient_info extends AppCompatActivity
                     department_spinner.setSelection(position);
                     patient_id.setText(d1.getKey().toString());
                     dob.setText(d1.child("patient_dob").getValue().toString());
-                    age.setText(getAge(dob.getText().toString()));
+                    age.setText(getAge(dob.getText().toString())+" years");
                     email.setText(d1.child("patient_email").getValue().toString());
                     address.setText(d1.child("patient_address").getValue().toString());
                     mobile_num.setText(d1.child("patient_mobile").getValue().toString());

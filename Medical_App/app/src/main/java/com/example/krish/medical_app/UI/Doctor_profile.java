@@ -53,6 +53,7 @@ public class Doctor_profile extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.doctor_profile);
 
         doc_profile = FirebaseDatabase.getInstance().getReference();

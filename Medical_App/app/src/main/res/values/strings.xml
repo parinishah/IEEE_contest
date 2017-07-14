@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Medical_App</string>
+    <string name="app_name">Dentogram</string>
 
     <string name="department_prompt">Choose department</string>
 

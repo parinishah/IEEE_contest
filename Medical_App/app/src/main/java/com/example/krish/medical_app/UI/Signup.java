@@ -48,6 +48,7 @@ public class Signup extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.signup);
 
         check_existing = FirebaseDatabase.getInstance().getReference();
