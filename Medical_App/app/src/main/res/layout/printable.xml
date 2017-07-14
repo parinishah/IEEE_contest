@@ -316,7 +316,7 @@
         <LinearLayout
             android:id="@+id/LinearLayout_print_notes_value"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
@@ -338,14 +338,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:text="Created by :"
+                android:layout_marginTop="2dp"
                 android:textColor="#3b3b3b" />
 
             <ImageView
                 android:id="@+id/imageView_print_dentogram_image"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
                 android:gravity="center"
-                android:background="@drawable/age" />
+                android:layout_marginStart="5dp"
+                android:background="@drawable/logo" />
 
             <ImageView
                 android:id="@+id/imageView_print_dentogram"
@@ -353,6 +355,7 @@
                 android:layout_height="20dp"
                 android:textAlignment="center"
                 android:gravity="center"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/text" />
 
         </LinearLayout>

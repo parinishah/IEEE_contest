@@ -56,8 +56,6 @@ public class Login extends AppCompatActivity {
 
         }
 
-        //forgot_password.setVisibility(View.VISIBLE);
-
         SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
         doctor_username = sharedPref.getString("doctor_username", null);
         if (doctor_username != null)
@@ -72,6 +70,8 @@ public class Login extends AppCompatActivity {
         signup = (TextView) findViewById(R.id.textView_login_signup_btn);
         login = (TextView) findViewById(R.id.textView_login_login_btn);
         forgot_password = (TextView) findViewById(R.id.textView_login_forgot);
+
+        forgot_password.setVisibility(View.INVISIBLE);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,21 +98,32 @@ public class Login extends AppCompatActivity {
                                         editor.putString("doctor_username", usernm);
                                         editor.commit();
                                         launch_my_patients(usernm);
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         password.setText("");
                                         password.setHint("Incorrect Password");
                                         username.setHintTextColor(Color.WHITE);
 
                                     }
 
-                                } else {
+                                }
+                                else
+                                {
                                     username.setText("");
                                     username.setHint("Username Required");
                                     password.setText("");
 
                                 }
 
-                        }
+                            }
+                            else
+                            {
+                                password.setText("");
+                                password.setHint("Password");
+                                username.setText("");
+                                username.setHint("Username does not exist");
+                            }
 
                     }
 
@@ -151,6 +162,10 @@ public class Login extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+        password.setText("");
+        password.setHint("Password");
+        username.setText("");
+        username.setHint("Username");
     }
 
     Snackbar sb = null;

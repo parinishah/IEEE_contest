@@ -17,7 +17,7 @@
         android:layout_height="40dp"
         android:textAlignment="center"
         android:textSize="17dp"
-        android:text="Choose an option"
+        android:text="Select option"
         android:clickable="false"
         android:gravity="center"
         android:textColor="#f3131313"

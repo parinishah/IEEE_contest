@@ -63,6 +63,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.R.attr.id;
+
 public class Printable extends AppCompatActivity implements View.OnClickListener {
 
     protected DatabaseReference pdf;
@@ -129,8 +131,29 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
                     v_medhis = d1.child("patient_medical_history").getValue().toString();
                     v_reffered = dataSnapshot.child(doc_username).child("name").getValue().toString();
                     v_department = d1.child("patient_department").getValue().toString();
-
                     v_date = String.valueOf(android.text.format.DateFormat.format("dd-MM-yyyy", new java.util.Date()));
+
+                    String note_text = "";
+                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
+                        String id = postSnapshot.getKey();
+                        note_text += postSnapshot.child("note_title").getValue().toString() +" - " + postSnapshot.child("note_text").getValue().toString() ;
+                        note_text += "\n";
+
+                    }
+
+                    View newLayout_notes = LayoutInflater.from(getBaseContext()).inflate(R.layout.print_singleview, note_list, false);
+
+                    TextView note_n = (TextView) newLayout_notes.findViewById(R.id.textView_print_singleview);
+
+                    note_n.setText(note_text);
+
+                    newLayout_notes.setTag(id);
+                    newLayout_notes.setClickable(true);
+                    newLayout_notes.setFocusable(true);
+
+                    note_list.addView(newLayout_notes);
+
+
 
                     patient_name.setText(v_name);
                     age.setText(getAge(v_dob) + " years");
@@ -141,33 +164,6 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
                     department.setText(v_department);
                     diagnosis.setText(v_diagnosis);
                     medical_history.setText(v_medhis);
-
-
-                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
-                        String id = postSnapshot.getKey();
-                        String note_text = postSnapshot.child("note_title").getValue().toString() +" - " + postSnapshot.child("note_text").getValue().toString() ;
-
-                        View newLayout_notes = LayoutInflater.from(getBaseContext()).inflate(R.layout.print_singleview, note_list, false);
-
-                        TextView note_n = (TextView) newLayout_notes.findViewById(R.id.textView_print_singleview);
-
-                        note_n.setText(note_text);
-
-                        newLayout_notes.setTag(id);
-                        newLayout_notes.setClickable(true);
-                        newLayout_notes.setFocusable(true);
-
-                        note_list.addView(newLayout_notes);
-
-                        View v = new View(getBaseContext());
-                        v.setLayoutParams(new LinearLayout.LayoutParams(
-                                ActionBar.LayoutParams.MATCH_PARENT,
-                                5
-                        ));
-
-                        v.setBackgroundColor(Color.parseColor("#B3B3B3"));
-                        note_list.addView(v);
-                    }
 
 
 
