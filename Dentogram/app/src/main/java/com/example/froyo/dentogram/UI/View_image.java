@@ -31,10 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-/**
- * Created by KRISH on 11-07-2017.
- */
-
 public class View_image extends AppCompatActivity
 {
 
@@ -46,7 +42,8 @@ public class View_image extends AppCompatActivity
     protected StorageReference image_delete;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.view_image);
@@ -66,41 +63,26 @@ public class View_image extends AppCompatActivity
         image_path = "Prescriptions/" + image_id + ".png";
 
 
-        //path = link_delete.child(doc_username).child("patients").child(pat_id).child("image links").child(image_id).child("path").getValue().toString();
-
-        /*link_delete.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(doc_username).child("patients").child(pat_id).child("image links").child(image_id).exists())
-                {
-                    path = dataSnapshot.child(doc_username).child("patients").child(pat_id).child("image links").child(image_id).child("path").getValue().toString();
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
         Glide.with(this)
                 .load(path)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(view_image);
 
 
-        back_image.setOnClickListener(new View.OnClickListener() {
+        back_image.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 launch_view_patients(doc_username,pat_id);
             }
         });
 
-        delete_image.setOnClickListener(new View.OnClickListener() {
+        delete_image.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 dialogopener_delete_image();
 
             }
@@ -130,22 +112,26 @@ public class View_image extends AppCompatActivity
             public void onClick(View view) {
 
                 image_delete = FirebaseStorage.getInstance().getReference(image_path);
-                image_delete.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                image_delete.delete().addOnSuccessListener(new OnSuccessListener<Void>()
+                {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        // File deleted successfully
+                    public void onSuccess(Void aVoid)
+                    {
+
                         Toast toast = Toast.makeText(getApplicationContext(), "Delete Successful", Toast.LENGTH_SHORT);
                         toast.show();
                         launch_view_patients(doc_username,pat_id);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener()
+                {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Uh-oh, an error occurred!
+
                         Toast toast = Toast.makeText(getApplicationContext(), "Delete Unsuccessful", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 });
+
                 link_delete.child(doc_username).child("patients").child(pat_id)
                         .child("image links").child(image_id).removeValue();
             }
@@ -162,30 +148,37 @@ public class View_image extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     Snackbar sb = null;
-    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver()
+    {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent)
+        {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo ni = manager.getActiveNetworkInfo();
             boolean isConnected = ni != null &&
                     ni.isConnectedOrConnecting();
 
 
-            if (isConnected) {
-                try{
+            if (isConnected)
+            {
+                try
+                {
                     sb.dismiss();
                 }
                 catch (Exception ex)
                 {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
-            } else {
+            }
+            else
+            {
                 sb = Snackbar.make(findViewById(R.id.view_image_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override

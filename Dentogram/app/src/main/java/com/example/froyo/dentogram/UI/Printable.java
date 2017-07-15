@@ -1,9 +1,5 @@
 package com.example.froyo.dentogram.UI;
 
-/**
- * Created by KRISH on 08-07-2017.
- */
-
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
@@ -65,7 +61,8 @@ import java.util.Date;
 
 import static android.R.attr.id;
 
-public class Printable extends AppCompatActivity implements View.OnClickListener {
+public class Printable extends AppCompatActivity implements View.OnClickListener
+{
 
     protected DatabaseReference pdf;
     protected String v_name, v_gender, v_dob, v_diagnosis, v_mobile, v_phone, v_date, v_medhis, v_reffered, v_department;
@@ -83,7 +80,7 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     protected ImageView back;
     protected LinearLayout note_list;
     protected String doc_username, pat_id;
-    LinearLayout pdflayout;
+    protected LinearLayout pdflayout;
     public static int REQUEST_PERMISSIONS = 1;
     boolean boolean_permission;
     boolean boolean_save;
@@ -91,7 +88,8 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     ProgressDialog progressDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.printable);
@@ -103,9 +101,11 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         fn_permission();
         listener();
 
-        back.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 launch_view_patients(doc_username, pat_id);
             }
         });
@@ -113,16 +113,20 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
-        pdf.addValueEventListener(new ValueEventListener() {
+        pdf.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
 
                 DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
 
-                if (d1.exists()) {
+                if (d1.exists())
+                {
                     v_name = d1.child("patient_first_name").getValue().toString() + " " + d1.child("patient_last_name").getValue().toString();
                     v_gender = d1.child("patient_gender").getValue().toString();
                     v_dob = d1.child("patient_dob").getValue().toString();
@@ -154,8 +158,6 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
                     note_list.addView(newLayout_notes);
 
-
-
                     patient_name.setText(v_name);
                     age.setText(getAge(v_dob) + " years");
                     patient_gender.setText(v_gender);
@@ -166,21 +168,20 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
                     diagnosis.setText(v_diagnosis);
                     medical_history.setText(v_medhis);
 
-
-
                     }
 
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
         });
     }
 
-    private void init() {
-
+    private void init()
+    {
         patient_name = (TextView) findViewById(R.id.textView_print_name_value);
         age = (TextView) findViewById(R.id.textView_print_age_value);
         patient_gender = (TextView) findViewById(R.id.textView_print_gender_value);
@@ -190,7 +191,6 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         department = (TextView) findViewById(R.id.textView_print_department_value);
         diagnosis = (TextView) findViewById(R.id.textView_print_diagnosis_value);
         medical_history = (TextView) findViewById(R.id.textView_print_medical_history_value);
-        //notes = (TextView) findViewById(R.id.textView_print_notes_value);
         create = (TextView) findViewById(R.id.textView_printable_create_pdf);
         pdflayout = (LinearLayout) findViewById(R.id.linearLayout_printable);
         back = (ImageView) findViewById(R.id.imageView_print_back);
@@ -203,25 +203,33 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
 
-        switch (view.getId()) {
+        switch (view.getId())
+        {
             case R.id.textView_printable_create_pdf:
 
-                if (boolean_save) {
+                if (boolean_save)
+                {
                     Intent i = new Intent(getApplicationContext(), Pdf_view.class);
                     i.putExtra("username", doc_username);
                     i.putExtra("patient_id", pat_id);
                     startActivity(i);
 
-                } else {
-                    if (boolean_permission) {
+                }
+                else
+                {
+                    if (boolean_permission)
+                    {
                         progressDialog = new ProgressDialog(Printable.this);
                         progressDialog.setMessage("Please wait");
                         bitmap = loadBitmapFromView(pdflayout, pdflayout.getWidth(), pdflayout.getHeight());
                         createPdf();
 //                        saveBitmap(bitmap);
-                    } else {
+                    }
+                    else
+                    {
 
                     }
 
@@ -231,14 +239,16 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    public void launch_view_patients(String doc_username, String pat_id) {
+    public void launch_view_patients(String doc_username, String pat_id)
+    {
         Intent i = new Intent(this, View_patient.class);
         i.putExtra("username", doc_username);
         i.putExtra("patient_id", pat_id);
         startActivity(i);
     }
 
-    private void createPdf() {
+    private void createPdf()
+    {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         float height = displaymetrics.heightPixels;
@@ -263,9 +273,6 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         canvas.drawBitmap(bitmap, 0, 0, null);
         document.finishPage(page);
 
-
-        // write the document content
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateandTime = sdf.format(new Date());
         String v_time = currentDateandTime + "";
@@ -274,38 +281,45 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         File filePath = new File(targetPdf);
         try {
             document.writeTo(new FileOutputStream(filePath));
-            //           Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_SHORT).show();
-            //          Toast.makeText(getApplicationContext(), "FIleManager -> sdcard -> Dentogram -> "+v_name+".pdf", Toast.LENGTH_SHORT).show();
+
             Snackbar sb1 = Snackbar.make(findViewById(R.id.printable_ui), "PDF Created Successfully", Snackbar.LENGTH_INDEFINITE);
-            sb1.setAction("Open PDF", new View.OnClickListener() {
+
+            sb1.setAction("Open PDF", new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     File file = new File(targetPdf);
                     Intent target = new Intent(Intent.ACTION_VIEW);
                     target.setDataAndType(Uri.fromFile(file), "application/pdf");
                     target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
                     Intent intent = Intent.createChooser(target, "Open File");
-                    try {
+                    try
+                    {
                         startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        // Instruct the user to install a PDF reader here, or something
+                    }
+                    catch (ActivityNotFoundException e)
+                    {
+
                     }
                 }
             }).setActionTextColor(getResources().getColor(R.color.holo_blue_light));
             sb1.show();
             boolean_save = true;
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
             Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
         }
 
-        // close the document
         document.close();
     }
 
 
-    public static Bitmap loadBitmapFromView(View v, int width, int height) {
+    public static Bitmap loadBitmapFromView(View v, int width, int height)
+    {
         Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         v.draw(c);
@@ -313,48 +327,60 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
         return b;
     }
 
-    private void fn_permission() {
+    private void fn_permission()
+    {
         if ((ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
-                (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
+        {
 
-            if ((ActivityCompat.shouldShowRequestPermissionRationale(Printable.this, android.Manifest.permission.READ_EXTERNAL_STORAGE))) {
-            } else {
+            if ((ActivityCompat.shouldShowRequestPermissionRationale(Printable.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)))
+            {
+            }
+            else
+            {
                 ActivityCompat.requestPermissions(Printable.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_PERMISSIONS);
 
             }
 
-            if ((ActivityCompat.shouldShowRequestPermissionRationale(Printable.this, Manifest.permission.WRITE_EXTERNAL_STORAGE))) {
-            } else {
+            if ((ActivityCompat.shouldShowRequestPermissionRationale(Printable.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)))
+            {
+            }
+            else
+            {
                 ActivityCompat.requestPermissions(Printable.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         REQUEST_PERMISSIONS);
 
             }
-        } else {
+        }
+        else
+        {
             boolean_permission = true;
-
-
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_PERMISSIONS) {
-
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_PERMISSIONS)
+        {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
 
                 boolean_permission = true;
 
-
-            } else {
+            }
+            else
+            {
                 Toast.makeText(getApplicationContext(), "Please allow the permission", Toast.LENGTH_LONG).show();
 
             }
         }
     }
 
-    public String getAge(String v_dob) {
+    public String getAge(String v_dob)
+    {
         String[] temp = v_dob.split("-");
         int year, month, day;
 
@@ -369,15 +395,19 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR))
+        {
             age--;
         }
 
         String ageS;
-        if (age < 0) {
+        if (age < 0)
+        {
             ageS = "NA";
 
-        } else {
+        }
+        else
+        {
             Integer ageInt = new Integer(age);
             ageS = ageInt.toString();
         }
@@ -386,28 +416,37 @@ public class Printable extends AppCompatActivity implements View.OnClickListener
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     Snackbar sb = null;
-    private BroadcastReceiver networkStateReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver networkStateReceiver = new BroadcastReceiver()
+    {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent)
+        {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo ni = manager.getActiveNetworkInfo();
             boolean isConnected = ni != null &&
                     ni.isConnectedOrConnecting();
 
 
-            if (isConnected) {
-                try {
+            if (isConnected)
+            {
+                try
+                {
                     sb.dismiss();
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
-            } else {
+            }
+            else
+            {
                 sb = Snackbar.make(findViewById(R.id.printable_ui), "No Internet Connection", Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override

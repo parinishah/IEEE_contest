@@ -42,11 +42,9 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * Created by KRISH on 13-06-2017.
- */
 
-public class My_patients extends AppCompatActivity {
+public class My_patients extends AppCompatActivity
+{
 
     protected SearchView search;
     protected ImageButton options;
@@ -65,11 +63,11 @@ public class My_patients extends AppCompatActivity {
     protected TextView delete_acc;
     protected AVLoadingIndicatorView avi;
 
-
     ArrayList<Patient> patient_array;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.my_patients);
@@ -85,7 +83,6 @@ public class My_patients extends AppCompatActivity {
 
         patient_array = new ArrayList<>();
 
-
         search = (SearchView)findViewById(R.id.search_bar_my_patients_search);
         options = (ImageButton) findViewById(R.id.imageButton_my_patients_options);
         add_patient = (ImageButton) findViewById(R.id.imageButton_my_patients_add_patient);
@@ -100,43 +97,30 @@ public class My_patients extends AppCompatActivity {
 
         search.setVisibility(View.INVISIBLE);
 
-        //Adding listener to searchView\
-       /* new search.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
-
-        });
-        {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.i("Text searched",query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        };
-*/
-
         drawerLayout = (DrawerLayout) findViewById(R.id.draw_layout);
 
-        add_patient.setOnClickListener(new View.OnClickListener() {
+        add_patient.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
                 patient_id = existing_patients.child(doc_username).child("patients:").push().getKey();
                 launch_new_patient_info(doc_username, patient_id);
             }
         });
 
-        profile_btn.setOnClickListener(new View.OnClickListener() {
+        profile_btn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
-                existing_patients.addValueEventListener(new ValueEventListener() {
+                existing_patients.addValueEventListener(new ValueEventListener()
+                {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
                        String password= dataSnapshot.child(doc_username).child("password").getValue().toString();
                        String email= dataSnapshot.child(doc_username).child("email").getValue().toString();
                         launch_doc_profile(doc_username, password, email);
@@ -144,40 +128,49 @@ public class My_patients extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(DatabaseError databaseError)
+                    {
 
                     }
                 });
 
-
             }
         });
 
-        delete_acc.setOnClickListener(new View.OnClickListener() {
+        delete_acc.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 dailogopner_delete_acc();
             }
         });
 
-        logout_btn.setOnClickListener(new View.OnClickListener() {
+        logout_btn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
                 launch_login();
             }
         });
 
 
-        options.setOnClickListener(new View.OnClickListener() {
+        options.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                if (!drawerLayout.isDrawerOpen(Gravity.START)) {
+            public void onClick(View v)
+            {
+                if (!drawerLayout.isDrawerOpen(Gravity.START))
+                {
                     drawerLayout.openDrawer(Gravity.START);
 
-                    existing_patients.addValueEventListener(new ValueEventListener() {
+                    existing_patients.addValueEventListener(new ValueEventListener()
+                    {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
                             if(dataSnapshot.child(doc_username).child("name").exists())
                             {
                                 doc_name.setText(dataSnapshot.child(doc_username).child("name").getValue().toString());
@@ -186,7 +179,8 @@ public class My_patients extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                        public void onCancelled(DatabaseError databaseError)
+                        {
 
                         }
                     });
@@ -196,18 +190,19 @@ public class My_patients extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
         patientadapter = new PatientAdapter(getApplicationContext(), patient_array);
         patient_list = (ListView) findViewById(R.id.listView_my_patients);
         patient_list.setAdapter(patientadapter);
 
-        patient_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        patient_list.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
                 Patient p = patient_array.get(i);
                 Intent in = new Intent(My_patients.this, View_patient.class);
                 in.putExtra("patient_id", p.getPatient_id());
@@ -216,42 +211,24 @@ public class My_patients extends AppCompatActivity {
             }
         });
 
-        /*search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        existing_patients.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.i("Text submit",query);
-
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                Log.i("Text searched",newText);
-
-                return false;
-
-            }
-        });*/
-
-        existing_patients.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                 patientadapter.clear();
 
                 if(doc_username!=null)
                 {
-                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").getChildren()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").getChildren())
+                    {
                         String name = postSnapshot.child("patient_first_name").getValue().toString();
                         String lname = postSnapshot.child("patient_last_name").getValue().toString();
-                        String department = postSnapshot.child("patient_department").getValue().toString();
                         String dob = postSnapshot.child("patient_dob").getValue().toString();
                         String age = getAge(dob);
                         String gender = postSnapshot.child("patient_gender").getValue().toString();
                         String id = postSnapshot.getKey().toString();
-                        patient = new Patient(id, name, null, lname, department, gender, null, age, null, null, null, null, null, null);
+                        patient = new Patient(id, name, null, lname, null, gender, null, age, null, null, null, null, null, null);
                         patient_array.add(patient);
                         patientadapter.notifyDataSetChanged();
                     }
@@ -261,46 +238,13 @@ public class My_patients extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
         });
     }
 
-    public void launch_new_patient_info(String doc_username, String patient_id) {
-        Intent i = new Intent(this, New_patient_info.class);
-        i.putExtra("username", doc_username);
-        i.putExtra("patient_id", patient_id);
-        startActivity(i);
-    }
-
-    public void launch_login() {
-
-        SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("doctor_username",null);
-        editor.apply();
-        startActivity(new Intent(this, Login.class));
-    }
-
-    public void launch_doc_profile(String doc_username, String password, String email)
-    {
-        Intent i = new Intent(this,Doctor_profile.class);
-        i. putExtra("username",doc_username);
-        i.putExtra("password",password);
-        i.putExtra("email",email);
-        i.putExtra("ui_status","false");
-        startActivity(i);
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
     public String getAge(String v_dob)
     {
         String s1, s2, s3;
@@ -321,12 +265,14 @@ public class My_patients extends AppCompatActivity {
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR))
+        {
             age--;
         }
 
         String ageS;
-        if(age<0) {
+        if(age<0)
+        {
             ageS = "NA";
 
         }
@@ -347,22 +293,27 @@ public class My_patients extends AppCompatActivity {
         final TextView delete = (TextView) dialog.findViewById(R.id.textView_delete_delete);
         TextView cancel = (TextView) dialog.findViewById(R.id.textView_delete_cancel);
 
-        delete.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 delete_doctor(doc_username);
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 dialog.dismiss();
             }
         });
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
     public void delete_doctor(String doc_username)
     {
         DatabaseReference d1 = FirebaseDatabase.getInstance().getReference();
@@ -371,9 +322,37 @@ public class My_patients extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    public void launch_new_patient_info(String doc_username, String patient_id)
+    {
+        Intent i = new Intent(this, New_patient_info.class);
+        i.putExtra("username", doc_username);
+        i.putExtra("patient_id", patient_id);
+        startActivity(i);
+    }
+
+    public void launch_login()
+    {
+        SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("doctor_username",null);
+        editor.apply();
+        startActivity(new Intent(this, Login.class));
+    }
+
+    public void launch_doc_profile(String doc_username, String password, String email)
+    {
+        Intent i = new Intent(this,Doctor_profile.class);
+        i. putExtra("username",doc_username);
+        i.putExtra("password",password);
+        i.putExtra("email",email);
+        i.putExtra("ui_status","false");
+        startActivity(i);
     }
 
     Snackbar sb = null;
@@ -386,15 +365,19 @@ public class My_patients extends AppCompatActivity {
                     ni.isConnectedOrConnecting();
 
 
-            if (isConnected) {
-                try{
+            if (isConnected)
+            {
+                try
+                {
                     sb.dismiss();
                 }
                 catch (Exception ex)
                 {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
-            } else {
+            }
+            else
+            {
                 sb = Snackbar.make(findViewById(R.id.draw_layout), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override
@@ -407,4 +390,13 @@ public class My_patients extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }

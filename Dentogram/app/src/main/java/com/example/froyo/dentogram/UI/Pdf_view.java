@@ -1,9 +1,5 @@
 package com.example.froyo.dentogram.UI;
 
-/**
- * Created by KRISH on 08-07-2017.
- */
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,10 +34,9 @@ import java.util.List;
 public class Pdf_view extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener
 {
     protected DatabaseReference view_pdf;
-    protected String v_time;
     PDFView pdfView;
     Integer pageNumber = 0;
-    String pdfFileName,doc_username,pat_id,v_name;
+    String pdfFileName,doc_username,pat_id,v_name,v_time,currentDateandTime;
     String TAG="PDFViewActivity";
     int position=-1;
 
@@ -50,11 +45,6 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.pdf_view);
-
-
-        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String currentDateandTime = sdf.format(new Date());
-        v_time = currentDateandTime + "";*/
 
         Bundle bundle = getIntent().getExtras();
         doc_username = bundle.getString("username");
@@ -67,12 +57,15 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
-        view_pdf.addValueEventListener(new ValueEventListener() {
+        view_pdf.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
 
                 DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
 
@@ -84,24 +77,27 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
         });
     }
 
 
-    private void init(){
+    private void init()
+    {
         pdfView= (PDFView)findViewById(R.id.pdfview);
         position = getIntent().getIntExtra("position",-1);
         displayFromSdcard();
     }
-    private void displayFromSdcard() {
 
+    private void displayFromSdcard()
+    {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String currentDateandTime = sdf.format(new Date());
-        String v_time = currentDateandTime + "";
+        currentDateandTime = sdf.format(new Date());
+        v_time = currentDateandTime + "";
 
         pdfFileName ="/sdcard/Dentogram/"+v_name+"-"+v_time+".pdf";
         File file = new File(pdfFileName);
@@ -118,54 +114,68 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
                 .scrollHandle(new DefaultScrollHandle(this))
                 .load();
     }
+
     @Override
-    public void onPageChanged(int page, int pageCount) {
+    public void onPageChanged(int page, int pageCount)
+    {
         pageNumber = page;
         setTitle(String.format("%s %s / %s", pdfFileName, page + 1, pageCount));
     }
+
     @Override
-    public void loadComplete(int nbPages) {
+    public void loadComplete(int nbPages)
+    {
         PdfDocument.Meta meta = pdfView.getDocumentMeta();
         printBookmarksTree(pdfView.getTableOfContents(), "-");
 
     }
 
-    public void printBookmarksTree(List<PdfDocument.Bookmark> tree, String sep) {
-        for (PdfDocument.Bookmark b : tree) {
+    public void printBookmarksTree(List<PdfDocument.Bookmark> tree, String sep)
+    {
+        for (PdfDocument.Bookmark b : tree)
+        {
 
             Log.e(TAG, String.format("%s %s, p %d", sep, b.getTitle(), b.getPageIdx()));
 
-            if (b.hasChildren()) {
+            if (b.hasChildren())
+            {
                 printBookmarksTree(b.getChildren(), sep + "-");
             }
         }
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     Snackbar sb = null;
-    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver()
+    {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent)
+        {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo ni = manager.getActiveNetworkInfo();
             boolean isConnected = ni != null &&
                     ni.isConnectedOrConnecting();
 
 
-            if (isConnected) {
-                try{
+            if (isConnected)
+            {
+                try
+                {
                     sb.dismiss();
                 }
                 catch (Exception ex)
                 {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
-            } else {
+            }
+            else
+            {
                 sb = Snackbar.make(findViewById(R.id.pdf_view_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override
@@ -179,4 +189,8 @@ public class Pdf_view extends AppCompatActivity implements OnPageChangeListener,
         }
     };
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

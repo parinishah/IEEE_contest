@@ -32,7 +32,8 @@ import java.io.File;
 
 import static java.security.AccessController.getContext;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity
+{
 
     protected EditText username;
     protected EditText password;
@@ -44,7 +45,8 @@ public class Login extends AppCompatActivity {
     protected String usernm;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.login);
@@ -74,26 +76,34 @@ public class Login extends AppCompatActivity {
 
         forgot_password.setVisibility(View.INVISIBLE);
 
-        signup.setOnClickListener(new View.OnClickListener() {
+        signup.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 launch_signup();
             }
         });
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Login.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
 
+        login.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Login.addValueEventListener(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
                         usernm = username.getText().toString();
 
                             if ((dataSnapshot.child(username.getText().toString()).exists()))
                             {
-                                if (!(usernm.equals(""))) {
+                                if (!(usernm.equals("")))
+                                {
 
-                                    if (dataSnapshot.child(usernm).child("password").getValue().toString().equals(password.getText().toString())) {
+                                    if (dataSnapshot.child(usernm).child("password").getValue().toString().equals(password.getText().toString()))
+                                    {
                                         SharedPreferences sharedPref = getSharedPreferences("doctor_username", MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPref.edit();
                                         editor.putString("doctor_username", usernm);
@@ -129,7 +139,8 @@ public class Login extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(DatabaseError databaseError)
+                    {
 
                     }
                 });
@@ -144,7 +155,8 @@ public class Login extends AppCompatActivity {
     }
 
 
-    public void launch_my_patients(String doc_username) {
+    public void launch_my_patients(String doc_username)
+    {
 
         Intent i =new Intent(this, My_patients.class);
         i.putExtra("username",doc_username);
@@ -152,7 +164,8 @@ public class Login extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -160,7 +173,8 @@ public class Login extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         password.setText("");
@@ -179,15 +193,19 @@ public class Login extends AppCompatActivity {
                     ni.isConnectedOrConnecting();
 
 
-            if (isConnected) {
-                try{
+            if (isConnected)
+            {
+                try
+                {
                     sb.dismiss();
                 }
                 catch (Exception ex)
                 {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
-            } else {
+            }
+            else
+            {
                 sb = Snackbar.make(findViewById(R.id.login_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override

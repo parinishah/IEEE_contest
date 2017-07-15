@@ -194,13 +194,13 @@
                     android:text="DEPARTMENT"
                     android:textSize="13dp" />
 
-                <Spinner
+                <EditText
                     android:id="@+id/spinner_new_department"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
                     android:layout_weight="1.5"
-                    android:entries="@array/department_array"
-                    android:prompt="@string/department_prompt" />
+                    android:hint="Department"
+                    android:textSize="18dp"/>
 
             </LinearLayout>
 

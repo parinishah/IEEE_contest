@@ -29,9 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 
-/**
- * Created by parini on 07-06-2017.
- */
 
 public class Signup extends AppCompatActivity
 {
@@ -43,10 +40,9 @@ public class Signup extends AppCompatActivity
     protected TextView signup;
     protected DatabaseReference check_existing;
 
-
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.signup);
@@ -75,31 +71,47 @@ public class Signup extends AppCompatActivity
                 launch_login();
             }
         });
-        signup.setOnClickListener(new View.OnClickListener() {
+
+        signup.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 final String username_s = username.getText().toString();
                 final String email_s = email.getText().toString();
                 final String password_s = password.getText().toString();
 
-                if (username_s.equals("")) {
+                if (username_s.equals(""))
+                {
                     username.setHint("Enter valid Username");
-                } else if (email_s.equals("")) {
+                }
+                else if (email_s.equals(""))
+                {
                     email.setHint("Enter Email");
-                } else {
-                    check_existing.addValueEventListener(new ValueEventListener() {
+                }
+                else
+                {
+                    check_existing.addValueEventListener(new ValueEventListener()
+                    {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.child(username.getText().toString()).exists()) {
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            if (dataSnapshot.child(username.getText().toString()).exists())
+                            {
                                 username.setText("");
                                 password.setText("");
                                 confirm_password.setText("");
                                 email.setText("");
                                 username.setHint("Username already exists!");
-                            } else {
-                                if (password.getText().toString().equals(confirm_password.getText().toString())) {
+                            }
+                            else
+                            {
+                                if (password.getText().toString().equals(confirm_password.getText().toString()))
+                                {
                                     launch_doctor_profile(username_s, password_s, email_s);
-                                } else {
+                                }
+                                else
+                                {
                                     password.setText("");
                                     confirm_password.setText("");
                                     confirm_password.setHint("Password didn't match!");
@@ -124,6 +136,7 @@ public class Signup extends AppCompatActivity
     {
         startActivity(new Intent(this, Login.class));
     }
+
     public void launch_doctor_profile(String username,String password,String email)
     {
         Intent i = new Intent(this,Doctor_profile.class);
@@ -146,30 +159,37 @@ public class Signup extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     Snackbar sb = null;
-    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver()
+    {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent)
+        {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo ni = manager.getActiveNetworkInfo();
             boolean isConnected = ni != null &&
                     ni.isConnectedOrConnecting();
 
 
-            if (isConnected) {
-                try{
+            if (isConnected)
+            {
+                try
+                {
                     sb.dismiss();
                 }
                 catch (Exception ex)
                 {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
-            } else {
+            }
+            else
+            {
                 sb = Snackbar.make(findViewById(R.id.signup_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override

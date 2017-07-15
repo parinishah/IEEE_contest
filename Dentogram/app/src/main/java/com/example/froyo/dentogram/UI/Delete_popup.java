@@ -9,17 +9,16 @@ import android.widget.TextView;
 import com.example.froyo.dentogram.R;
 
 
-/**
- * Created by KRISH on 13-06-2017.
- */
 
-public class Delete_popup extends AppCompatActivity {
+public class Delete_popup extends AppCompatActivity
+{
 
     protected TextView delete;
     protected TextView cancel;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.delete_popup);
@@ -27,16 +26,20 @@ public class Delete_popup extends AppCompatActivity {
         delete = (TextView) findViewById(R.id.textView_delete_delete);
         cancel = (TextView) findViewById(R.id.textView_delete_cancel);
 
-        delete.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 launch_view_patient();
             }
         });
@@ -44,4 +47,10 @@ public class Delete_popup extends AppCompatActivity {
     }
 
     public void launch_view_patient() { startActivity(new Intent(this, View_patient.class)); }
+
+    @Override
+    public void onBackPressed()
+    {
+
+    }
 }

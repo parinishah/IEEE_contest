@@ -17,11 +17,8 @@ import com.example.froyo.dentogram.R;
 
 import static android.R.attr.data;
 
-/**
- * Created by KRISH on 13-06-2017.
- */
-
-public class Pictures_options_popup extends AppCompatActivity {
+public class Pictures_options_popup extends AppCompatActivity
+{
 
     protected TextView gallery;
     protected TextView camera;
@@ -32,7 +29,8 @@ public class Pictures_options_popup extends AppCompatActivity {
     ImageView imageView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.pictures_options_popup);
@@ -42,9 +40,11 @@ public class Pictures_options_popup extends AppCompatActivity {
         cancel = (TextView) findViewById(R.id.textView_pictures_options_cancel);
         imageView = (ImageView) findViewById(R.id.imgView);
 
-        gallery.setOnClickListener(new View.OnClickListener() {
+        gallery.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -53,7 +53,8 @@ public class Pictures_options_popup extends AppCompatActivity {
             }
         });
 
-        camera.setOnClickListener(new View.OnClickListener() {
+        camera.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
 
@@ -64,15 +65,15 @@ public class Pictures_options_popup extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data)
+        {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -88,7 +89,9 @@ public class Pictures_options_popup extends AppCompatActivity {
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
 
-        } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+        }
+        else if (requestCode == REQUEST_IMAGE_CAPTURE)
+        {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
 
             imageView.setImageBitmap(photo);
@@ -97,5 +100,9 @@ public class Pictures_options_popup extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }
 

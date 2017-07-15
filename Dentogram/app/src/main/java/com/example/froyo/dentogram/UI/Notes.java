@@ -34,10 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
-/**
- * Created by KRISH on 13-06-2017.
- */
-
 public class Notes extends AppCompatActivity
 {
 
@@ -57,7 +53,8 @@ public class Notes extends AppCompatActivity
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.notes);
@@ -84,9 +81,11 @@ public class Notes extends AppCompatActivity
         date.setText(date_s);
 
 
-        delete.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 if(title.length()!=0)
                 {
                     dialogopener();
@@ -99,9 +98,11 @@ public class Notes extends AppCompatActivity
             }
         });
 
-        save.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
                 if(title.length()==0)
                 {
@@ -121,12 +122,14 @@ public class Notes extends AppCompatActivity
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
-        notes.addValueEventListener(new ValueEventListener() {
+        notes.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                if(dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").child(note_id).exists())
                {
                    DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").child(note_id);
@@ -148,13 +151,13 @@ public class Notes extends AppCompatActivity
                    refills.setText(n_refills);
                    sig.setText(n_sig);
 
-
                }
 
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
         });
@@ -186,7 +189,8 @@ public class Notes extends AppCompatActivity
         dialog.show();
     }
 
-    public void launch_view_patient(String doc_username, String pat_id){
+    public void launch_view_patient(String doc_username, String pat_id)
+    {
 
         Intent i = new Intent(this, View_patient.class);
         i.putExtra("username", doc_username);
@@ -202,10 +206,9 @@ public class Notes extends AppCompatActivity
         launch_view_patient(doc_username,pat_id);
     }
 
-
-
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
@@ -220,15 +223,19 @@ public class Notes extends AppCompatActivity
                     ni.isConnectedOrConnecting();
 
 
-            if (isConnected) {
-                try{
+            if (isConnected)
+            {
+                try
+                {
                     sb.dismiss();
                 }
                 catch (Exception ex)
                 {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
-            } else {
+            }
+            else
+            {
                 sb = Snackbar.make(findViewById(R.id.notes_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override
@@ -243,7 +250,8 @@ public class Notes extends AppCompatActivity
     };
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
 
     }
 }

@@ -29,9 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-/**
- * Created by KRISH on 16-06-2017.
- */
+
 
 public class Doctor_profile extends AppCompatActivity
 {
@@ -95,7 +93,7 @@ public class Doctor_profile extends AppCompatActivity
                     launch_my_patients(signup_username);
                 }
 
-                
+
             }
         });
 
@@ -211,6 +209,11 @@ public class Doctor_profile extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
@@ -247,5 +250,6 @@ public class Doctor_profile extends AppCompatActivity
             }
         }
     };
+
 }
 

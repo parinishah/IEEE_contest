@@ -59,14 +59,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * Created by KRISH on 08-06-2017.
- */
-
-public class View_patient extends AppCompatActivity {
-
-    // private FirebaseStorage storage = FirebaseStorage.getInstance();
-
+public class View_patient extends AppCompatActivity
+{
 
     protected ImageButton back;
     protected ImageButton more;
@@ -90,19 +84,16 @@ public class View_patient extends AppCompatActivity {
     protected StorageReference photos_storage;
     protected ArrayList<Note> note_array;
     protected ArrayList<Picture> picture_array;
-    //protected NoteAdapter noteadapter;
-    //protected PictureAdapter pictureadapter;
     protected LinearLayout note_list;
     protected LinearLayout picture_list;
     protected Dialog dialog_images;
-   // protected Dialog dialog_view_image;
-   // protected ImageView imagevw;
     protected ImageView img_p;
     private static int RESULT_LOAD_IMAGE = 1;
     private static int REQUEST_IMAGE_CAPTURE = 2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.view_patient);
@@ -121,7 +112,7 @@ public class View_patient extends AppCompatActivity {
         back = (ImageButton) findViewById(R.id.imageButton_view_back);
         more = (ImageButton) findViewById(R.id.imageButton_view_more);
         patient = (TextView) findViewById(R.id.textView_view_patient);
-        reffered_by = (TextView) findViewById(R.id.textView_view_reffered);
+        reffered_by = (TextView) findViewById(R.id.textView_view_id_reffered);
         department = (TextView) findViewById(R.id.textView_view_id_department);
         patient_name = (TextView) findViewById(R.id.textView_view_patient_name);
         gender = (TextView) findViewById(R.id.textView_view_gender);
@@ -137,80 +128,9 @@ public class View_patient extends AppCompatActivity {
 
         avi =  (AVLoadingIndicatorView) findViewById(R.id.avi);
         avi.hide();
-       // imagevw = (ImageView) findViewById(R.id.imageView_view_image);
 
-       // noteadapter = new NoteAdapter(getApplicationContext(), note_array);
         note_list = (LinearLayout) findViewById(R.id.listView_notes);
-
-
-        //note_list.setAdapter(noteadapter);
-
-        /*note_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Note n = note_array.get(i);
-                Intent in = new Intent(View_patient.this, Notes.class);
-                in.putExtra("patient_id", pat_id);
-                in.putExtra("username", doc_username);
-                in.putExtra("note_id", n.getNotes_id());
-                startActivity(in);
-            }
-        });
-
-        note_list.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-// Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
-                    case MotionEvent.ACTION_UP:
-// Allow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-// Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
-            }
-        });*/
-
-       // pictureadapter = new PictureAdapter(getApplicationContext(), picture_array);
         picture_list = (LinearLayout) findViewById(R.id.listView_photos);
-       /* picture_list.setAdapter(pictureadapter);
-
-        picture_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Picture p = picture_array.get(i);
-                dialogopener_view_image(p);
-            }
-        });
-
-        picture_list.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-// Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
-                    case MotionEvent.ACTION_UP:
-// Allow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-// Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
-            }
-        });
-*/
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,17 +139,22 @@ public class View_patient extends AppCompatActivity {
             }
         });
 
-        more.setOnClickListener(new View.OnClickListener() {
+        more.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 PopupMenu menu = new PopupMenu(View_patient.this, more);
                 menu.getMenuInflater().inflate(R.menu.patient_profile_options, menu.getMenu());
 
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
 
-                        switch (item.getItemId()) {
+                        switch (item.getItemId())
+                        {
                             case R.id.patient_profile_options_edit:
                                 launch_new_patient_info(doc_username, pat_id);
                                 return true;
@@ -279,117 +204,19 @@ public class View_patient extends AppCompatActivity {
 
     }
 
-    private boolean isReadAllowedofCamera() {
-        //Getting the permission status
-        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.CAMERA);
-
-        //If permission is granted returning true
-        if (result == PackageManager.PERMISSION_GRANTED)
-            return true;
-
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private boolean isReadAllowedofRead() {
-        //Getting the permission status
-        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        //If permission is granted returning true
-        if (result == PackageManager.PERMISSION_GRANTED)
-            return true;
-
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private boolean isReadAllowedofWrite() {
-        //Getting the permission status
-        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        //If permission is granted returning true
-        if (result == PackageManager.PERMISSION_GRANTED)
-            return true;
-
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private void request(int id) {
-
-        if (id == 0) {
-            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
-            permissionHelper.request(new PermissionHelper.PermissionCallback() {
-                @Override
-                public void onPermissionGranted() {
-                }
-
-                @Override
-                public void onPermissionDenied() {
-
-
-                }
-
-                @Override
-                public void onPermissionDeniedBySystem() {
-
-                }
-            });
-        } else if (id == 1) {
-            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.CAMERA}, 100);
-            permissionHelper.request(new PermissionHelper.PermissionCallback() {
-                @Override
-                public void onPermissionGranted() {
-
-                }
-
-                @Override
-                public void onPermissionDenied() {
-
-
-                }
-
-                @Override
-                public void onPermissionDeniedBySystem() {
-
-                }
-            });
-        } else if (id == 2) {
-            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-            permissionHelper.request(new PermissionHelper.PermissionCallback() {
-                @Override
-                public void onPermissionGranted() {
-
-                }
-
-                @Override
-                public void onPermissionDenied() {
-
-
-                }
-
-                @Override
-                public void onPermissionDeniedBySystem() {
-
-                }
-            });
-        }
-
-        if (isReadAllowedofCamera() && isReadAllowedofRead() && isReadAllowedofWrite()) {
-            dialogopener_images();
-        }
-
-    }
-
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
-        view_patient.addValueEventListener(new ValueEventListener() {
+        view_patient.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                 DataSnapshot d1 = dataSnapshot.child(doc_username).child("patients").child(pat_id);
 
-                if (d1.exists()) {
+                if (d1.exists())
+                {
                     String v_name, v_gender, v_dob, v_diagnosis, v_mobile, v_phone, v_medhis, v_reffered, v_department;
                     v_name = d1.child("patient_first_name").getValue().toString() + " " + d1.child("patient_last_name").getValue().toString();
                     v_gender = d1.child("patient_gender").getValue().toString();
@@ -417,10 +244,9 @@ public class View_patient extends AppCompatActivity {
 
                     note_list.removeAllViews();
                     picture_list.removeAllViews();
-                    //noteadapter.clear();
-                    //pictureadapter.clear();
 
-                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").child(pat_id).child("notes").getChildren())
+                    {
                         String date = postSnapshot.child("note_date").getValue().toString();
                         String title = postSnapshot.child("note_title").getValue().toString();
                         String id = postSnapshot.getKey();
@@ -464,7 +290,8 @@ public class View_patient extends AppCompatActivity {
 
                     }
 
-                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").child(pat_id).child("image links").getChildren()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.child(doc_username).child("patients").child(pat_id).child("image links").getChildren())
+                    {
                         final String path = postSnapshot.child("path").getValue().toString();
                         final String date = postSnapshot.child("date").getValue().toString();
                         final String id = postSnapshot.getKey();
@@ -505,10 +332,6 @@ public class View_patient extends AppCompatActivity {
                         v.setBackgroundColor(Color.parseColor("#B3B3B3"));
                         picture_list.addView(v);
 
-
-                        //picture = new Picture(id, path, date);
-                        //picture_array.add(picture);
-                        //pictureadapter.notifyDataSetChanged();
                     }
 
                 }
@@ -522,33 +345,115 @@ public class View_patient extends AppCompatActivity {
         });
     }
 
-    public void launch_my_patients(String doc_username) {
+    private boolean isReadAllowedofCamera()
+    {
 
-        Intent i = new Intent(this, My_patients.class);
-        i.putExtra("username", doc_username);
-        startActivity(i);
+        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.CAMERA);
+
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+
+        return false;
     }
 
-    public void launch_printable(String doc_username, String pat_id) {
-        Intent i = new Intent(this, Printable.class);
-        i.putExtra("username", doc_username);
-        i.putExtra("patient_id", pat_id);
-        startActivity(i);
+    private boolean isReadAllowedofRead() {
+
+        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        return false;
     }
 
-    public void launch_notes(String doc_username, String pat_id) {
+    private boolean isReadAllowedofWrite() {
 
-        Intent i = new Intent(this, Notes.class);
-        i.putExtra("username", doc_username);
-        i.putExtra("patient_id", pat_id);
-        String notes_id = note_ref.push().getKey().toString();
-        i.putExtra("note_id", notes_id);
-        startActivity(i);
+        int result = ContextCompat.checkSelfPermission(View_patient.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        return false;
     }
 
-    ImageView imageView, imageView1;
+    private void request(int id)
+    {
 
-    public void dialogopener_images() {
+        if (id == 0)
+        {
+            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+            permissionHelper.request(new PermissionHelper.PermissionCallback()
+            {
+                @Override
+                public void onPermissionGranted() {
+                }
+
+                @Override
+                public void onPermissionDenied() {
+
+
+                }
+
+                @Override
+                public void onPermissionDeniedBySystem() {
+
+                }
+            });
+        }
+        else if (id == 1)
+        {
+            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.CAMERA}, 100);
+            permissionHelper.request(new PermissionHelper.PermissionCallback()
+            {
+                @Override
+                public void onPermissionGranted() {
+
+                }
+
+                @Override
+                public void onPermissionDenied() {
+
+
+                }
+
+                @Override
+                public void onPermissionDeniedBySystem() {
+
+                }
+            });
+        }
+        else if (id == 2)
+        {
+            PermissionHelper permissionHelper = new PermissionHelper(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+            permissionHelper.request(new PermissionHelper.PermissionCallback()
+            {
+                @Override
+                public void onPermissionGranted() {
+
+                }
+
+                @Override
+                public void onPermissionDenied() {
+
+
+                }
+
+                @Override
+                public void onPermissionDeniedBySystem() {
+
+                }
+            });
+        }
+
+        if (isReadAllowedofCamera() && isReadAllowedofRead() && isReadAllowedofWrite()) {
+            dialogopener_images();
+        }
+
+    }
+
+    public void dialogopener_images()
+    {
         dialog_images = new Dialog(View_patient.this);
         dialog_images.setContentView(R.layout.pictures_options_popup);
 
@@ -560,13 +465,16 @@ public class View_patient extends AppCompatActivity {
         gallery_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isReadAllowedofWrite() && isReadAllowedofRead()) {
+                if (isReadAllowedofWrite() && isReadAllowedofRead())
+                {
                     Intent i = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                     startActivityForResult(i, RESULT_LOAD_IMAGE);
-                } else {
+                }
+                else
+                {
                     request(2);
                 }
             }
@@ -575,13 +483,18 @@ public class View_patient extends AppCompatActivity {
         camera_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isReadAllowedofCamera()) {
+                if (isReadAllowedofCamera())
+                {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+                    {
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
 
-                } else {
+                }
+                else
+                {
                     request(1);
                 }
             }
@@ -600,10 +513,12 @@ public class View_patient extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data)
+        {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -622,21 +537,18 @@ public class View_patient extends AppCompatActivity {
             cursor.close();
 
 
-            //img_p.setImageBitmap(bitmap);
-
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
             byte[] data_compress = baos.toByteArray();
             pic_storage(data_compress);
             dialog_images.dismiss();
 
-
-        } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            if (data.getExtras() != null) {
+        }
+        else if (requestCode == REQUEST_IMAGE_CAPTURE)
+        {
+            if (data.getExtras() != null)
+            {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
-
-                //img_p.setImageBitmap(photo);
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 photo.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -651,76 +563,8 @@ public class View_patient extends AppCompatActivity {
     }
 
 
-    public void launch_new_patient_info(String doc_username, String pat_id) {
-
-        Intent i = new Intent(this, New_patient_info.class);
-        i.putExtra("username", doc_username);
-        i.putExtra("patient_id", pat_id);
-        startActivity(i);
-    }
-
-    public void dialogopener() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.delete_popup);
-
-        final TextView delete = (TextView) dialog.findViewById(R.id.textView_delete_delete);
-        TextView cancel = (TextView) dialog.findViewById(R.id.textView_delete_cancel);
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                delete_patient(doc_username, pat_id);
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-    }
-
-    public void delete_patient(String doc_username, String pat_id) {
-        view_patient.child(doc_username).child("patients").child(pat_id).removeValue();
-        launch_my_patients(doc_username);
-    }
-
-
-    public String getAge(String v_dob) {
-        String[] temp = v_dob.split("-");
-        int year, month, day;
-
-        day = Integer.parseInt(temp[0]);
-        month = Integer.parseInt(temp[1]);
-        year = Integer.parseInt(temp[2]);
-
-        Calendar dob = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
-
-        dob.set(year, month, day);
-
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
-            age--;
-        }
-
-        String ageS;
-        if (age < 0) {
-            ageS = "NA";
-
-        } else {
-            Integer ageInt = new Integer(age);
-            ageS = ageInt.toString();
-        }
-
-        return ageS;
-    }
-
-    public void pic_storage(byte[] data_compress) {
+    public void pic_storage(byte[] data_compress)
+    {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateandTime = sdf.format(new Date());
         image_id = currentDateandTime + "";
@@ -747,8 +591,8 @@ public class View_patient extends AppCompatActivity {
 
 
                 avi.hide();
-                //Glide.with(getApplicationContext()).load(path).into(pres);
-                Toast toast = Toast.makeText(getApplicationContext(), "Upload Successfully", Toast.LENGTH_SHORT);
+
+                Toast toast = Toast.makeText(getApplicationContext(), "Upload Successful", Toast.LENGTH_SHORT);
                 toast.show();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -760,6 +604,109 @@ public class View_patient extends AppCompatActivity {
         });
     }
 
+    public void dialogopener()
+    {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.delete_popup);
+
+        final TextView delete = (TextView) dialog.findViewById(R.id.textView_delete_delete);
+        TextView cancel = (TextView) dialog.findViewById(R.id.textView_delete_cancel);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete_patient(doc_username, pat_id);
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
+    public void delete_patient(String doc_username, String pat_id)
+    {
+        view_patient.child(doc_username).child("patients").child(pat_id).removeValue();
+        launch_my_patients(doc_username);
+    }
+
+
+    public String getAge(String v_dob)
+    {
+        String[] temp = v_dob.split("-");
+        int year, month, day;
+
+        day = Integer.parseInt(temp[0]);
+        month = Integer.parseInt(temp[1]);
+        year = Integer.parseInt(temp[2]);
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR))
+        {
+            age--;
+        }
+
+        String ageS;
+        if (age < 0)
+        {
+            ageS = "NA";
+
+        }
+        else
+        {
+            Integer ageInt = new Integer(age);
+            ageS = ageInt.toString();
+        }
+
+        return ageS;
+    }
+
+    public void launch_my_patients(String doc_username)
+    {
+
+        Intent i = new Intent(this, My_patients.class);
+        i.putExtra("username", doc_username);
+        startActivity(i);
+    }
+
+    public void launch_printable(String doc_username, String pat_id)
+    {
+        Intent i = new Intent(this, Printable.class);
+        i.putExtra("username", doc_username);
+        i.putExtra("patient_id", pat_id);
+        startActivity(i);
+    }
+
+    public void launch_notes(String doc_username, String pat_id)
+    {
+
+        Intent i = new Intent(this, Notes.class);
+        i.putExtra("username", doc_username);
+        i.putExtra("patient_id", pat_id);
+        String notes_id = note_ref.push().getKey().toString();
+        i.putExtra("note_id", notes_id);
+        startActivity(i);
+    }
+
+    public void launch_new_patient_info(String doc_username, String pat_id)
+    {
+
+        Intent i = new Intent(this, New_patient_info.class);
+        i.putExtra("username", doc_username);
+        i.putExtra("patient_id", pat_id);
+        startActivity(i);
+    }
 
     public void launch_view_image(String doc_username, String pat_id,String path,String image_id)
     {
@@ -772,7 +719,8 @@ public class View_patient extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         registerReceiver(networkStateReceiver  , new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
@@ -787,15 +735,19 @@ public class View_patient extends AppCompatActivity {
                     ni.isConnectedOrConnecting();
 
 
-            if (isConnected) {
-                try{
+            if (isConnected)
+            {
+                try
+                {
                     sb.dismiss();
                 }
                 catch (Exception ex)
                 {
                     Log.e("Exception", ex.getStackTrace().toString());
                 }
-            } else {
+            }
+            else
+            {
                 sb = Snackbar.make(findViewById(R.id.view_patient_ui), "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Start Wifi", new View.OnClickListener() {
                     @Override
